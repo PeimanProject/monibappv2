@@ -1,0 +1,129 @@
+{
+  "Index": {
+    "title": "Monib AI"
+  },
+  "Auth": {
+    "mobile": "Mobile Number",
+    "login": "Login",
+    "code": "Activation Code",
+    "get_code": "Get Code",
+    "change_number": "Change Number",
+    "register": "Register",
+    "login_error": "The activation code is incorrect",
+    "twoFactor": "Code",
+    "authenticatorApp": "Code in Authenticator"
+  },
+  "Common": {
+    "search": "Search...",
+    "searchAct": "Search...",
+    "verse": "Verse",
+    "searchSurah": "Search...",
+    "goToVerse": "Go to Verse...",
+    "goToPage": "Go to Page...",
+    "page": "Page:",
+    "name": "Monib Audio Quran",
+    "upPage": "Previous Page"
+  },
+  "Main": {
+    "Quran": "Holy Quran",
+    "Nhj": "Nahj al-Balagha",
+    "Shf": "Sahifa Sajjadiya",
+    "Sp": "Special Talks",
+    "lecture": "Lecture"
+  },
+  "Items": {
+    "calendar": "Session Schedule Calendar",
+    "wisdom": "Wisdom and Insights",
+    "playlist": "My Playlist",
+    "support": "Support",
+    "lastLecture": "Latest Lectures",
+    "more": "More",
+    "live": "Live Broadcast",
+    "Search": "Search"
+  },
+  "Menu": {
+    "menu": "Menu",
+    "download": "Downloads",
+    "playlist": "My Playlist",
+    "support": "Support",
+    "profile": "Profile",
+    "aboutUs": "About Monib",
+    "contactUs": "Contact Us",
+    "sendQuestion": "Send a Question",
+    "setting": "Settings",
+    "professor": "Mohammad Ali Ansari",
+    "shop": "Bookstore",
+    "telegram": "Telegram",
+    "eata": "Eitaa",
+    "instagram": "Instagram",
+    "web": "Hedayat Noor",
+    "SUB": {
+      "setting": "Settings",
+      "main": " "
+    },
+    "translateSize": "Translation Font Size",
+    "quranSize": "Quran Font Size",
+    "small": "Small",
+    "normal": "Normal",
+    "large": "Large",
+    "dark": "Dark",
+    "light": "Light",
+    "device": "Based on System"
+  },
+  "Lecture": {
+    "lecture": "Lecture",
+    "lectures": "Lectures",
+    "download": "Download",
+    "share": "Share",
+    "playlist": "My Playlist",
+    "AI_Tools": "AI Tools",
+    "cc": "Subtitles",
+    "summary": "Summary",
+    "transcript": "Transcript",
+    "quran": "Quran Text",
+    "subject": "Topics",
+    "verse": "Verse",
+    "cc_off": "Off",
+    "cc_fa": "Persian",
+    "cc_s_fa": "FA",
+    "cc_s_en": "EN",
+    "cc_en": "English",
+    "previousInterpretationRound": "Previous Interpretation Round",
+    "newInterpretationRound": "New Interpretation Round",
+    "noEvent":"تقویم جاری",
+    "moharam": "محرم",
+    "safar": "صفر",
+    "fatemiyeh": "فاطمیه",
+    "ramadan": "رمضان",
+    "gadir": "غدیر",
+    "rajab": "رجب",
+    "shaban": "شعبان"
+  },
+  "Calendar": {
+    "last": "Past Session Calendar"
+  },
+  "Scheduler": {
+    "day": "Day",
+    "month": "Month",
+    "year": "Year",
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "s_saturday": "Sat",
+    "s_sunday": "Sun",
+    "s_monday": "Mon",
+    "s_tuesday": "Tue",
+    "s_wednesday": "Wed",
+    "s_thursday": "Thu",
+    "s_friday": "Fri"
+  },
+  "Series": {
+    "sermon": "Sermon",
+    "letter": "Letter",
+    "wisdom": "Wisdom"
+  }
+}

@@ -1,0 +1,47 @@
+.ios-datepicker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    background-color: #f0f0f0;
+    padding: 10px 0;
+  }
+  
+  .wheel-container {
+    position: relative;
+    width: 70px; /* Adjust as needed */
+    height: 150px; /* Adjust as needed (visibleItems * itemHeight) */
+    overflow: hidden;
+  }
+  
+  .wheel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transition: transform 0.15s ease-out; /* Smooth scrolling stop */
+  }
+  
+  .wheel-item {
+    height: 35px; /* Must match itemHeight in JS */
+    line-height: 35px;
+    text-align: center;
+    font-size: 1.2em;
+    color: #333;
+    white-space: nowrap;
+  }
+  
+  .wheel-container .label {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 35px; /* Match itemHeight */
+    margin-top: -17.5px; /* Adjust to center */
+    border-top: 1px solid #007aff; /* iOS highlight color */
+    border-bottom: 1px solid #007aff; /* iOS highlight color */
+    box-sizing: border-box;
+    pointer-events: none; /* Allow interaction with the wheel */
+  }
