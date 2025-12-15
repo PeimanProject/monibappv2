@@ -8,7 +8,6 @@ export const getSSRToken = async () => {
     password: process.env.AUTH_SECRET,
     cookieName: process.env.AUTH_TOKEN,
   });
-
   return session?.token;
 };
 

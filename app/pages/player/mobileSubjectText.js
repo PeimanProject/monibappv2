@@ -2,11 +2,11 @@
 
 import { Box } from "@mui/material";
 import React from "react";
-import { useTranslations } from "next-intl";
 import { SubjectList } from "@/app/fragment/subjectList/subjectList";
 import _ from "lodash";
 import { TabNormalItem, TabStyle } from "@/app/component/tabStyle";
 import { TextList } from "@/app/component/quran/textList";
+import { useTranslate } from "@/core/useTranslation";
 
 export const MobileSubjectText = ({
   titles,
@@ -25,7 +25,7 @@ export const MobileSubjectText = ({
 }) => {
   const [value, setValue] = React.useState("subject");
   const [index, setIndex] = React.useState(0);
-  const t = useTranslations("Lecture");
+  const { get } = useTranslate()
 
 
   const handleChange = React.useCallback(
@@ -59,14 +59,14 @@ export const MobileSubjectText = ({
                 value={"subject"}
                 index={0}
                 selected={value === "subject"}
-                text={t("subject")}
+                text={get("Lecture.subject")}
               />
               <TabNormalItem
                 onChange={handleChange}
                 value={"quran"}
                 index={1}
                 selected={value === "quran"}
-                text={t("quran")}
+                text={get("Lecture.quran")}
               />
             </TabStyle>
           </Box>

@@ -9,11 +9,11 @@ import {
   IconButton,
 } from "@mui/material";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
-import { useLocale, useTranslations } from "next-intl";
 import React from "react";
 import Image from "next/image";
 import { TabCircleItem, TabStyle } from "@/app/component/tabStyle";
 import Link from "next/link";
+import { useTranslate } from "@/core/useTranslation";
 
 export const MobileInfo = ({
   contextName,
@@ -30,8 +30,7 @@ export const MobileInfo = ({
   handlePictureInPicture,
   verse,
 }) => {
-  const t = useTranslations("Lecture");
-  const locale = useLocale();
+  const { get } = useTranslate()
   const theme = useTheme();
 
   return (
@@ -64,7 +63,7 @@ export const MobileInfo = ({
               },
             }}
           >
-            <Link href={`/${locale}/series/${seriesId}`}>
+            <Link href={`/series/${seriesId}`}>
               <Button color="inherit" sx={{ minWidth: 20 }}>
                 {series.title}
                 {/* <Typography
@@ -80,7 +79,7 @@ export const MobileInfo = ({
               sx={{ minHeight: 15, mx: 2, transform: "rotate(20deg)" }}
             />
             <Typography>
-              {t("verse")} {digitsEnToFa(verseId)}
+              {get("Lecture.verse")} {digitsEnToFa(verseId)}
             </Typography>
           </Box>
         )}
@@ -95,7 +94,7 @@ export const MobileInfo = ({
                 },
               }}
             >
-              <Link href={`/${locale}/series/${seriesId}`}>
+              <Link href={`/series/${seriesId}`}>
                 <Button color="inherit" sx={{ minWidth: 50, px: 0 }}>
                   <Typography
                     variant="body1"
@@ -115,7 +114,7 @@ export const MobileInfo = ({
                 sx={{ minHeight: 15, mx: 1, transform: "rotate(20deg)" }}
               />
               <Typography>
-                {t("lecture")} {digitsEnToFa(rowNumber)}
+                {get("Lecture.lecture")} {digitsEnToFa(rowNumber)}
               </Typography>
               {verse && (
                 <Typography
@@ -156,7 +155,7 @@ export const MobileInfo = ({
               height={20}
             />
             <Typography sx={{ fontSize: 8 }} variant="caption">
-              {t("audio")}
+              {get("Lecture.audio")}
             </Typography>
           </TabCircleItem>
 
@@ -173,7 +172,7 @@ export const MobileInfo = ({
               height={20}
             />
             <Typography sx={{ fontSize: 8 }} variant="caption">
-              {t("video")}
+              {get("Lecture.video")}
             </Typography>
           </TabCircleItem>
         </TabStyle>

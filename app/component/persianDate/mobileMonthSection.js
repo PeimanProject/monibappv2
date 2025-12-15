@@ -1,13 +1,13 @@
 import { Box, Typography, ButtonBase } from "@mui/material";
 import React from "react";
 import _ from "lodash";
-import { useTranslations } from "next-intl";
 import { holidayColor, weekDays, jalaliWeekDay } from "./dayBar";
 import { addDays, isEqual, format } from "date-fns-jalali";
 import { format as gFormat } from "date-fns";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
 import { desktopValues } from "@/core/config/values";
 import { useEventCalendarStore } from "@/store/useEventCalendar";
+import { useTranslate } from "@/core/useTranslation";
 
 const CellSection = ({ children }) => {
   return (
@@ -92,14 +92,14 @@ const CellDaySection = ({
             ...(!!selected &&
               !!lecture?.file_type &&
               isInMonth && {
-                bgcolor: "primary.dark",
-                color: "white",
-              }),
+              bgcolor: "primary.dark",
+              color: "white",
+            }),
             ...(!!isEvent &&
               !!isInMonth && {
-                color: "white",
-                bgcolor: "var(--event-color)",
-              }),
+              color: "white",
+              bgcolor: "var(--event-color)",
+            }),
             py: 0.1,
             m: 0.2,
             border: 2,
@@ -117,8 +117,8 @@ const CellDaySection = ({
             }),
             ...(!!lecture &&
               lecture?.file_type == null && {
-                bgcolor: "#c4d0cc",
-              }),
+              bgcolor: "#c4d0cc",
+            }),
             backgroundSize: `10px 10px`,
             // backgroundSize: `4px 4px`,
           }}
@@ -131,14 +131,14 @@ const CellDaySection = ({
                   fontWeight: "light",
                   ...(!!selected &&
                     !!isEvent && {
-                      bgcolor: "primary.dark",
-                      px: 1,
-                    }),
+                    bgcolor: "primary.dark",
+                    px: 1,
+                  }),
                   ...(!!lecture &&
                     lecture?.file_type == null && {
-                      // bgcolor: "primary.main",
-                      px: 1,
-                    }),
+                    // bgcolor: "primary.main",
+                    px: 1,
+                  }),
                 }}
               >
                 {digitsEnToFa(numberDay - firstDay)}
@@ -159,11 +159,11 @@ const CellDaySection = ({
                   alignItems: "center",
                   ...(!!lecture &&
                     lecture?.file_type == null && {
-                      bgcolor: "primary.main",
-                      color: "black",
-                      width: "auto",
-                      px: 1,
-                    }),
+                    bgcolor: "primary.main",
+                    color: "black",
+                    width: "auto",
+                    px: 1,
+                  }),
                 }}
               >
                 <Typography variant="caption">
@@ -245,7 +245,7 @@ export const MobileMonthSection = ({
   hijri_len,
   desktop,
 }) => {
-  const t = useTranslations("Scheduler");
+  const { get } = useTranslate()
   return (
     <>
       <Box
@@ -268,7 +268,7 @@ export const MobileMonthSection = ({
               variant="caption"
               sx={{ ...(day === 6 && { color: holidayColor }) }}
             >
-              {t(weekDays[jalaliWeekDay[day]])}
+              {get(`Scheduler.${weekDays[jalaliWeekDay[day]]}`)}
             </Typography>
           </CellSection>
         ))}

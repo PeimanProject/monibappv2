@@ -1,11 +1,9 @@
 import { Box, ButtonBase, Container, Typography, Divider } from "@mui/material";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
 import { cleanText } from "../miskat/mobileMiskat";
-import { useLocale } from "next-intl";
 import Link from "next/link";
 
 export const Book = ({ resultBook }) => {
-  const locale = useLocale();
 
   return (
     <Container maxWidth="sm">
@@ -14,7 +12,7 @@ export const Book = ({ resultBook }) => {
           resultBook?.result?.result?.map((book, index) => (
             <Link
               key={index}
-              href={`/${locale}/miskat/id/${book.id}/${book.page_id}/?title=${book.bookInfo?.title}`}
+              href={`/miskat/id/${book.id}/${book.page_id}/?title=${book.bookInfo?.title}`}
             >
               <ButtonBase
                 sx={{

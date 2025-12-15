@@ -61,10 +61,10 @@ export const SeriesItemKey = ({
   React.useEffect(() => {
     setShow(
       !!!value ||
-        value?.length === 0 ||
-        title.indexOf(value) > -1 ||
-        rowId === +value ||
-        rowId === digitsFaToEn(value)
+      value?.length === 0 ||
+      title.indexOf(value) > -1 ||
+      rowId === +value ||
+      rowId === digitsFaToEn(value)
     );
   }, [value]);
 
@@ -122,8 +122,8 @@ export const SeriesItemKey = ({
       }}
       href={
         type === "miskat"
-          ? `/${locale}/quran/${rowId}/${title}?type=${type}`
-          : `/${locale}/series/${id}?type=${type}`
+          ? `/quran/${rowId}/${title}?type=${type}`
+          : `/series/${id}?type=${type}`
       }
     >
       {content}

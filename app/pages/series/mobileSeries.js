@@ -10,7 +10,6 @@ import { QuranTitle } from "../wisdom/quranTitle";
 import { TafsirList } from "@/app/component/quran/tafsir";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { useLocale } from "next-intl";
 
 export const MobileSeries = ({
   series,
@@ -19,7 +18,6 @@ export const MobileSeries = ({
   type = "lecture",
   os
 }) => {
-  const locale = useLocale();
   const { setVerse } = useVerseDataStore();
   const [value, setValue] = React.useState(type || "lecture");
   const router = useRouter();
@@ -46,7 +44,7 @@ export const MobileSeries = ({
       ),
     [series?.title]
   );
-  
+
 
   return (
     <>
@@ -74,9 +72,8 @@ export const MobileSeries = ({
             }}
           >
             <Link
-              href={`/${locale}/series/${
-                series.lastCourseId || series.newCourseId
-              }?type=${type}`}
+              href={`/series/${series.lastCourseId || series.newCourseId
+                }?type=${type}`}
             >
               <Button variant="contained" color="primary" size="small">
                 {series.lastCourseId ? "دور پیشین" : "دور جدید"}

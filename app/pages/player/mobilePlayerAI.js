@@ -11,7 +11,6 @@ import {
   useTheme,
   Container,
 } from "@mui/material";
-import { useTranslations } from "next-intl";
 import Image from "next/image";
 import React from "react";
 import Radio from "@mui/material/Radio";
@@ -24,6 +23,7 @@ import { CustomDrawer, DrawerToolbar } from "@/app/component/customDrawer";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { TabCircleItem, TabStyle } from "@/app/component/tabStyle";
+import { useTranslate } from "@/core/useTranslation";
 
 
 export const CustomStyledMenu = styled(
@@ -77,7 +77,7 @@ export const MobilePlayerAI = ({
     []
   );
 
-  const t = useTranslations("Lecture");
+  const { get } = useTranslate()
   const [open, setOpen] = React.useState(false);
   const [showText, setShowText] = React.useState(false);
 
@@ -136,7 +136,7 @@ export const MobilePlayerAI = ({
             />
           }
         >
-          {t("cc")}
+          {get("Lecture.cc")}
         </Button>
         <CustomStyledMenu
           onClose={handleClose}
@@ -147,19 +147,19 @@ export const MobilePlayerAI = ({
             <FormControlLabel
               value="fa"
               control={<Radio color="default" />}
-              label={t("cc_fa")}
+              label={get("Lecture.cc_fa")}
             />
             {srt_en?.fileName && (
               <FormControlLabel
                 value="en"
                 control={<Radio color="default" />}
-                label={t("cc_en")}
+                label={get("Lecture.cc_en")}
               />
             )}
             <FormControlLabel
               value="off"
               control={<Radio color="default" />}
-              label={t("cc_off")}
+              label={get("Lecture.cc_off")}
             />
           </RadioGroup>
         </CustomStyledMenu>
@@ -181,7 +181,7 @@ export const MobilePlayerAI = ({
             />
           }
         >
-          {t("transcript")}
+          {get("Lecture.transcript")}
         </Button>
       </Box>
       <CustomDrawer
@@ -202,7 +202,7 @@ export const MobilePlayerAI = ({
                 </Typography>
               </Box>
               <Typography>
-                {t("lecture")} {numberToWords(rowNumber, { ordinal: true })}
+                {get("Lecture.lecture")} {numberToWords(rowNumber, { ordinal: true })}
               </Typography>
             </Box>
           )}
@@ -215,7 +215,7 @@ export const MobilePlayerAI = ({
                 index={0}
                 selected={value === "fa"}
               >
-                <Typography>{t("cc_s_fa")}</Typography>
+                <Typography>{get("Lecture.cc_s_fa")}</Typography>
               </TabCircleItem>
               <TabCircleItem
                 onChange={handleChange}
@@ -223,7 +223,7 @@ export const MobilePlayerAI = ({
                 index={1}
                 selected={value === "en"}
               >
-                <Typography>{t("cc_s_en")}</Typography>
+                <Typography>{get("Lecture.cc_s_en")}</Typography>
               </TabCircleItem>
             </TabStyle>
           )}

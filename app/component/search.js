@@ -1,7 +1,7 @@
+import { useTranslate } from "@/core/useTranslation";
 import { Divider, IconButton, useTheme } from "@mui/material";
 import Box from "@mui/material/Box";
 import InputBase from "@mui/material/InputBase";
-import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 export const SearchControl = ({
@@ -12,7 +12,7 @@ export const SearchControl = ({
   value,
   maxWidth = 250,
 }) => {
-  const t = useTranslations("Common");
+  const { get } = useTranslate()
   const theme = useTheme();
 
   return (
@@ -40,11 +40,11 @@ export const SearchControl = ({
         }}
         onChange={onChange}
         onKeyDown={onKeyDown}
-        placeholder={t("searchAct")}
+        placeholder={get("Common.searchAct")}
       />
       <Divider sx={{ mx: 0.5 }} />
       <Box sx={{ display: "flex", alignItems: "center" }}>
-        <IconButton onClick={()=>onSearch(null)}>
+        <IconButton onClick={() => onSearch(null)}>
           <Image
             alt="Find"
             width={24}

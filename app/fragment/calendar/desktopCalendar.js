@@ -2,7 +2,6 @@
 
 import React, { useEffect } from "react";
 import { YearControl } from "@/app/component/persianDate/yearControl";
-import { useTranslations } from "next-intl";
 import _ from "lodash";
 import { isEqual, format } from "date-fns-jalali";
 import { DesktopInfoLecture } from "./desktopInfoLecture";
@@ -11,7 +10,6 @@ import { useNavBarStore } from "@/store/layout/useNavBarStore";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
 
 export const DesktopCalendar = ({ list, year }) => {
-  const t = useTranslations("Lecture");
   const [selectedDate, setSelectedDate] = React.useState(null);
   const [show, setShow] = React.useState(false);
   const [loading, setLoading] = React.useState(false);

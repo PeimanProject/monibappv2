@@ -10,13 +10,13 @@ import {
   IconButton,
   alpha,
 } from "@mui/material";
-import { useTranslations } from "next-intl";
 import React from "react";
 import Image from "next/image";
 import CloseIcon from "@mui/icons-material/Close";
 import { useAddToPlayListStore } from "@/store/usePlayListStore";
 import { useUserStore } from "@/store/useUserStore";
 import { useAuthLoginStore } from "@/store/layout/useProfileStore";
+import { useTranslate } from "@/core/useTranslation";
 
 export const MobilePlayerTools = ({
   lectureId,
@@ -26,7 +26,7 @@ export const MobilePlayerTools = ({
   os,
   vertical
 }) => {
-  const t = useTranslations("Lecture");
+  const { get } = useTranslate()
   const [showDownload, setShowDownload] = React.useState(false);
   const setShowPlayList = useAddToPlayListStore((state) => state.setShow);
   const user = useUserStore((state) => state.user);
@@ -106,7 +106,7 @@ export const MobilePlayerTools = ({
               fullWidth
               onClick={handleDownloadFile(download.sound)}
             >
-              {t("audioDownload")}
+              {get("Lecture.audioDownload")}
             </Button>
 
             <Box sx={{ flexBasis: 10 }} />
@@ -117,7 +117,7 @@ export const MobilePlayerTools = ({
               fullWidth
               onClick={handleDownloadFile(download.video)}
             >
-              {t("videoDownload")}
+              {get("Lecture.videoDownload")}
             </Button>
           </Box>
           <Box sx={{ mt: 1, px: 2, pb: 4, display: "flex" }}>
@@ -136,9 +136,9 @@ export const MobilePlayerTools = ({
           display: "flex",
           alignItems: "center",
           ...(!!vertical && {
-            flexDirection:"column",
-            '>button':{
-              mt:1
+            flexDirection: "column",
+            '>button': {
+              mt: 1
             }
 
           }),
@@ -167,7 +167,7 @@ export const MobilePlayerTools = ({
             />
           }
         >
-          {t("download")}
+          {get("Lecture.download")}
         </Button>
 
         <Button
@@ -187,7 +187,7 @@ export const MobilePlayerTools = ({
             />
           }
         >
-          {t("share")}
+          {get("Lecture.share")}
         </Button>
         <Button
           size="small"
@@ -206,7 +206,7 @@ export const MobilePlayerTools = ({
             />
           }
         >
-          {t("playlist")}
+          {get("Lecture.playlist")}
         </Button>
       </Box>
     </>

@@ -7,7 +7,7 @@ import Link from "next/link";
 export const mainMenuData = [
   {
     id: "date",
-    render: ({}) => (
+    render: ({ }) => (
       <>
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <Typography variant="caption" sx={{ mx: 1 }}>
@@ -26,16 +26,16 @@ export const mainMenuData = [
   },
   {
     id: "professor",
-    render: ({ t, mode }) => (
+    render: ({ get, mode }) => (
       <MenuItem
-        title={t("professor")}
+        title={get("Menu.professor")}
         icon={`/icons/${mode}/items/professor.svg`}
       />
     ),
   },
   {
     id: "wisdom",
-    render: ({ t, onClose }) => (
+    render: ({ get, onClose }) => (
       <Box
         sx={{
           flex: 1,
@@ -46,10 +46,10 @@ export const mainMenuData = [
           },
         }}
       >
-        <Link href={"/fa/wisdom"}>
+        <Link href={"/wisdom"}>
           <MenuItem
             onChange={onClose}
-            title={t("wisdom")}
+            title={get("Menu.wisdom")}
             color="blue"
             icon={`/icons/wisdom.svg`}
           />
@@ -59,22 +59,22 @@ export const mainMenuData = [
   },
   {
     id: "shop",
-    render: ({ t, mode }) => (
+    render: ({ get, mode }) => (
       <Box
         sx={{ display: "flex", alignItems: "center", flex: 1, a: { flex: 1 } }}
       >
         <a href="https://shop.hedayatnoor.com/" target="_blank">
           <MenuItem
-            title={t("shop")}
-            subTitle={t("shopIran")}
+            title={get("Menu.shop")}
+            subTitle={get("Menu.shopIran")}
             icon={`/icons/${mode}/items/book.svg`}
           />
         </a>
         <Box sx={{ mx: 1 }} />
         <a href="http://shop.monibapp.co.uk/" target="_blank">
           <MenuItem
-            title={t("shop")}
-            subTitle={t("shopUK")}
+            title={get("Menu.shop")}
+            subTitle={get("Menu.shopUK")}
             icon={`/icons/${mode}/items/book.svg`}
           />
         </a>
@@ -83,18 +83,18 @@ export const mainMenuData = [
   },
   {
     id: "social",
-    render: ({ t, mode }) => (
+    render: ({ get, mode }) => (
       <Box
         sx={{ display: "flex", alignItems: "center", flex: 1, a: { flex: 1 } }}
       >
         <Link href="https://eitaa.com/hedayatnoor" target="_blank">
-          <MenuItem icon={`/icons/${mode}/items/eata.svg`} title={t("eata")} />
+          <MenuItem icon={`/icons/${mode}/items/eata.svg`} title={get("Menu.eata")} />
         </Link>
         <Box sx={{ mx: 1 }} />
         <Link href="https://t.me/MohammadAliAnsari" target="_blank">
           <MenuItem
             icon={`/icons/${mode}/items/teleg.svg`}
-            title={t("telegram")}
+            title={get("Menu.telegram")}
           />
         </Link>
       </Box>
@@ -102,7 +102,7 @@ export const mainMenuData = [
   },
   {
     id: "web",
-    render: ({ t, mode }) => (
+    render: ({ get, mode }) => (
       <Box
         sx={{ display: "flex", alignItems: "center", flex: 1, a: { flex: 1 } }}
       >
@@ -112,19 +112,19 @@ export const mainMenuData = [
         >
           <MenuItem
             icon={`/icons/${mode}/items/instagram.svg`}
-            title={t("instagram")}
+            title={get("Menu.instagram")}
           />
         </Link>
         <Box sx={{ mx: 1 }} />
         <Link href="https://hedayatnoor.com/" target="_blank">
-          <MenuItem icon={`/icons/${mode}/items/site.svg`} title={t("web")} />
+          <MenuItem icon={`/icons/${mode}/items/site.svg`} title={get("Menu.web")} />
         </Link>
       </Box>
     ),
   },
   {
     id: "support",
-    render: ({ t, mode, onClose }) => (
+    render: ({ get, mode, onClose }) => (
       <Box
         sx={{
           flex: 1,
@@ -135,10 +135,10 @@ export const mainMenuData = [
           },
         }}
       >
-        <Link href={"/fa/support"}>
+        <Link href={"/support"}>
           <MenuItem
             onChange={onClose}
-            title={t("support")}
+            title={get("Menu.support")}
             icon={`/icons/${mode}/items/support.svg`}
           />
         </Link>

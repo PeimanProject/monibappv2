@@ -1,18 +1,17 @@
 "use client";
 
-import { Box, Container, alpha  } from "@mui/material";
+import { Box, Container, alpha } from "@mui/material";
 import React from "react";
 import _ from "lodash";
-import { useLocale, useTranslations } from "next-intl";
 import { SearchControl } from "@/app/component/search";
 import { SeriesItemKey } from "@/app/component/seriesItemKey";
 import { desktopValues } from "@/core/config/values";
 import { TabNormalItem, TabStyle } from "@/app/component/tabStyle";
+import { useTranslate } from "@/core/useTranslation";
 
 export const MobileSeries = ({ list, nhj, sahifa, desktop, type, quran }) => {
   const [valueSearch, setValue] = React.useState("");
-  const t = useTranslations("Series");
-  const locale = useLocale();
+  const { get } = useTranslate()
 
   const handleChange = React.useCallback((event) => {
     setValue(event?.target?.value);
@@ -65,21 +64,21 @@ export const MobileSeries = ({ list, nhj, sahifa, desktop, type, quran }) => {
           >
             <TabStyle index={index}>
               <TabNormalItem
-                text={t("sermon")}
+                text={get("Series.sermon")}
                 value={"sermon"}
                 index={0}
                 selected={index === 0}
                 onChange={handleNhjChange}
               />
               <TabNormalItem
-                text={t("letter")}
+                text={get("Series.letter")}
                 value={"letter"}
                 index={1}
                 selected={index === 1}
                 onChange={handleNhjChange}
               />
               <TabNormalItem
-                text={t("wisdom")}
+                text={get("Series.wisdom")}
                 value={"wisdom"}
                 index={2}
                 selected={index === 2}
@@ -110,7 +109,7 @@ export const MobileSeries = ({ list, nhj, sahifa, desktop, type, quran }) => {
                 {...value}
                 key={indexList}
                 row={type === "miskat" ? 6 : 12}
-                locale={locale}
+                locale={"fa"}
                 showRow={!!!nhj && !!!sahifa}
                 value={valueSearch}
                 showItem={!!!nhj || value.type === index + 1}

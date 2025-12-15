@@ -2,13 +2,11 @@
 
 import React from "react";
 import { YearControl } from "@/app/component/persianDate/yearControl";
-import { useTranslations } from "next-intl";
 import _ from "lodash";
 import { isEqual, format } from "date-fns-jalali";
 import { InfoLecture } from "./infoLecture";
 
 export const MobileCalendar = ({ list, year, desktop }) => {
-  const t = useTranslations("Lecture");
   const [selectedDate, setSelectedDate] = React.useState(null);
   const [show, setShow] = React.useState(false);
   const [loading, setLoading] = React.useState(false);

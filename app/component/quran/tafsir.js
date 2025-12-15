@@ -2,15 +2,12 @@
 
 import React from "react";
 import _ from "lodash";
-import { useLocale, useTranslations } from "next-intl";
 import { Box } from "@mui/material";
 import { useQuranFontSizeStore } from "@/store/layout/useQuranFontSizeStore";
 import { useTranslateFontSizeStore } from "@/store/layout/useTranslateFontSizeStore";
 import { TafsirVerseText } from "./tafsirVerse";
 
 export const TafsirList = ({ data, seriesId, verseId, rId }) => {
-  const locale = useLocale();
-  const t = useTranslations("Common");
 
   const quranFontSize = useQuranFontSizeStore((state) => state.quranFontSize);
   const translateFontSize = useTranslateFontSizeStore(
@@ -50,11 +47,11 @@ export const TafsirList = ({ data, seriesId, verseId, rId }) => {
               <div
                 key={index}
                 ref={isSelected ? verseRef : null}
-                //  style={isSelected ? { scrollMarginBottom: 120 } : {}}
+              //  style={isSelected ? { scrollMarginBottom: 120 } : {}}
               >
                 <TafsirVerseText
                   item={item}
-                  locale={locale}
+                  locale={"fa"}
                   seriesId={seriesId}
                   quranFontSize={quranFontSize}
                   translateFontSize={translateFontSize}

@@ -2,11 +2,11 @@
 
 import { Box, Divider, Typography, Button, useTheme } from "@mui/material";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
-import { useLocale, useTranslations } from "next-intl";
 import React from "react";
 import Image from "next/image";
 import { TabCircleItem, TabStyle } from "@/app/component/tabStyle";
 import Link from "next/link";
+import { useTranslate } from "@/core/useTranslation";
 
 export const DesktopInfo = ({
   contextName,
@@ -19,10 +19,8 @@ export const DesktopInfo = ({
   seriesId,
   verse
 }) => {
-  const t = useTranslations("Lecture");
-  const locale = useLocale();
   const theme = useTheme();
-
+  const { get } = useTranslate()
   return (
     <Box
       sx={{
@@ -53,7 +51,7 @@ export const DesktopInfo = ({
               },
             }}
           >
-            <Link href={`/${locale}/series/${seriesId}`}>
+            <Link href={`/series/${seriesId}`}>
               <Button color="inherit" sx={{ minWidth: 20 }}>
                 {series.title}
                 {/* <Typography
@@ -69,7 +67,7 @@ export const DesktopInfo = ({
               sx={{ minHeight: 15, mx: 2, transform: "rotate(20deg)" }}
             />
             <Typography>
-              {t("verse")} {digitsEnToFa(verseId)}
+              {get("Lecture.verse")} {digitsEnToFa(verseId)}
             </Typography>
           </Box>
         )}
@@ -85,7 +83,7 @@ export const DesktopInfo = ({
                 },
               }}
             >
-              <Link href={`/${locale}/series/${seriesId}`}>
+              <Link href={`/series/${seriesId}`}>
                 <Button color="inherit" sx={{ minWidth: 50, px: 0 }}>
                   <Typography
                     variant="body1"
@@ -100,7 +98,7 @@ export const DesktopInfo = ({
                 sx={{ minHeight: 15, mx: 1, transform: "rotate(20deg)" }}
               />
               <Typography>
-                {t("lecture")} {digitsEnToFa(rowNumber)}
+                {get("Lecture.lecture")} {digitsEnToFa(rowNumber)}
               </Typography>
               {verse && (
                 <Typography variant="caption" sx={{ ml: 1, color: "text.secondary" }}>
@@ -108,8 +106,8 @@ export const DesktopInfo = ({
                 </Typography>
               )}
             </Box>
-           
-            <Typography sx={{px:3}}>{description}</Typography>
+
+            <Typography sx={{ px: 3 }}>{description}</Typography>
           </Box>
         )}
         <Box sx={{ flex: 1 }} />
@@ -122,7 +120,7 @@ export const DesktopInfo = ({
               height={20}
             />
             <Typography sx={{ fontSize: 8 }} variant="caption">
-              {t("audio")}
+              {get("Lecture.audio")}
             </Typography>
           </TabCircleItem>
 
@@ -134,7 +132,7 @@ export const DesktopInfo = ({
               height={20}
             />
             <Typography sx={{ fontSize: 8 }} variant="caption">
-              {t("video")}
+              {get("Lecture.video")}
             </Typography>
           </TabCircleItem>
         </TabStyle>

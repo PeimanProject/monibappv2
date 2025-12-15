@@ -2,7 +2,7 @@
 
 import { Box } from "@mui/material";
 import { TabNormalItem, TabStyle } from "@/app/component/tabStyle";
-import { useTranslations } from "next-intl";
+import { useTranslate } from "@/core/useTranslation";
 
 // const Key = ({ children, subItem, selected, onClick }) => {
 //   return (
@@ -27,7 +27,7 @@ import { useTranslations } from "next-intl";
 // };
 
 export const QuranTitle = ({ value, onChange, rId }) => {
-  const t = useTranslations("Series");
+  const { get } = useTranslate()
   return (
     <Box
       sx={{
@@ -41,26 +41,26 @@ export const QuranTitle = ({ value, onChange, rId }) => {
           value === "quran"
             ? 1
             : value === "lecture" || value === "default"
-            ? 0
-            : 2
+              ? 0
+              : 2
         }
       >
         <TabNormalItem
-          text={t("Lecture")}
+          text={get("Series.Lecture")}
           value={"lecture"}
           index={1}
           selected={value === "lecture" || value === "default"}
           onChange={onChange}
         />
         <TabNormalItem
-          text={t("Verse")}
+          text={get("Series.Verse")}
           value={"quran"}
           index={0}
           selected={value === "quran"}
           onChange={onChange}
         />
         {rId < 17 && <TabNormalItem
-          text={t("Mishkat")}
+          text={get("Series.Mishkat")}
           value={"miskat"}
           index={2}
           selected={value === "miskat"}

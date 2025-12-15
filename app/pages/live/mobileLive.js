@@ -4,15 +4,14 @@ import { Box, Container, Typography, Divider } from "@mui/material";
 import React, { useEffect } from "react";
 import { MobileHomeLastLecture } from "@/app/fragment/homeLastLecture/mobileHomeLastLecture";
 import _ from "lodash";
-import { useTranslations } from "next-intl";
 import { Timer } from "@/app/component/timer";
 import Iframe from "react-iframe";
 import Image from "next/image";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
 import { useNavBarStore } from "@/store/layout/useNavBarStore";
+import { useTranslate } from "@/core/useTranslation";
 
 const Live = ({ live, data, desktop }) => {
-  const t = useTranslations("Live");
 
   return (
     <>
@@ -74,7 +73,7 @@ const Live = ({ live, data, desktop }) => {
 };
 
 const NoLive = ({ data, live, desktop }) => {
-  const t = useTranslations("Live");
+  const { get } = useTranslate()
   return (
     <Container disableGutters>
       <Box
@@ -126,7 +125,7 @@ const NoLive = ({ data, live, desktop }) => {
                 }}
               >
                 <Typography sx={{ mr: 1 }} variant="body2">
-                  {t("toLive")}
+                  {get("Live.toLive")}
                 </Typography>
                 <Timer time={live?.liveCounter?.time} pure />
               </Box>
@@ -156,7 +155,7 @@ const NoLive = ({ data, live, desktop }) => {
                 </Typography>
                 <Box sx={{ flex: 1 }} />
                 <Typography sx={{ mr: 1 }} variant="body2">
-                  {t("lecture")}
+                  {get("Live.lecture")}
                 </Typography>
                 <Typography sx={{ fontWeight: "bold" }} variant="body1">
                   {!!live?.ai_live?.rowNumber &&

@@ -1,5 +1,4 @@
 import React from "react";
-import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { BoxLoading } from "@/app/component/boxLoading";
@@ -17,6 +16,7 @@ import { digitsEnToFa, numberToWords } from "@persian-tools/persian-tools";
 import { useSpring, animated, config } from "@react-spring/web";
 import * as d3 from "d3";
 import { Close } from "@mui/icons-material";
+import { useTranslate } from "@/core/useTranslation";
 
 const h = 140;
 const hB = 400;
@@ -94,8 +94,7 @@ const Back = ({ children, show }) => {
 };
 
 export const InfoData = ({ lectures, selectedDate, hijri_month }) => {
-  const t = useTranslations("Lecture");
-  const locale = useLocale();
+  const { get } = useTranslate()
 
   const renderLecture = (lec) => {
     return (
@@ -115,12 +114,12 @@ export const InfoData = ({ lectures, selectedDate, hijri_month }) => {
           <Typography>{lec?.contextName}</Typography>
 
           <Typography sx={{ mx: 1 }} variant="caption">
-            {t("lecture")}
+            {get("Lecture.lecture")}
           </Typography>
           <Typography variant="caption">
             {numberToWords(lec.rowNumber, { ordinal: true })}
           </Typography>
-          {lec?.series_note && <Typography  variant="caption" sx={{ ml: 1, color: "#f7f700" }}>({lec?.series_note})</Typography>}
+          {lec?.series_note && <Typography variant="caption" sx={{ ml: 1, color: "#f7f700" }}>({lec?.series_note})</Typography>}
         </Box>
         <Box sx={{ flex: 1 }} />
         {lec.file_type && (
@@ -153,7 +152,7 @@ export const InfoData = ({ lectures, selectedDate, hijri_month }) => {
       {_.map(lectures, (lec, index) => (
         <Box key={index}>
           {lec.file_type ? (
-            <Link href={`/${locale}/player/${lec.id}`}>
+            <Link href={`/player/${lec.id}`}>
               {renderLecture(lec)}
             </Link>
           ) : (
@@ -193,8 +192,6 @@ export const InfoLecture = ({
   onClose,
   hijri_month,
 }) => {
-  const t = useTranslations("Lecture");
-  const locale = useLocale();
 
   return (
     <>

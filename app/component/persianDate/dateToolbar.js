@@ -14,9 +14,9 @@ import { digitsEnToFa } from "@persian-tools/persian-tools";
 import DownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { SvgCalendarIcon } from "@/app/assets/icons/calendarIcon";
 import Link from "next/link";
-import { useLocale, useTranslations } from "next-intl";
 import { useEventCalendarStore } from "@/store/useEventCalendar";
 import { format } from "date-fns-jalali";
+import { useTranslate } from "@/core/useTranslation";
 
 const CustomStyledMenu = styled(
   ({
@@ -106,10 +106,9 @@ const Events = (current_tag) => [
 ];
 
 export const DateToolbar = ({ year, desktop }) => {
-  const locale = useLocale();
   const [openYear, setOpenYear] = React.useState(false);
   const [openEvent, setOpenEvent] = React.useState(false);
-  const t = useTranslations("Lecture");
+  const { get } = useTranslate()
   const anchorYearRef = React.useRef(null);
   const anchorEventRef = React.useRef(null);
   const { event, setEvent } = useEventCalendarStore();
@@ -166,7 +165,7 @@ export const DateToolbar = ({ year, desktop }) => {
           }}
         >
           {_.map(_.range(1404, 1392), (y) => (
-            <Link key={y} href={`/${locale}/calendar/${y}`}>
+            <Link key={y} href={`/calendar/${y}`}>
               <Button
                 variant={+year === y ? "contained" : "text"}
                 sx={{ flexBasis: 50 }}
@@ -206,7 +205,7 @@ export const DateToolbar = ({ year, desktop }) => {
                 color={e.title === event?.title ? "primary" : "inherit"}
                 fullWidth
               >
-                {t(e.title)}
+                {get(`Lecture.${e.title}`)}
               </Button>
             )
           )}
@@ -234,7 +233,7 @@ export const DateToolbar = ({ year, desktop }) => {
             px: 1,
           }}
         >
-          <Typography variant="caption">{t("SessionSchedule")}</Typography>
+          <Typography variant="caption">{get("Lecture.SessionSchedule")}</Typography>
           <Button
             endIcon={<DownIcon />}
             color="inherit"
@@ -259,8 +258,8 @@ export const DateToolbar = ({ year, desktop }) => {
             endIcon={<SvgCalendarIcon color="#fff" />}
           >
             {!!event?.title && event?.title !== "noEvent"
-              ? t(event?.title)
-              : t("event")}
+              ? get(`Lecture.${event?.title}`)
+              : get("Lecture.event")}
           </Button>
         </Box>
         <Divider sx={{ borderColor: "primary.main" }} />

@@ -17,8 +17,8 @@ import { usePlayerActionStore } from "@/store/usePlayerActionStore";
 import { useSyncMediaSourceStore } from "@/store/useSyncMediaSourceStore";
 import { MobileInfo } from "./mobileInfo";
 import { iosAudioSession } from "@/app/libs/iosAudioSession";
-import { useTranslations } from "next-intl";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
+import { useTranslate } from "@/core/useTranslation";
 
 export const MobilePlayerControl = ({
   video,
@@ -40,7 +40,7 @@ export const MobilePlayerControl = ({
   verse,
   time,
 }) => {
-  const t = useTranslations("Lecture");
+  const { get } = useTranslate()
   const [isPlaying, setIsPlaying] = React.useState(false);
   const playerRef = React.useRef(null);
   const [show, setShow] = React.useState(false);
@@ -126,7 +126,7 @@ export const MobilePlayerControl = ({
   const setMediaSession = () => {
     if ("mediaSession" in navigator) {
       navigator.mediaSession.metadata = new window.MediaMetadata({
-        title: `${contextName} / ${t("lecture")} ${digitsEnToFa(rowNumber)}`,
+        title: `${contextName} / ${get("Lecture.lecture")} ${digitsEnToFa(rowNumber)}`,
         artist: `${appConfig.author}`,
         album: `${appConfig.name}`,
         artwork: [
@@ -165,9 +165,9 @@ export const MobilePlayerControl = ({
 
           ...(!!text &&
             ccType !== "off" && {
-              bgcolor: "black",
-              minHeight: 200,
-            }),
+            bgcolor: "black",
+            minHeight: 200,
+          }),
           ...(!text ||
             (ccType === "off" && {
               pt: 1,
@@ -179,7 +179,7 @@ export const MobilePlayerControl = ({
           zIndex: 999,
         }}
       >
-         <MobileInfo
+        <MobileInfo
           {...{
             contextName,
             rowNumber,
@@ -238,7 +238,7 @@ export const MobilePlayerControl = ({
               width: 1 / 1,
               display: "flex",
               justifyContent: "center",
-              
+
             }}
           >
             {/* <audio
@@ -286,22 +286,22 @@ export const MobilePlayerControl = ({
                 attributes: { playsInline: true },
                 tracks: srt
                   ? [
-                      {
-                        kind: "subtitles",
-                        src: `/api/srt/vtt/${lectureId}?filename=${srt?.fileName}`, // Path to your SRT file
-                        srcLang: "fa",
-                        default: true,
-                      },
-                      ...(srt_en?.fileName
-                        ? [
-                            {
-                              kind: "subtitles",
-                              src: `/api/srt/vtt/${lectureId}?filename=${srt_en.fileName}`, // Path to your SRT file
-                              srcLang: "en",
-                            },
-                          ]
-                        : []),
-                    ]
+                    {
+                      kind: "subtitles",
+                      src: `/api/srt/vtt/${lectureId}?filename=${srt?.fileName}`, // Path to your SRT file
+                      srcLang: "fa",
+                      default: true,
+                    },
+                    ...(srt_en?.fileName
+                      ? [
+                        {
+                          kind: "subtitles",
+                          src: `/api/srt/vtt/${lectureId}?filename=${srt_en.fileName}`, // Path to your SRT file
+                          srcLang: "en",
+                        },
+                      ]
+                      : []),
+                  ]
                   : [],
               },
             }}
@@ -321,7 +321,7 @@ export const MobilePlayerControl = ({
           />
         )}
 
-       
+
       </Box>
     </>
   );

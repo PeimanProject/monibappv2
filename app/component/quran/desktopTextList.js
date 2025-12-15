@@ -3,13 +3,13 @@
 import React from "react";
 import _ from "lodash";
 
-import { useLocale, useTranslations } from "next-intl";
 import { Box } from "@mui/material";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
 import { useQuranFontSizeStore } from "@/store/layout/useQuranFontSizeStore";
 import { useTranslateFontSizeStore } from "@/store/layout/useTranslateFontSizeStore";
 import { useCurrentVerseStore } from "@/store/useQuranStore";
 import { DesktopVerse } from "./desktopVerse";
+import { useTranslate } from "@/core/useTranslation";
 
 export const DesktopTextList = ({
   data,
@@ -19,9 +19,7 @@ export const DesktopTextList = ({
   rId,
   surahId,
 }) => {
-  const locale = useLocale();
-  const t = useTranslations("Common");
-
+  const { get } = useTranslate()
   const quranFontSize = useQuranFontSizeStore((state) => state.quranFontSize);
   const translateFontSize = useTranslateFontSizeStore(
     (state) => state.translateFontSize
@@ -61,7 +59,7 @@ export const DesktopTextList = ({
             color="inherit"
             sx={{ width: 100, color: "black" }}
           >
-            {t("page")}
+            {get("Common.page")}
             {digitsEnToFa(verse?.pageNo || "-")}
           </Box>
 
@@ -80,7 +78,7 @@ export const DesktopTextList = ({
                   <DesktopVerse
                     item={item}
                     type={type}
-                    locale={locale}
+                    locale={"fa"}
                     seriesId={seriesId}
                     quranFontSize={quranFontSize}
                     translateFontSize={translateFontSize}

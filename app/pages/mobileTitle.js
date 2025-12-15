@@ -3,10 +3,10 @@
 import React from "react";
 import { Box, Container, Typography, alpha, Button } from "@mui/material";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
-import { useLocale, useTranslations } from "next-intl";
 import { desktopValues } from "@/core/config/values";
 import Link from "next/link";
 import { useCurrentVerseStore } from "@/store/useQuranStore";
+import { useTranslate } from "@/core/useTranslation";
 
 export const MobileTitle = ({
   title,
@@ -19,10 +19,9 @@ export const MobileTitle = ({
   onChange,
   rId,
 }) => {
-  const t = useTranslations("Lecture");
-  const locale = useLocale();
-  const verse = useCurrentVerseStore((state) => state.verse);
 
+  const verse = useCurrentVerseStore((state) => state.verse);
+  const { get } = useTranslate();
   return (
     <>
       {(value === "lecture" || value === "quran") && (
@@ -85,7 +84,7 @@ export const MobileTitle = ({
 
                   {!!newCourseId && value === "lecture" && (
                     <Box sx={{ pl: 1 }}>
-                      <Link href={`/${locale}/series/${newCourseId}`}>
+                      <Link href={`/series/${newCourseId}`}>
                         <Button
                           size="small"
                           variant="contained"
@@ -93,8 +92,8 @@ export const MobileTitle = ({
                           sx={{ minWidth: 120 }}
                         >
                           {mainId === 1
-                            ? t("newInterpretationRound")
-                            : t("newRound")}
+                            ? get("Lecture.newInterpretationRound")
+                            : get("Lecture.newRound")}
                         </Button>
                       </Link>
                     </Box>
@@ -118,7 +117,7 @@ export const MobileTitle = ({
                         )}
                         sx={{ minWidth: 120 }}
                       >
-                        {t(value === "quran" ? "lectures" : "quran")}
+                        {get(value === "quran" ? "Lecture.lectures" : "Lecture.quran")}
                       </Button>
                       {value === "quran" && (
                         <Box

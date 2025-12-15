@@ -13,13 +13,13 @@ import {
   Radio,
   FormControl,
 } from "@mui/material";
-import { useLocale, useTranslations } from "next-intl";
 import React from "react";
 import _ from "lodash";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
 import { desktopValues } from "@/core/config/values";
 import Link from "next/link";
 import { Book } from "./book";
+import { useTranslate } from "@/core/useTranslation";
 
 export const MobileSearch = ({ desktop, q }) => {
   const [value, setValue] = React.useState("tag");
@@ -30,7 +30,6 @@ export const MobileSearch = ({ desktop, q }) => {
   const [resultBook, setResultBook] = React.useState(null);
   const [index, setIndex] = React.useState(0);
   const [filter, setFilter] = React.useState("all");
-  const locale = useLocale();
 
   React.useEffect(() => {
     const savedQueryQuran = localStorage.getItem("search_query");
@@ -56,7 +55,7 @@ export const MobileSearch = ({ desktop, q }) => {
     }
   }, []);
 
-  const t = useTranslations("Search");
+  const { get } = useTranslate()
   const handleChange = React.useCallback(
     (value, index) => () => {
       setValue(value);
@@ -79,7 +78,6 @@ export const MobileSearch = ({ desktop, q }) => {
         method: "POST",
         body: JSON.stringify({ query: gy, doc: value }),
       });
-
       const list = await req.json();
       setSearch(false);
       if (value === "quran") {
@@ -134,7 +132,7 @@ export const MobileSearch = ({ desktop, q }) => {
       >
         <TabStyle index={index} wSize={100}>
           <TabNormalItem
-            text={t("subject")}
+            text={get("Search.subject")}
             value={"tag"}
             index={0}
             wSize={100}
@@ -142,7 +140,7 @@ export const MobileSearch = ({ desktop, q }) => {
             onChange={handleChange}
           />
           <TabNormalItem
-            text={t("quran")}
+            text={get("Search.quran")}
             value={"quran"}
             index={1}
             wSize={100}
@@ -150,7 +148,7 @@ export const MobileSearch = ({ desktop, q }) => {
             onChange={handleChange}
           />
           <TabNormalItem
-            text={t("book")}
+            text={get("Search.book")}
             value={"book"}
             index={2}
             wSize={100}
@@ -186,27 +184,26 @@ export const MobileSearch = ({ desktop, q }) => {
           >
             <Box sx={{ flex: 1 }} />
             <Typography variant="caption" color="text.secondary">
-              {t("resultCount")}:
+              {get("Search.resultCount")}:
               {digitsEnToFa(
                 value === "quran"
                   ? `${resultQuran?.total.value}`
-                  : `${
-                      _.filter(resultTag?.list, (item) => {
-                        if (filter === "all") return true;
-                        if (filter === "1") return item.main_id == 1;
-                        if (filter === "2") return item.main_id == 3;
-                        if (filter === "4") return item.main_id == 4;
-                        return false;
-                      }).length
-                    }`
+                  : `${_.filter(resultTag?.list, (item) => {
+                    if (filter === "all") return true;
+                    if (filter === "1") return item.main_id == 1;
+                    if (filter === "2") return item.main_id == 3;
+                    if (filter === "4") return item.main_id == 4;
+                    return false;
+                  }).length
+                  }`
               )}
             </Typography>
           </Box>
         )}
         {value === "book" && (
-        
-            <Book resultBook={resultBook} />
-        
+
+          <Book resultBook={resultBook} />
+
         )}
         {value === "tag" && (
           <Box
@@ -260,7 +257,7 @@ export const MobileSearch = ({ desktop, q }) => {
             ({ highlight, surah_name, verse_id, page_no, surah_id }, index) => {
               return (
                 <Link
-                  href={`/${locale}/surah/${surah_id}/${verse_id}`}
+                  href={`/surah/${surah_id}/${verse_id}`}
                   key={index}
                 >
                   <Box>
@@ -325,7 +322,7 @@ export const MobileSearch = ({ desktop, q }) => {
             ) => {
               return (
                 <Link
-                  href={`/${locale}/player/${lecture_id}?time=${start_time}`}
+                  href={`/player/${lecture_id}?time=${start_time}`}
                   key={index}
                 >
                   <Box>

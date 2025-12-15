@@ -11,10 +11,9 @@ import {
 } from "@mui/material";
 import _ from "lodash";
 import Link from "next/link";
-import { useLocale } from "use-intl";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
+import { useTranslate } from "@/core/useTranslation";
 
 export const DesktopLectureList = ({
   lectureList,
@@ -27,10 +26,8 @@ export const DesktopLectureList = ({
   mainId,
   os
 }) => {
-  const locale = useLocale();
   const theme = useTheme();
-  const t = useTranslations("Lecture");
-
+  const { get } = useTranslate()
   const handleDownloadFile = React.useCallback(
     (url) => () => {
       const link = document.createElement("a");
@@ -64,7 +61,7 @@ export const DesktopLectureList = ({
               </Typography>
 
               <Typography sx={{ ml: 1 }}>
-                {digitsEnToFa(`${lectureCount}`)} {t("lecture")}
+                {digitsEnToFa(`${lectureCount}`)} {get("Lecture.lecture")}
               </Typography>
             </Box>
             <Typography variant="body2" sx={{ color: "text.primary" }}>
@@ -82,7 +79,7 @@ export const DesktopLectureList = ({
                 px: 1,
               }}
             >
-              <Link href={`/${locale}/series/${lastCourseId || newCourseId}`}>
+              <Link href={`/series/${lastCourseId || newCourseId}`}>
                 <Button variant="contained" color="primary" size="small">
                   {lastCourseId ? "دور پیشین" : "دور جدید"}
                 </Button>
@@ -104,7 +101,7 @@ export const DesktopLectureList = ({
           }}
           key={index}
         >
-          <Link href={`/${locale}/player/${item.id}`}>
+          <Link href={`/player/${item.id}`}>
             <ButtonBase
               component="div"
               sx={{

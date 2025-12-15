@@ -1,14 +1,10 @@
 import React from "react";
-import { useLocale, useTranslations } from "next-intl";
-import Image from "next/image";
-import Link from "next/link";
 import {
   Box,
   Dialog,
   DialogContent,
 } from "@mui/material";
 import _ from "lodash";
-import { numberToWords } from "@persian-tools/persian-tools";
 import { useSpring, animated, config } from "@react-spring/web";
 import * as d3 from "d3";
 import { InfoData } from "./infoLecture";
@@ -96,8 +92,6 @@ export const DesktopInfoLecture = ({
   onClose,
   hijri_month,
 }) => {
-  const t = useTranslations("Lecture");
-  const locale = useLocale();
 
   return (
     <>
@@ -105,7 +99,7 @@ export const DesktopInfoLecture = ({
         <DialogContent>
           <Box sx={{ p: 4 }}>
             <InfoData {...{ lectures, selectedDate, hijri_month }} />
-          
+
           </Box>
         </DialogContent>
       </Dialog>

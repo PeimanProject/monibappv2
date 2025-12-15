@@ -13,7 +13,6 @@ import {
   Grid,
   Container,
 } from "@mui/material";
-import { useTranslations } from "next-intl";
 import React from "react";
 import Image from "next/image";
 import CloseIcon from "@mui/icons-material/Close";
@@ -35,6 +34,7 @@ import { TabCircleItem, TabStyle } from "@/app/component/tabStyle";
 import _ from "lodash";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { useCallback } from "react";
+import { useTranslate } from "@/core/useTranslation";
 
 export const DesktopPlayerTools = ({
   lectureId,
@@ -48,8 +48,8 @@ export const DesktopPlayerTools = ({
   rowNumber,
   contextName,
 }) => {
+  const { get } = useTranslate()
   const theme = useTheme();
-  const t = useTranslations("Lecture");
   const [showDownload, setShowDownload] = React.useState(false);
   const setShowPlayList = useAddToPlayListStore((state) => state.setShow);
   const user = useUserStore((state) => state.user);
@@ -233,7 +233,7 @@ export const DesktopPlayerTools = ({
               />
             }
           >
-            {t("download")}
+            {get("Lecture.download")}
           </Button>
         </Grid>
         <Grid size={4}>
@@ -254,7 +254,7 @@ export const DesktopPlayerTools = ({
               />
             }
           >
-            {t("share")}
+            {get("Lecture.share")}
           </Button>
         </Grid>
         <Grid size={4}>
@@ -275,7 +275,7 @@ export const DesktopPlayerTools = ({
               />
             }
           >
-            {t("playlist")}
+            {get("Lecture.playlist")}
           </Button>
         </Grid>
 
@@ -300,7 +300,7 @@ export const DesktopPlayerTools = ({
                   />
                 }
               >
-                {t("cc")}
+                {get("Lecture.cc")}
               </Button>
             </Grid>
             <CustomStyledMenu
@@ -319,13 +319,13 @@ export const DesktopPlayerTools = ({
                   <FormControlLabel
                     value="en"
                     control={<Radio color="default" />}
-                    label={t("cc_en")}
+                    label={get("Lecture.cc_en")}
                   />
                 )}
                 <FormControlLabel
                   value="off"
                   control={<Radio color="default" />}
-                  label={t("cc_off")}
+                  label={get("Lecture.cc_off")}
                 />
               </RadioGroup>
             </CustomStyledMenu>
@@ -348,7 +348,7 @@ export const DesktopPlayerTools = ({
                   />
                 }
               >
-                {t("transcript")}
+                {get("Lecture.transcript")}
               </Button>
             </Grid>
             <CustomDrawer
@@ -383,7 +383,7 @@ export const DesktopPlayerTools = ({
                       index={0}
                       selected={value === "fa"}
                     >
-                      <Typography>{t("cc_s_fa")}</Typography>
+                      <Typography>{get("Lecture.cc_s_fa")}</Typography>
                     </TabCircleItem>
                     <TabCircleItem
                       onChange={handleChange}
@@ -422,12 +422,12 @@ export const DesktopPlayerTools = ({
                   >
                     {srtArray[value].map((item, index) => (
                       <Box
-                       
+
                         sx={{
                           ...(isCurrent(item) && {
                             color: "red",
                           }),
-                          mx:0.5
+                          mx: 0.5
                         }}
                         key={index}
                       >
