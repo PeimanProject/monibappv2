@@ -10,11 +10,11 @@ import {
   Box,
 } from "@mui/material";
 import React from "react";
-import { useTranslations } from "next-intl";
 import { Close } from "@mui/icons-material";
 import { useMyPlayListStore } from "@/store/playListStore";
 import { PlayListItemsList } from "./playListItems";
 import { ManagePlaylist } from "./manage";
+import { useTranslate } from "@/core/useTranslation";
 
 export const SelectMyPlayListControl = () => {
   const [{ showManage, playlist }, setManage] = React.useState({
@@ -25,15 +25,14 @@ export const SelectMyPlayListControl = () => {
   const show = useAddToPlayListStore((state) => state.show);
   const item = useAddToPlayListStore((state) => state.item);
   const setShow = useAddToPlayListStore((state) => state.setShow);
-  const t = useTranslations("Playlist");
   const { list, fetchList } = useMyPlayListStore((state) => state);
-
+  const { get } = useTranslate()
   React.useEffect(() => {
-    const get = async () => {
+    const load = async () => {
       await fetchList();
     };
 
-    get();
+    load();
   }, [show]);
 
   const handleSelected = React.useCallback(
@@ -78,7 +77,7 @@ export const SelectMyPlayListControl = () => {
           component="div"
         >
           <Typography variant="h6" sx={{ px: 2 }}>
-            {t("title")}
+            {get("Playlist.title")}
           </Typography>
           <Box sx={{ flex: 1 }} />
           <IconButton sx={{ mr: 1 }} onClick={() => setShow(false)}>

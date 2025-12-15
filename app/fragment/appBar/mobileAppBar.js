@@ -4,7 +4,6 @@ import { AppBar, ButtonBase, Typography, useTheme } from "@mui/material";
 import React from "react";
 import { AppBarBack } from "./appBarBack";
 import Image from "next/image";
-import { useLocale, useTranslations } from "next-intl";
 import { useMainMenuStore } from "@/store/layout/useLayoutStore";
 import { useSpring, animated } from "@react-spring/web";
 import { MobileItems } from "./mobileItems/mobileItems";
@@ -15,6 +14,7 @@ import {
 import { usePlayListStore } from "@/store/usePlayListStore";
 import { useUserStore } from "@/store/useUserStore";
 import { useRouter } from "next/navigation";
+import { useTranslate } from "@/core/useTranslation";
 
 const MainMenuKey = ({ pos = -40, top = 0, title, onClick, showMenu }) => {
   const theme = useTheme();
@@ -76,11 +76,10 @@ const MainMenuKey = ({ pos = -40, top = 0, title, onClick, showMenu }) => {
     >
       <animated.div
         style={{
-          border: `2px solid ${
-            theme.palette.mode === "dark"
-              ? "var(--border-dark-color)"
-              : theme.palette.divider
-          }`,
+          border: `2px solid ${theme.palette.mode === "dark"
+            ? "var(--border-dark-color)"
+            : theme.palette.divider
+            }`,
           overflow: "hidden",
           ...springs,
         }}
@@ -168,11 +167,10 @@ const MenuKey = ({ icon, pos = -40, top = 0, title, onClick, showMenu }) => {
     >
       <animated.div
         style={{
-          border: `2px solid ${
-            theme.palette.mode === "dark"
-              ? "var(--border-dark-color)"
-              : theme.palette.divider
-          }`,
+          border: `2px solid ${theme.palette.mode === "dark"
+            ? "var(--border-dark-color)"
+            : theme.palette.divider
+            }`,
           overflow: "hidden",
           ...springs,
         }}
@@ -204,11 +202,10 @@ export const MobileAppBar = () => {
   const user = useUserStore((state) => state.user);
   const setShowLogin = useAuthLoginStore((state) => state.setShow);
   const setShowProfile = useProfileStore((state) => state.setShow);
-  const t = useTranslations("Menu");
+  const { get } = useTranslate()
   const { show, setShow } = useMainMenuStore((state) => state);
   const setShowPlayList = usePlayListStore((state) => state.setShow);
   const router = useRouter();
-  const locale = useLocale();
 
   const [showButtons, setShowButtons] = React.useState(false);
 
@@ -245,13 +242,13 @@ export const MobileAppBar = () => {
   }, []);
 
   const handleHome = React.useCallback(
-    () => router.push(`/${locale}/`),
-    [router, locale]
+    () => router.push(`/`),
+    [router]
   );
 
   const handleFind = React.useCallback(
-    () => router.push(`/${locale}/search`),
-    [router, locale]
+    () => router.push(`/search`),
+    [router]
   );
 
   return (
@@ -276,28 +273,28 @@ export const MobileAppBar = () => {
                 top={22 - topValue}
                 showMenu={show}
                 onClick={handleToggleLogin(true)}
-                title={t("profile")}
+                title={get("Menu.profile")}
               />
               <MenuKey
                 icon={"/menu/playlist.svg"}
                 pos={-35 - 55 - m}
                 top={16 + topValue}
                 showMenu={show}
-                title={t("playlist")}
+                title={get("Menu.playlist")}
                 onClick={handlePlayListClick(true)}
               />
               <MainMenuKey
                 onClick={handleMenuClick(!show)}
                 top={34 - topValue}
                 showMenu={show}
-                title={t("menu")}
+                title={get("Menu.menu")}
               />
               <MenuKey
                 icon={"/menu/find.svg"}
                 pos={20 + m}
                 top={16 + topValue}
                 showMenu={show}
-                title={t("find")}
+                title={get("Menu.find")}
                 onClick={handleFind}
               />
 
@@ -307,7 +304,7 @@ export const MobileAppBar = () => {
                 pos={20 + m * 2 + 50}
                 top={22 - topValue}
                 showMenu={show}
-                title={t("home")}
+                title={get("Menu.home")}
               />
             </>
           )}

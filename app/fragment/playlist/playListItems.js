@@ -11,7 +11,7 @@ import PlayListItem from "./items";
 import { Button, useTheme } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
-import { useTranslations } from "next-intl";
+import { useTranslate } from "@/core/useTranslation";
 
 export const PlayListItemsList = ({
   myList,
@@ -25,11 +25,11 @@ export const PlayListItemsList = ({
   onClose,
 }) => {
   const [expanded, setExpanded] = React.useState("panel1");
-  const t = useTranslations("Playlist");
+  const { get } = useTranslate()
   const theme = useTheme();
 
 
-  const onWisdomPlayer = React.useCallback((item) => {}, []);
+  const onWisdomPlayer = React.useCallback((item) => { }, []);
 
   return (
     <Box
@@ -47,7 +47,7 @@ export const PlayListItemsList = ({
         fullWidth
         endIcon={<AddIcon />}
       >
-        {t("add")}
+        {get("Playlist.add")}
       </Button>
       <Box
         sx={{
@@ -71,9 +71,9 @@ export const PlayListItemsList = ({
               borderColor: "primary.main",
               ...(!!select &&
                 current?.id === item?.id && {
-                  bgcolor: "primary.main",
-                  color: "white",
-                }),
+                bgcolor: "primary.main",
+                color: "white",
+              }),
             }}
           >
             <ButtonBase

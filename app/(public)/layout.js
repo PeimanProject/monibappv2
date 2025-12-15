@@ -1,5 +1,5 @@
+"use client";
 import React from "react";
-import { getViewport } from "@/app/libs/isMobileDetect";
 import { MainAppBar } from "@/app/fragment/appBar/mainAppBar";
 import { MobileTopBar } from "@/app/fragment/appBar/mobileTopBar";
 import { AuthLoginControl } from "@/app/fragment/auth/authLoginControl";
@@ -8,8 +8,8 @@ import { ProfileControl } from "@/app/fragment/auth/profileControl";
 import { SelectMyPlayListControl } from "@/app/fragment/playlist/selectMyPlayListControl";
 import { PlayerAction } from "@/app/fragment/player/playerAction";
 
-const PublicLayout = async ({ children }) => {
-  const viewport = await getViewport();
+const PublicLayout = ({ children }) => {
+  const viewport = "mobile";
 
   return (
     <>
@@ -18,9 +18,9 @@ const PublicLayout = async ({ children }) => {
       <AuthLoginControl />
       <PlayerAction />
       <ProfileControl />
-      {viewport === "mobile" && <MobileTopBar />}
+      <MobileTopBar />
       <MainAppBar viewport={viewport} />
-      {children}  
+      {children}
     </>
   );
 };

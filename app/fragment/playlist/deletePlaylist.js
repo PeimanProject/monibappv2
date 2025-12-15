@@ -8,8 +8,8 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect } from "react";
-import { useTranslations } from "next-intl";
 import { useMyPlayListStore } from "@/store/playListStore";
+import { useTranslate } from "@/core/useTranslation";
 
 export const DeletePlayList = ({
   show = false,
@@ -22,10 +22,9 @@ export const DeletePlayList = ({
   isWisdom,
 }) => {
   const [isLoading, setIsLoading] = React.useState(false);
-  const t = useTranslations("Playlist");
   const { fetchList } = useMyPlayListStore((state) => state);
-  
- 
+  const { get } = useTranslate()
+
 
   const submit = React.useCallback(async () => {
     setIsLoading(true);
@@ -96,15 +95,15 @@ export const DeletePlayList = ({
     <Dialog fullWidth maxWidth="sm" open={show}>
       <DialogContent>
         <Box sx={{ p: 2 }}>
-          <Typography>{t("deletedPlaylist")}</Typography>
+          <Typography>{get("Playlist.deletedPlaylist")}</Typography>
         </Box>
       </DialogContent>
       <DialogActions>
         <Button color="inherit" onClick={onClose}>
-          {t("cancel")}
+          {get("Playlist.cancel")}
         </Button>
         <Button disabled={isLoading} onClick={submit} variant="contained">
-          {t("ok")}
+          {get("Playlist.ok")}
         </Button>
       </DialogActions>
     </Dialog>

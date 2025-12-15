@@ -1,6 +1,5 @@
 import { desktopValues } from "@/core/config/values";
 import { ButtonBase, Typography, Box } from "@mui/material";
-import { useLocale } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -21,8 +20,7 @@ export const MainButton = ({
   onClick,
   border = false,
 }) => {
-  const locale = useLocale();
-  
+
 
   const buttonContent = (
     <ButtonBase
@@ -119,7 +117,7 @@ export const MainButton = ({
       }}
     >
       {link ? (
-        <Link href={`/${locale}/${link}`}>{buttonContent}</Link>
+        <Link href={`/${link}`}>{buttonContent}</Link>
       ) : (
         buttonContent
       )}

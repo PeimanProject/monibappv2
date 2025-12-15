@@ -2,7 +2,6 @@
 
 import React from "react";
 import { useProfileStore } from "@/store/layout/useProfileStore";
-import { useTranslations } from "next-intl";
 import {
   Dialog,
   DialogTitle,
@@ -16,11 +15,12 @@ import {
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
 import { useUserStore } from "@/store/useUserStore";
+import { useTranslate } from "@/core/useTranslation";
 
 export const ProfileControl = () => {
   const { show, setShow } = useProfileStore((state) => state);
   const { setUser, user } = useUserStore((state) => state);
-  const t = useTranslations("Auth");
+  const { get } = useTranslate()
 
   const handleLogout = async () => {
     await fetch("/api/auth/signout", {
@@ -59,7 +59,7 @@ export const ProfileControl = () => {
         component="div"
       >
         <Typography variant="h6" sx={{ px: 2, color: "white" }}>
-          {t("profile")}
+          {get("Auth.profile")}
         </Typography>
         <Box sx={{ flex: 1 }} />
         <IconButton sx={{ mr: 1 }} onClick={() => setShow(false)}>
@@ -70,7 +70,7 @@ export const ProfileControl = () => {
         <Box sx={{ p: 1, display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
           <TextField
             value={user?.userData?.username || ""}
-            
+
             slotProps={{
               readOnly: true,
               htmlInput: {
@@ -86,7 +86,7 @@ export const ProfileControl = () => {
             }}
           />
           <Button variant="contained" onClick={handleLogout} sx={{ mt: 2 }}>
-            {t("logout")}
+            {get("Auth.logout")}
           </Button>
         </Box>
       </DialogContent>

@@ -14,7 +14,7 @@ export const getViewport = async () => {
   const ua = get("user-agent");
 
   const device = new UAParser(ua || "").getDevice();
-
+  return "mobile"
   return device.type === "mobile"
     ? "mobile"
     : "desktop";

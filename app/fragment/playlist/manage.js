@@ -8,16 +8,15 @@ import {
   Typography,
   Box,
 } from "@mui/material";
-import { useTranslations } from "next-intl";
 import { useMyPlayListStore } from "@/store/playListStore";
+import { useTranslate } from "@/core/useTranslation";
 
 export const ManagePlaylist = ({ playlist, show, onClose }) => {
   const [{ title, id }, setValue] = React.useState({ title: "", id: null });
   const fetchList = useMyPlayListStore((state) => state.fetchList);
   const [isSubmit, setIsSubmit] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
-  const t = useTranslations("Playlist");
-
+  const { get } = useTranslate()
   React.useEffect(() => {
     if (!!playlist?.id) {
       setValue(playlist);
@@ -45,7 +44,7 @@ export const ManagePlaylist = ({ playlist, show, onClose }) => {
       const action = id ? "PUT" : "POST";
       await fetch(`/api/user/playlist/`, {
         method: action,
-        body: JSON.stringify({ title,id }),
+        body: JSON.stringify({ title, id }),
         headers: {
           "content-Type": "application/json",
         },
@@ -77,25 +76,25 @@ export const ManagePlaylist = ({ playlist, show, onClose }) => {
             name="title"
             value={title}
             error={isSubmit && !title}
-            label={t("playList")}
+            label={get("Playlist.playList")}
           />
           {isSubmit && !title && (
             <Typography sx={{ color: "secondary.main", mt: 1, px: 2 }}>
-              {t("enterTitle")}
+              {get("Playlist.enterTitle")}
             </Typography>
           )}
         </Box>
       </DialogContent>
       <DialogActions>
         <Button color="inherit" onClick={onClose}>
-          {t("cancel")}
+          {get("Playlist.cancel")}
         </Button>
         <Button
           disabled={isLoading || !!!title}
           onClick={submit}
           variant="contained"
         >
-          {t("ok")}
+          {get("Playlist.ok")}
         </Button>
       </DialogActions>
     </Dialog>

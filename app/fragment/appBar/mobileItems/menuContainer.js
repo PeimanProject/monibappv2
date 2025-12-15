@@ -4,10 +4,10 @@ import React from "react";
 import { animated } from "@react-spring/web";
 import _ from "lodash";
 import { Box, useTheme } from "@mui/material";
-import { useTranslations } from "next-intl";
+import { useTranslate } from "@/core/useTranslation";
 
 export const MenuContainer = ({ item, onChange, style, onClose }) => {
-  const t = useTranslations("Menu");
+  const { get } = useTranslate()
   const theme = useTheme();
 
   return (
@@ -26,7 +26,7 @@ export const MenuContainer = ({ item, onChange, style, onClose }) => {
           }}
         >
           {_.isFunction(item.render) &&
-            item.render({ t, onChange, mode: theme.palette.mode, onClose })}
+            item.render({ get, onChange, mode: theme.palette.mode, onClose })}
         </Box>
       </Box>
     </animated.div>

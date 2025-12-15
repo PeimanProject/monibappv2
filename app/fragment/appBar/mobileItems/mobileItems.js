@@ -12,11 +12,11 @@ import {
 } from "@react-spring/web";
 import React from "react";
 import _ from "lodash";
-import { useTranslations } from "next-intl";
 import { mainMenuData } from "./mobileItemData";
 import BackIcon from "@mui/icons-material/ArrowForwardIos";
 import { MenuContainer } from "./menuContainer";
 import { SettingData } from "./mobileItemSettingData";
+import { useTranslate } from "@/core/useTranslation";
 
 const Block = ({ show, data, onChange, onClose }) => {
   const transApi = useSpringRef();
@@ -48,7 +48,7 @@ export const MobileItems = () => {
   const show = useMainMenuStore((state) => state.show);
   const setShow = useMainMenuStore((state) => state.setShow);
 
-  const t = useTranslations("Menu");
+  const { get } = useTranslate()
   const [state, setState] = React.useState("main");
 
   const handelClose = () => setShow(false);
@@ -76,9 +76,9 @@ export const MobileItems = () => {
 
     ...(state !== "main" &&
       !!show && {
-        right: 0,
-        scale: 1,
-      }),
+      right: 0,
+      scale: 1,
+    }),
     delay: state === "main" ? 0 : 0,
     config: config.default,
   });

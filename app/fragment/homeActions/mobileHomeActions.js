@@ -3,17 +3,15 @@
 import React from "react";
 import { MainButton } from "@/app/component/mainButton";
 import { Box, Button, Typography, useTheme } from "@mui/material";
-import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { desktopValues } from "@/core/config/values";
 import Link from "next/link";
 import { Timer } from "@/app/component/timer";
+import { useTranslate } from "@/core/useTranslation";
 
 export const MobileHomeActions = ({ liveCounter, isLive }) => {
-  const t = useTranslations("Items");
-  const tLive = useTranslations("Live");
+  const { get } = useTranslate()
   const theme = useTheme();
-  const locale = useLocale();
 
   return (
     <>
@@ -43,7 +41,7 @@ export const MobileHomeActions = ({ liveCounter, isLive }) => {
           </Link>
         </Box>
         <Box sx={{ flex: 1, mx: 0.3, a: { height: 1 / 1 } }}>
-          <Link href={`/${locale}/content/quran?type=miskat`}>
+          <Link href={`/content/quran?type=miskat`}>
             <Button
               sx={{
                 borderRadius: desktopValues({}).BORDER,
@@ -62,7 +60,7 @@ export const MobileHomeActions = ({ liveCounter, isLive }) => {
         <MainButton
           fullWidth
           bgcolor="var(--event-color)"
-          text={t("calendar")}
+          text={get("Items.calendar")}
           link="calendar"
         />
         <MainButton
@@ -70,14 +68,14 @@ export const MobileHomeActions = ({ liveCounter, isLive }) => {
           bgcolor={
             !!liveCounter?.time || isLive ? "var(--live-color)" : "#555555"
           }
-          text={t("live")}
+          text={get("Items.live")}
           link="live"
         >
           {!!liveCounter?.time && (
             <Box>
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Typography sx={{ mr: 1 }} variant="caption">
-                  {tLive("toLive")}:
+                  {get("Live.toLive")}:
                 </Typography>
                 <Timer pure time={liveCounter?.time} />
               </Box>
@@ -86,7 +84,7 @@ export const MobileHomeActions = ({ liveCounter, isLive }) => {
           {!liveCounter && (
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <Typography variant="body1" sx={{ mr: 1 }}>
-                {t("live")}
+                {get("Items.live")}
               </Typography>
               <Image src="/icons/live.svg" alt="live" width={30} height={30} />
             </Box>

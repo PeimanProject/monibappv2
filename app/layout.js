@@ -1,16 +1,10 @@
 import { StyleProvider } from "@/theme/theme";
-import { GlobalStateProvider } from "@/provider/globalStateProvider";
-import { NextIntlClientProvider } from "next-intl";
 import { SSR_GetTheme } from "@/core/ssrGetTheme";
-import { getMessages } from "next-intl/server";
 import { iranSans, iranYekan, tArabic } from "./font";
 import { appConfig } from "@/core/config/values";
-import { getIronSession } from "iron-session";
-import { cookies } from "next/headers";
-import { API } from "@/core/config/api";
 import { UserStore } from "./userStore";
 import NextTopLoader from "nextjs-toploader";
-import { getViewport } from "../libs/isMobileDetect";
+import { getViewport } from "./libs/isMobileDetect";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { EventLayout } from "./eventLayout";
 import { IOSAudioManager } from "@/app/component/iosAudioManager";
@@ -72,38 +66,36 @@ export const viewport = {
 
 const fonts = { iranSans, iranYekan };
 
-export default async function RootLayout({ children, params }) {
-  const { locale } = await params;
+export default async function RootLayout({ children }) {
 
-  let dir = locale === "fa" ? "rtl" : "ltr";
+  let dir = "rtl"
 
-  const messages = await getMessages();
   const theme = await SSR_GetTheme();
 
   const viewport = await getViewport();
 
-  const session = await getIronSession(await cookies(), {
-    password: process.env.AUTH_SECRET,
-    cookieName: process.env.AUTH_TOKEN,
-  });
+  // const session = await getIronSession(await cookies(), {
+  //   password: process.env.AUTH_SECRET,
+  //   cookieName: process.env.AUTH_TOKEN,
+  // });
 
   let user = null;
 
-  if (session?.token) {
-    const userReq = await fetch(`${API().security}data/info/`, {
-      headers: {
-        "content-Type": "application/json",
-        AppName: "monib_core_panel",
-        apiCode: "N>LZB$*8;,nr(/]&9Va&P!.ur(&9Ucf6",
-        Authorization: `Bearer ${session.token}`,
-      },
-    });
-    user = await userReq.json();
-  }
+  // if (session?.token) {
+  //   const userReq = await fetch(`${API().security}data/info/`, {
+  //     headers: {
+  //       "content-Type": "application/json",
+  //       AppName: "monib_core_panel",
+  //       apiCode: "N>LZB$*8;,nr(/]&9Va&P!.ur(&9Ucf6",
+  //       Authorization: `Bearer ${session.token}`,
+  //     },
+  //   });
+  //   user = await userReq.json();
+  // }
 
   return (
     <html
-      lang={locale}
+      lang={"fa"}
       data-theme="light"
       theme="classic"
       dir={dir}
@@ -111,22 +103,17 @@ export default async function RootLayout({ children, params }) {
     >
       <body
         suppressHydrationWarning={true}
-        className={`${fonts[theme.theme.fontFamily].variable} ${
-          tArabic.variable
-        }`}
+        className={`${fonts[theme.theme.fontFamily].variable} ${tArabic.variable
+          }`}
       >
         <EventLayout />
         <IOSAudioManager />
         {/* <ServiceWorkerRegistration /> */}
         <NextTopLoader color="#FE4A23" height={4} showSpinner={false} />
-        <NextIntlClientProvider messages={messages}>
-          <GlobalStateProvider>
-            <StyleProvider theme={theme} dir={dir} viewport={viewport}>
-              <UserStore user={user} />
-              {children}
-            </StyleProvider>
-          </GlobalStateProvider>
-        </NextIntlClientProvider>
+        <StyleProvider theme={theme} dir={dir} viewport={viewport}>
+          <UserStore user={user} />
+          {children}
+        </StyleProvider>
         <GoogleAnalytics gaId="G-BH8L7RC80X" />
         <MicrosoftClarity />
       </body>

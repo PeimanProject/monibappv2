@@ -3,11 +3,11 @@
 import React from "react";
 import _ from "lodash";
 import { Box, Button, Typography, useTheme } from "@mui/material";
-import { useLocale, useTranslations } from "next-intl";
 import DownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Image from "next/image";
 import Link from "next/link";
 import { ItemKey } from "@/app/component/seriesItemKey";
+import { useTranslate } from "@/core/useTranslation";
 
 export const LastLectureContentKey = ({ displayTitle, displayDate, verse }) => {
   const theme = useTheme();
@@ -40,9 +40,7 @@ export const LastLectureContentKey = ({ displayTitle, displayDate, verse }) => {
 };
 
 export const MobileHomeLastLecture = ({ list, titleStyle = "normal" }) => {
-  const t = useTranslations("Items");
-  const locale = useLocale();
-
+  const { get } = useTranslate()
   return (
     <>
       <Box
@@ -60,7 +58,7 @@ export const MobileHomeLastLecture = ({ list, titleStyle = "normal" }) => {
           },
         }}
       >
-        <Link href={`/${locale}/last`}>
+        <Link href={`/last`}>
           <Box
             sx={{
               height: 40,
@@ -83,25 +81,25 @@ export const MobileHomeLastLecture = ({ list, titleStyle = "normal" }) => {
             }}
           >
             <Typography sx={{ fontWeight: "bold" }}>
-              {t("lastLecture")}
+              {get("Items.lastLecture")}
             </Typography>
           </Box>
         </Link>
         {_.map(_.take(list?.list, 4), (item, index) => (
-          <Link key={index} href={`/${locale}/player/${item.id}`}>
+          <Link key={index} href={`/player/${item.id}`}>
             <ItemKey show={true}>
               <LastLectureContentKey {...item} />
             </ItemKey>
           </Link>
         ))}
-        <Link href={`/${locale}/last`}>
+        <Link href={`/last`}>
           <Button
             size="small"
             sx={{ color: "primary.dark", mt: 1 }}
             fullWidth
             endIcon={<DownIcon />}
           >
-            {t("more")}
+            {get("Items.more")}
           </Button>
         </Link>
       </Box>

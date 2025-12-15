@@ -112,9 +112,9 @@ export const mainLayoutTheme = ({
       background:
         mode === "light"
           ? theme?.back || {
-              paper: "#fff",
-              default: "#f6f8fc",
-            }
+            paper: "#fff",
+            default: "#f6f8fc",
+          }
           : darkBackgroundColor[shade],
     },
     components,
@@ -126,7 +126,7 @@ const ctx = {
 
 export const StyleProvider = function ({
   children,
-  dir = "ltr",
+  dir = "rtl",
   theme,
   viewport,
 }) {
@@ -181,9 +181,9 @@ export const StyleProvider = function ({
                 fontFamily: "var(--global-font)",
                 ...(viewport.isMobile
                   ? {
-                      background: `url('/images/back.jpg') center center no-repeat`,
-                      backgroundAttachment: `fixed`,
-                    }
+                    background: `url('/images/back.jpg') center center no-repeat`,
+                    backgroundAttachment: `fixed`,
+                  }
                   : {}),
               },
               iframe: {

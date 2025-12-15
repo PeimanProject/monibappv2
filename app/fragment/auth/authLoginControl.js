@@ -16,14 +16,14 @@ import {
   Typography,
   alpha,
 } from "@mui/material";
-import { useTranslations } from "next-intl";
 import React, { useRef, useState } from "react";
 import _ from "lodash";
 import { isMobilePhone } from "validator";
 import { digitsFaToEn } from "@persian-tools/persian-tools";
 import { useRouter } from "next/navigation";
+import { useTranslate } from "@/core/useTranslation";
 
-export const AuthLoginControl = ({}) => {
+export const AuthLoginControl = ({ }) => {
   const [showCode, setShowCode] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(false);
@@ -31,7 +31,7 @@ export const AuthLoginControl = ({}) => {
   const [isSubmit, setIsSubmit] = React.useState(false);
   const setUser = useUserStore((state) => state.setUser);
   const { show, setShow } = useAuthLoginStore();
-  const t = useTranslations("Auth");
+  const { get } = useTranslate()
   const router = useRouter();
 
   const codeRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
@@ -61,11 +61,11 @@ export const AuthLoginControl = ({}) => {
   );
 
   const handleGetCode = React.useCallback(async () => {
-   const codeReq =  await fetch("/api/security/code", {
+    const codeReq = await fetch("/api/security/code", {
       method: "POST",
       body: JSON.stringify({
         mobile,
-        code:"+98",
+        code: "+98",
       }),
     });
 
@@ -166,7 +166,7 @@ export const AuthLoginControl = ({}) => {
         component="div"
       >
         <Typography variant="h6" sx={{ px: 2, color: "white" }}>
-          {t("title")}
+          {get("Auth.title")}
         </Typography>
         <Box sx={{ flex: 1 }} />
         <IconButton sx={{ mr: 1 }} onClick={() => setShow(false)}>
@@ -187,7 +187,7 @@ export const AuthLoginControl = ({}) => {
           }}
         >
           <Typography variant="caption" sx={{ mb: 1, color: "white" }}>
-            {t("mobile")}
+            {get("Auth.mobile")}
           </Typography>
           <TextField
             // label={t("mobile")}
@@ -274,7 +274,7 @@ export const AuthLoginControl = ({}) => {
             <Typography
               sx={{ my: 2, textAlign: "center", color: "error.main" }}
             >
-              {t("login_error")}
+              {get("Auth.login_error")}
             </Typography>
           </Collapse>
 
@@ -285,7 +285,7 @@ export const AuthLoginControl = ({}) => {
               disabled={!!!mobile || !isMobilePhone(mobile, "fa-IR")}
               sx={{ my: 2 }}
             >
-              {t("get_code")}
+              {get("Auth.get_code")}
             </Button>
           )}
           {!!showCode && (
@@ -295,7 +295,7 @@ export const AuthLoginControl = ({}) => {
               disabled={loading}
               sx={{ minWidth: 120 }}
             >
-              {t("login")}
+              {get("Auth.login")}
             </Button>
           )}
         </Box>

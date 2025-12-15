@@ -1,0 +1,5 @@
+==============TODO===================
+make all components client side 
+reading user in layout and set it in the local storage using zustand
+removing all intl (i18n) dependencies asap ✅
+using another way for navigation in app and edit all Link component to have true url

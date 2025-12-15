@@ -16,7 +16,6 @@ import Image from "next/image";
 import { useTheme } from "@mui/material/styles";
 import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
 import { useRouter } from "next/navigation";
-import { useLocale } from "next-intl";
 import ReactPlayer from "react-player";
 import { useSyncMediaSourceStore } from "@/store/useSyncMediaSourceStore";
 
@@ -26,7 +25,6 @@ export const PlayerAction = () => {
   );
   const theme = useTheme();
   const router = useRouter();
-  const locale = useLocale();
   const playerRef = React.useRef(null);
   const [player, setPlayer] = React.useState(null);
   const { sync, setSync } = useSyncMediaSourceStore((state) => state);
@@ -48,7 +46,7 @@ export const PlayerAction = () => {
   const handleBack = React.useCallback(() => {
     if (!!data?.lectureId) {
       setShow(false, data, false);
-      router.push(`/${locale}/player/${data?.lectureId}/?media=video`);
+      router.push(`/player/${data?.lectureId}/?media=video`);
     } else {
       setShow(true, data, false);
     }

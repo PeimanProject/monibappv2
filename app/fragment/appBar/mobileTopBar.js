@@ -3,14 +3,11 @@
 import {
   AppBar,
   Box,
-  IconButton,
   Typography,
   alpha,
   useTheme,
   Divider,
-  Button,
 } from "@mui/material";
-import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import React from "react";
 import PropTypes from "prop-types";
@@ -35,35 +32,25 @@ function ElevationScroll(props) {
 
   return children
     ? React.cloneElement(children, {
-        isScroll: trigger ? true : false,
-      })
+      isScroll: trigger ? true : false,
+    })
     : null;
 }
 
-ElevationScroll.propTypes = {
-  children: PropTypes.element,
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window: PropTypes.func,
-};
 
-const Tools = ({}) => {
-  const t = useTranslations("Common");
+const Tools = ({ }) => {
   const pathname = usePathname();
   const [show, setShow] = React.useState(true);
-  const locale = useLocale();
   const router = useRouter();
   const theme = useTheme();
   const { title, subText, mode } = useVerseDataStore();
 
-  React.useEffect(() => {
-    const pattern = /^\/fa\/?$/;
+  // React.useEffect(() => {
+  //   const pattern = /^\/fa\/?$/;
 
-    // const pattern = /\/player\//;
-    setShow(!!!pattern.test(pathname));
-  }, [pathname]);
+  //   // const pattern = /\/player\//;
+  //   setShow(!!!pattern.test(pathname));
+  // }, [pathname]);
 
   const handleBackClick = () => {
     router.back();
@@ -100,7 +87,7 @@ const Tools = ({}) => {
           },
         }}
       >
-        <Link href={`/${locale}/`}>
+        <Link href={`/`}>
           <Image
             src={`/icons/${theme.palette.mode}/monib-text.svg`}
             alt="Monib Text"
@@ -134,9 +121,9 @@ const Tools = ({}) => {
         )}
 
         <Box sx={{ flex: 1 }}>
-          {!show && (
+          {show && (
             <Typography
-              sx={{ color: "primary.main",  fontWeight: "bold" }}
+              sx={{ color: "primary.main", fontWeight: "bold" }}
             >
               آزمایشی
             </Typography>
@@ -175,12 +162,12 @@ const Tools = ({}) => {
             </>
           </Link>
         </Box> */}
-        {show && (
+        {/* {show && (
           <IconButton sx={{ color: "text.primary" }} onClick={handleBackClick}>
             <ArrowBackIosIcon />
           </IconButton>
-        )}
-        {!show && (
+        )} */}
+        {/* {!show && (
           <>
             <Button
               onClick={() => {
@@ -199,7 +186,7 @@ const Tools = ({}) => {
               {t("GoToLastVersion")}
             </Button>
           </>
-        )}
+        )} */}
       </Box>
     </AppBar>
   );

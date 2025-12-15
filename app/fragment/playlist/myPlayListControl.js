@@ -10,14 +10,15 @@ import {
   Box,
 } from "@mui/material";
 import React from "react";
-import { useTranslations } from "next-intl";
 import { Close } from "@mui/icons-material";
 import { useMyPlayListStore } from "@/store/playListStore";
 import { PlayListItemsList } from "./playListItems";
 import { ManagePlaylist } from "./manage";
 import { DeletePlayList } from "./deletePlaylist";
+import { useTranslate } from "@/core/useTranslation";
 
 export const MyPlayListControl = () => {
+  const { get } = useTranslate()
   const [{ showManage, playlist }, setManage] = React.useState({
     showManage: false,
     playlist: null,
@@ -25,7 +26,6 @@ export const MyPlayListControl = () => {
   const [current, setCurrent] = React.useState(null);
   const show = usePlayListStore((state) => state.show);
   const setShow = usePlayListStore((state) => state.setShow);
-  const t = useTranslations("Playlist");
   const { list, fetchList } = useMyPlayListStore((state) => state);
   const [
     { showDeleteList, deletedPlaylistId, item, isLecture, isTopic, isWisdom },
@@ -98,7 +98,7 @@ export const MyPlayListControl = () => {
           component="div"
         >
           <Typography variant="h6" sx={{ px: 2 }}>
-            {t("title")}
+            {get("Playlist.title")}
           </Typography>
           <Box sx={{ flex: 1 }} />
           <IconButton sx={{ mr: 1 }} onClick={() => setShow(false)}>
@@ -110,7 +110,7 @@ export const MyPlayListControl = () => {
             myList={list}
             onAdd={() => setManage({ showManage: true })}
             onDelete={handleDeleted}
-            onFast={() => {}}
+            onFast={() => { }}
             onEdit={(item) => () =>
               setManage({ showManage: true, playlist: item })}
             onSelect={handleSelected}
