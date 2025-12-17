@@ -1,22 +1,25 @@
-import { DesktopCalendar } from "@/app/fragment/calendar/desktopCalendar";
+"use client";
 import { MobileCalendar } from "@/app/fragment/calendar/mobileCalendar";
-import { getViewport } from "@/app/libs/isMobileDetect";
 import { API } from "@/core/config/api";
-import React from "react";
+import React, { use, useEffect } from "react";
 
-const CalendarPage = async ({ params }) => {
-  const { year } = await params;
-  const viewport = await getViewport();
+const CalendarPage = ({ params }) => {
+  const { year } = use(params);
+  const [list, setList] = useState(null)
 
-  const contentReq = await fetch(`${API().core}content/lecture/${year}/year`);
-  const list = await contentReq.json();
+  const handleListReq = async () => {
 
-  return (
-    <>
-      {viewport === "desktop" && <DesktopCalendar list={list} year={year} />}
-      {viewport === "mobile" && <MobileCalendar list={list} year={year} />}
-    </>
-  );
+    const contentReq = await fetch(`${API().core}content/lecture/${year}/year`);
+    const data = await contentReq.json();
+    setList(data)
+  }
+  useEffect(() => {
+    handleListReq()
+  }, [])
+  if (!list) {
+    return <Typography m={5} textAlign={"center"}>در حال بارگذاری ...</Typography>
+  }
+  return <MobileCalendar list={list} year={year} />
 };
 
 export default CalendarPage;

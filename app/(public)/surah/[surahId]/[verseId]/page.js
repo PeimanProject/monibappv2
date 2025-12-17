@@ -1,78 +1,69 @@
-import { getViewport } from "@/app/libs/isMobileDetect";
+"use client";
 import { MobileVersePlayer } from "@/app/pages/player/mobileVersePlayer";
 import { API } from "@/core/config/api";
-import { appConfig } from "@/core/config/values";
-import { digitsEnToFa } from "@persian-tools/persian-tools";
-import React from "react";
+import { Typography } from "@mui/material";
 
-export async function generateMetadata({ params }) {
-  const { verseId, surahId } = await params;
-  const req = await fetch(
-    `https://core.monibapp.com/app/v2/verse/series/${surahId}`
-  );
-  const sr = await req.json();
+import React, { use, useEffect } from "react";
 
-  const seriesReq = await fetch(`${API().core}content/series/${sr?.series_id}`);
-  const series = await seriesReq.json();
+const VersePlayer = ({ params }) => {
+  const viewport = "mobile";
+  const { verseId, surahId } = use(params);
+  //states
+  const [sr, setSr] = useState(null);
+  const [series, setSeries] = useState(null);
+  const [quranData, setQuranData] = useState(null)
+  const [verse, setVerse] = useState(null)
 
-  const title = `${series.title}, تفسبر آیه ${digitsEnToFa(verseId)} | ${
-    appConfig.title
-  }`;
+  const handleSrReq = async () => {
+    const req = await fetch(
+      `https://core.monibapp.com/app/v2/verse/series/${surahId}`
+    );
+    const data = await req.json();
+    setSr(data)
+  }
 
-  return {
-    title,
-    openGraph: {
-      title,
-      images: "/poster.jpg",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description: appConfig.description,
-      siteId: "",
-      creator: "Monib",
-      creatorId: "",
-      images: ["https://monib.ai/poster.jpg"],
-    },
-  };
-}
-
-const VersePlayer = async ({ params }) => {
-  const viewport = await getViewport();
-  const { verseId, surahId } = await params;
-
-  const req = await fetch(
-    `https://core.monibapp.com/app/v2/verse/series/${surahId}`
-  );
-  const sr = await req.json();
-
-  const seriesReq = await fetch(`${API().core}content/series/${sr?.series_id}`);
-  const series = await seriesReq.json();
-
-  let quranData = null;
-
-  if (series?.mainId === 1) {
+  const handleSeriesReq = async () => {
+    const seriesReq = await fetch(`${API().core}content/series/${sr?.series_id}`);
+    const data = await seriesReq.json();
+    setSeries(data);
+  }
+  const handleSeriesConditionalReq = async () => {
     const data = await fetch(
       `https://api.monibapp.ir/v3/service/quran/pages/?surahId=${surahId * -1}`
     );
-    quranData = await data.json();
+    const res = await data.json();
+    setQuranData(res)
   }
 
-  const verseReq = await fetch(
-    `${API().core}verse/${sr?.series_id}/${verseId}`
-  );
-  const verse = await verseReq.json();
+  const handleVerseReq = async () => {
+    const verseReq = await fetch(
+      `${API().core}verse/${sr?.series_id}/${verseId}`
+    );
+    const data = await verseReq.json();
+    setVerse(data)
 
-  return (
-    <>
-      {(viewport === "mobile" || viewport === "desktop") && (
-        <MobileVersePlayer
-          desktop={viewport === "desktop"}
-          {...{ quranData, series, seriesId: sr?.series_id, verseId, verse }}
-        />
-      )}
-    </>
-  );
+  }
+
+  useEffect(() => {
+    handleSrReq()
+    handleSeriesReq()
+    handleVerseReq()
+  }, [])
+
+
+
+
+  if (series?.mainId === 1) {
+    handleSeriesConditionalReq()
+  }
+
+  if (!sr || !series || !verse) {
+    return <Typography m={5} textAlign={"center"}>در حال بارگذاری...</Typography>
+  }
+  return <MobileVersePlayer
+    desktop={viewport === "desktop"}
+    {...{ quranData, series, seriesId: sr?.series_id, verseId, verse }}
+  />
 };
 
 export default VersePlayer;

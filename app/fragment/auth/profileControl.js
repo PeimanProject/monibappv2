@@ -23,12 +23,8 @@ export const ProfileControl = () => {
   const { get } = useTranslate()
 
   const handleLogout = async () => {
-    await fetch("/api/auth/signout", {
-      method: "POST",
-    });
-
-    setShow(false);
     setUser(null);
+    setShow(false);
   };
 
   return (

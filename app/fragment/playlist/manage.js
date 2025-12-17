@@ -10,12 +10,15 @@ import {
 } from "@mui/material";
 import { useMyPlayListStore } from "@/store/playListStore";
 import { useTranslate } from "@/core/useTranslation";
+import { AddToPlayListAction, UpdateUserPlayList } from "@/app/data/user/playlist/route";
+import { useUserStore } from "@/store/useUserStore";
 
 export const ManagePlaylist = ({ playlist, show, onClose }) => {
   const [{ title, id }, setValue] = React.useState({ title: "", id: null });
   const fetchList = useMyPlayListStore((state) => state.fetchList);
   const [isSubmit, setIsSubmit] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
+  const { user } = useUserStore()
   const { get } = useTranslate()
   React.useEffect(() => {
     if (!!playlist?.id) {
@@ -41,24 +44,15 @@ export const ManagePlaylist = ({ playlist, show, onClose }) => {
     setIsSubmit(true);
     if (title) {
       setIsLoading(true);
-      const action = id ? "PUT" : "POST";
-      await fetch(`/api/user/playlist/`, {
-        method: action,
-        body: JSON.stringify({ title, id }),
-        headers: {
-          "content-Type": "application/json",
-        },
-      });
+      if (!id) {
+        await AddToPlayListAction(title, user.token)
+      } else {
+        await UpdateUserPlayList({ title, token: user.token, id })
+      }
       setIsLoading(false);
       setIsSubmit(false);
-      await fetchList();
+      await fetchList(user.token);
       onClose();
-      // action({ title, id }, () => {
-      //   setIsLoading(false);
-      //   setIsSubmit(false);
-      //   dispatch(fetchPlayList);
-      //   onClose();
-      // });
     }
   }, [setIsSubmit, title, id, onClose, setIsLoading]);
 

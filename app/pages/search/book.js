@@ -1,3 +1,4 @@
+"use client";
 import { Box, ButtonBase, Container, Typography, Divider } from "@mui/material";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
 import { cleanText } from "../miskat/mobileMiskat";

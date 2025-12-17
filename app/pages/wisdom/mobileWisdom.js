@@ -16,19 +16,17 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { setDate } from "date-fns-jalali";
 import { usePlayerActionStore } from "@/store/usePlayerActionStore";
 import { getShareURL } from "@/core/config/api";
-import { useLocale } from "next-intl";
 import { useNavBarStore } from "@/store/layout/useNavBarStore";
 
 const Section = ({ title, image, stringDuration, stringSize, file, id }) => {
   const theme = useTheme();
   const setShow = usePlayerActionStore((state) => state.setShow);
-  const locale = useLocale();
 
   const handleShare = React.useCallback(async (e) => {
     e.stopPropagation();
     await navigator.share({
       text: ``,
-      url: `${getShareURL()}${locale}/wisdom/${id}/`,
+      url: `${getShareURL()}/wisdom/${id}/`,
     });
   }, []);
 
@@ -137,8 +135,7 @@ export const MobileWisdom = ({ SSRList, wisdom }) => {
   const handleEndLess = React.useCallback(async () => {
     setLoading(true);
     const response = await fetch(
-      `/api/wisdom/?page=${
-        (+data?.pagination?.page || +SSRList?.pagination?.page) + 1
+      `/api/wisdom/?page=${(+data?.pagination?.page || +SSRList?.pagination?.page) + 1
       }`
     );
     const li = await response?.json();

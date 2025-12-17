@@ -16,7 +16,6 @@ import { useSyncMediaSourceStore } from "@/store/useSyncMediaSourceStore";
 import BackIcon from "@mui/icons-material/ArrowForwardIos";
 import ForwardIcon from "@mui/icons-material/ArrowBackIos";
 import { useRouter } from "next/navigation";
-import { useLocale } from "next-intl";
 import { VerseMobileInfo } from "./verseMobileInfo";
 import { useVerseDataStore } from "@/store/useVerseData";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
@@ -54,7 +53,6 @@ export const MobileVersePlayerControl = ({
   const { sync, setSync } = useSyncMediaSourceStore((state) => state);
   const [player, setPlayer] = React.useState(null);
   const router = useRouter();
-  const locale = useLocale();
 
   const { setVerse } = useVerseDataStore();
 
@@ -124,7 +122,7 @@ export const MobileVersePlayerControl = ({
   }, [setShowPlayerAction, playerRef, video, sound, lectureId, title]);
 
   const verseAction = (num) => () => {
-    router.push(`/${locale}/verse/${seriesId}/${+verseId + num}`);
+    router.push(`/verse/${seriesId}/${+verseId + num}`);
   };
 
   return (
@@ -234,11 +232,11 @@ export const MobileVersePlayerControl = ({
                   audioRef.current.muted = false;
                 }
               }}
-              // onTimeUpdate={handleTimeUpdate}
-              // sx={{
-              //   bgcolor: "background.default",
-              //   borderRadius: (theme) => theme.spacing(3, 3, 0, 0),
-              // }}
+            // onTimeUpdate={handleTimeUpdate}
+            // sx={{
+            //   bgcolor: "background.default",
+            //   borderRadius: (theme) => theme.spacing(3, 3, 0, 0),
+            // }}
             >
               <source src={sound?.url} type="audio/mpeg" />
               Your browser does not support the audio element.
@@ -257,22 +255,22 @@ export const MobileVersePlayerControl = ({
                 attributes: { playsInline: true },
                 tracks: srt
                   ? [
-                      {
-                        kind: "subtitles",
-                        src: `/api/srt/vtt/${lectureId}?filename=${srt?.fileName}`, // Path to your SRT file
-                        srcLang: "fa",
-                        default: true,
-                      },
-                      ...(srt_en?.fileName
-                        ? [
-                            {
-                              kind: "subtitles",
-                              src: `/api/srt/vtt/${lectureId}?filename=${srt_en.fileName}`, // Path to your SRT file
-                              srcLang: "en",
-                            },
-                          ]
-                        : []),
-                    ]
+                    {
+                      kind: "subtitles",
+                      src: `/api/srt/vtt/${lectureId}?filename=${srt?.fileName}`, // Path to your SRT file
+                      srcLang: "fa",
+                      default: true,
+                    },
+                    ...(srt_en?.fileName
+                      ? [
+                        {
+                          kind: "subtitles",
+                          src: `/api/srt/vtt/${lectureId}?filename=${srt_en.fileName}`, // Path to your SRT file
+                          srcLang: "en",
+                        },
+                      ]
+                      : []),
+                  ]
                   : [],
               },
             }}

@@ -9,7 +9,6 @@ import {
   IconButton,
 } from "@mui/material";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
-import { useLocale, useTranslations } from "next-intl";
 import React from "react";
 import Image from "next/image";
 import { TabCircleItem, TabStyle } from "@/app/component/tabStyle";
@@ -17,6 +16,7 @@ import Link from "next/link";
 import { useCurrentVerseStore } from "@/store/useQuranStore";
 import Menu from "@mui/material/Menu";
 import { MobilePlayerTools } from "./mobilePlayerTools";
+import { useTranslate } from "@/core/useTranslation";
 
 export const VerseMobileInfo = ({
   contextName,
@@ -31,8 +31,7 @@ export const VerseMobileInfo = ({
   seriesId,
   verse,
 }) => {
-  const t = useTranslations("Lecture");
-  const locale = useLocale();
+  const { get } = useTranslate()
   const theme = useTheme();
   const verseP = useCurrentVerseStore((state) => state.verse);
 
@@ -76,7 +75,7 @@ export const VerseMobileInfo = ({
                 },
               }}
             >
-              <Link href={`/${locale}/series/${seriesId}`}>
+              <Link href={`/series/${seriesId}`}>
                 <Button color="inherit" sx={{ minWidth: 50, px: 0 }}>
                   <Typography
                     variant="body1"
@@ -91,7 +90,7 @@ export const VerseMobileInfo = ({
                 sx={{ minHeight: 15, mx: 1, transform: "rotate(20deg)" }}
               />
               <Typography>
-                {t("lecture")} {digitsEnToFa(rowNumber)}
+                {get("Lecture.lecture")} {digitsEnToFa(rowNumber)}
               </Typography>
             </Box>
             <Typography sx={{ mt: 1 }}>{description}</Typography>
@@ -106,7 +105,7 @@ export const VerseMobileInfo = ({
             mt: 1,
           }}
         >
-          <Typography sx={{ mr: 1 }}>{t("page")}</Typography>
+          <Typography sx={{ mr: 1 }}>{get("Lecture.page")}</Typography>
           <Box
             sx={{
               bgcolor: "primary.main",
@@ -164,7 +163,7 @@ export const VerseMobileInfo = ({
               height={20}
             />
             <Typography sx={{ fontSize: 8 }} variant="caption">
-              {t("audio")}
+              {get("Lecture.audio")}
             </Typography>
           </TabCircleItem>
 
@@ -176,7 +175,7 @@ export const VerseMobileInfo = ({
               height={20}
             />
             <Typography sx={{ fontSize: 8 }} variant="caption">
-              {t("video")}
+              {get("Lecture.video")}
             </Typography>
           </TabCircleItem>
         </TabStyle>

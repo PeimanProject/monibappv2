@@ -15,7 +15,6 @@ import React, { useEffect } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Link from "next/link";
-import { useLocale } from "next-intl";
 
 const splitFootnotes = (footnoteText) => {
   if (!footnoteText) return [];
@@ -81,7 +80,6 @@ const cleanBookName = (name) => {
 
 export default function PageMobileMiskat({ content, viewport, page_id, id }) {
   const { setNavBar } = useNavBarStore();
-  const locale = useLocale();
   useEffect(() => {
     setNavBar({
       links: [
@@ -227,10 +225,10 @@ export default function PageMobileMiskat({ content, viewport, page_id, id }) {
             </Box>
           ))}
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Link href={`/${locale}/miskat/id/${id}/${+page_id - 1}`}>
+            <Link href={`/miskat/id/${id}/${+page_id - 1}`}>
               <Button color="secondary" startIcon={<ArrowForwardIcon />}>صفحه قبل</Button>
             </Link>
-            <Link href={`/${locale}/miskat/id/${id}/${+page_id + 1}`}>
+            <Link href={`/miskat/id/${id}/${+page_id + 1}`}>
               <Button color="secondary" endIcon={<ArrowBackIcon />}>صفحه بعد</Button>
             </Link>
           </Box>

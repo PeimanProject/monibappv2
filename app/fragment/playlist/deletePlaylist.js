@@ -10,6 +10,9 @@ import {
 import { useEffect } from "react";
 import { useMyPlayListStore } from "@/store/playListStore";
 import { useTranslate } from "@/core/useTranslation";
+import { useUserStore } from "@/store/useUserStore";
+import { DeleteUserPlayList } from "@/app/data/user/playlist/route";
+import { DeleteUserPlayListByType } from "@/app/data/user/playlist/type/route";
 
 export const DeletePlayList = ({
   show = false,
@@ -23,6 +26,7 @@ export const DeletePlayList = ({
 }) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const { fetchList } = useMyPlayListStore((state) => state);
+  const { user } = useUserStore()
   const { get } = useTranslate()
 
 
@@ -30,53 +34,42 @@ export const DeletePlayList = ({
     setIsLoading(true);
     if (!!item) {
       if (isTopic) {
-        await fetch(`/api/user/playlist/topic`, {
-          method: "DELETE",
-          body: JSON.stringify({
+        await DeleteUserPlayListByType({
+          body: {
             playlistId: currentList.id,
             topicId: item.topicId,
-          }),
-          headers: {
-            "content-Type": "application/json",
           },
-        });
+          token: user.token,
+          type: "topic"
+        })
+
       }
 
       if (isLecture) {
-        await fetch(`/api/user/playlist/lecture`, {
-          method: "DELETE",
-          body: JSON.stringify({
+        await DeleteUserPlayListByType({
+          body: {
             playlistId: currentList.id,
             lectureId: item.lectureId,
-          }),
-          headers: {
-            "content-Type": "application/json",
           },
-        });
+          token: user.token,
+          type: "lecture"
+        })
       }
 
       if (isWisdom) {
-        await fetch(`/api/user/playlist/`, {
-          method: "DELETE",
-          body: JSON.stringify({
+        await DeleteUserPlayListByType({
+          body: {
             playlistId: currentList.id,
             wisdomId: item.id,
-          }),
-          headers: {
-            "content-Type": "application/json",
           },
-        });
+          token: user.token,
+        })
       }
     } else {
-      await fetch(`/api/user/playlist/?id=${id}`, {
-        method: "DELETE",
-        headers: {
-          "content-Type": "application/json",
-        },
-      });
+      await DeleteUserPlayList({ token, id })
     }
 
-    await fetchList();
+    await fetchList(user.token);
     onClose();
   }, [
     id,

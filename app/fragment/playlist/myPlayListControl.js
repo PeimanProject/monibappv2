@@ -16,9 +16,11 @@ import { PlayListItemsList } from "./playListItems";
 import { ManagePlaylist } from "./manage";
 import { DeletePlayList } from "./deletePlaylist";
 import { useTranslate } from "@/core/useTranslation";
+import { useUserStore } from "@/store/useUserStore";
 
 export const MyPlayListControl = () => {
   const { get } = useTranslate()
+  const { user } = useUserStore()
   const [{ showManage, playlist }, setManage] = React.useState({
     showManage: false,
     playlist: null,
@@ -34,7 +36,7 @@ export const MyPlayListControl = () => {
 
   React.useEffect(() => {
     const get = async () => {
-      await fetchList();
+      await fetchList(user.token);
     };
 
     get();
@@ -51,7 +53,7 @@ export const MyPlayListControl = () => {
     ({ show, id, item, isTopic, isLecture, isWisdom }) =>
       async (event) => {
         if (!show && current?.id) {
-          await fetchList();
+          await fetchList(user.token);
         }
         event?.stopPropagation();
         setDeletedPlaylist({

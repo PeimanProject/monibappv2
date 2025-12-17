@@ -22,6 +22,8 @@ import { isMobilePhone } from "validator";
 import { digitsFaToEn } from "@persian-tools/persian-tools";
 import { useRouter } from "next/navigation";
 import { useTranslate } from "@/core/useTranslation";
+import { SendCode } from "@/app/data/security/code/route";
+import { Login } from "@/app/data/auth/login/route";
 
 export const AuthLoginControl = ({ }) => {
   const [showCode, setShowCode] = React.useState(false);
@@ -29,7 +31,7 @@ export const AuthLoginControl = ({ }) => {
   const [error, setError] = React.useState(false);
   const [codeData, setCodeData] = React.useState(null);
   const [isSubmit, setIsSubmit] = React.useState(false);
-  const setUser = useUserStore((state) => state.setUser);
+  const { setUser } = useUserStore();
   const { show, setShow } = useAuthLoginStore();
   const { get } = useTranslate()
   const router = useRouter();
@@ -61,16 +63,18 @@ export const AuthLoginControl = ({ }) => {
   );
 
   const handleGetCode = React.useCallback(async () => {
-    const codeReq = await fetch("/api/security/code", {
-      method: "POST",
-      body: JSON.stringify({
-        mobile,
-        code: "+98",
-      }),
-    });
-
-    const codeRes = await codeReq.json();
-    setCodeData(codeRes);
+    const code = await SendCode({
+      mobile,
+      code: "+98",
+    })
+    // const codeReq = await fetch("/api/security/code", {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     mobile,
+    //     code: "+98",
+    //   }),
+    // });
+    setCodeData(code.res);
     setShowCode(true);
     setIsSubmit(false);
   }, [mobile]);
@@ -101,12 +105,13 @@ export const AuthLoginControl = ({ }) => {
     setLoading(true);
     setError(false);
     try {
-      const resultRes = await fetch("/api/auth/login", {
-        method: "POST",
-        body: JSON.stringify({ userId: codeData?.id, code }),
-      });
+      const result = await Login({ userId: codeData?.id, code })
+      // const resultRes = await fetch("/api/auth/login", {
+      //   method: "POST",
+      //   body: JSON.stringify({ userId: codeData?.id, code }),
+      // });
 
-      const result = await resultRes.json();
+      // const result = await resultRes.json();
 
       setLoading(false);
 
@@ -217,7 +222,7 @@ export const AuthLoginControl = ({ }) => {
               disabled={loading}
               onClick={() => setShowCode(false)}
             >
-              {t("change_number")}
+              {get("Auth.change_number")}
             </Button>
           )}
           <Collapse in={!!showCode}>

@@ -1,26 +1,38 @@
-import { getViewport } from "@/app/libs/isMobileDetect";
+"use client";
 import PageMobileMiskat from "@/app/pages/miskat/pageMobileMiskat";
 import { API } from "@/core/config/api";
+import { Typography } from "@mui/material";
+import { use, useEffect, useState } from "react";
 
-export default async function Page({ params }) {
-  const { id, page_id } = await params;
+export default function Page({ params }) {
+  const { id, page_id } = use(params);
 
-  const viewport = await getViewport();
+  const [content, setContent] = useState(null)
 
-  const contentReq = await fetch(`${API().core}/miskat`, {
-    method: "POST",
-    body: JSON.stringify({ id: id, page_id: page_id, page: true }),
-    cache: "no-cache",
-    headers: {
-      "content-Type": "application/json",
-    },
-  });
+  const handleContentReq = async () => {
+    const contentReq = await fetch(`${API().core}/miskat`, {
+      method: "POST",
+      body: JSON.stringify({ id: id, page_id: page_id, page: true }),
+      cache: "no-cache",
+      headers: {
+        "content-Type": "application/json",
+      },
+    });
 
-  const content = await contentReq.json();
+    const data = await contentReq.json();
+    setContent(data)
+  }
 
+  useEffect(() => {
+    handleContentReq()
+  }, [])
+
+  if (!content) {
+    return <Typography m={5} textAlign={"center"}>در حال بارگذاری...</Typography>
+  }
   return (
     <>
-      <PageMobileMiskat content={content} viewport={viewport} page_id={page_id} id={id} />
+      <PageMobileMiskat content={content} viewport={"mobile"} page_id={page_id} id={id} />
     </>
   );
 }

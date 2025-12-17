@@ -1,62 +1,59 @@
 import { StyleProvider } from "@/theme/theme";
 import { SSR_GetTheme } from "@/core/ssrGetTheme";
 import { iranSans, iranYekan, tArabic } from "./font";
-import { appConfig } from "@/core/config/values";
-import { UserStore } from "./userStore";
 import NextTopLoader from "nextjs-toploader";
-import { getViewport } from "./libs/isMobileDetect";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { EventLayout } from "./eventLayout";
 import { IOSAudioManager } from "@/app/component/iosAudioManager";
 import { MicrosoftClarity } from "@/metric/microsoftClarity";
-// import { ServiceWorkerRegistration } from "@/app/component/serviceWorkerRegistration";
+import { ServiceWorkerRegistration } from "@/app/component/serviceWorkerRegistration";
 
-export const metadata = {
-  title: appConfig.title,
-  metadataBase: new URL("https://monibapp.ir/"),
-  generator: "Next.js",
-  referrer: "origin-when-cross-origin",
-  description: appConfig.description,
-  keywords: [""],
-  description: "",
-  url: "https://monibapp.ir/",
-  siteName: "Admin",
-  alternates: {
-    canonical: "/",
-    languages: {
-      "en-US": "/en",
-      "fa-IR": "/fa",
-    },
-  },
-  icons: [{ rel: "apple-touch-icon", url: "/apple-icon-2048x2048.png" }],
-  apple: {
-    "apple-mobile-web-app-title": appConfig.title,
-    "apple-mobile-web-app-capable": "yes",
-    "apple-mobile-web-app-status-bar-style": "default",
-  },
-  openGraph: {
-    title: appConfig.title,
-    images: "/poster.jpg",
-    description: appConfig.description,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: appConfig.title,
-    description: appConfig.description,
-    siteId: "",
-    creator: "Monib",
-    creatorId: "",
-    images: ["https://monibapp.ir/poster.jpg"],
-  },
-  other: {
-    "mobile-web-app-capable": "yes",
-    "apple-mobile-web-app-capable": "yes",
-    "apple-mobile-web-app-status-bar-style": "default",
-    "apple-mobile-web-app-title": appConfig.title,
-    "format-detection": "telephone=no",
-    "apple-itunes-app": "app-argument=monib-ai",
-  },
-};
+// export const metadata = {
+//   title: appConfig.title,
+//   metadataBase: new URL("https://monibapp.ir/"),
+//   generator: "Next.js",
+//   referrer: "origin-when-cross-origin",
+//   description: appConfig.description,
+//   keywords: [""],
+//   description: "",
+//   url: "https://monibapp.ir/",
+//   siteName: "Admin",
+//   alternates: {
+//     canonical: "/",
+//     languages: {
+//       "en-US": "/en",
+//       "fa-IR": "/fa",
+//     },
+//   },
+//   icons: [{ rel: "apple-touch-icon", url: "/apple-icon-2048x2048.png" }],
+//   apple: {
+//     "apple-mobile-web-app-title": appConfig.title,
+//     "apple-mobile-web-app-capable": "yes",
+//     "apple-mobile-web-app-status-bar-style": "default",
+//   },
+//   openGraph: {
+//     title: appConfig.title,
+//     images: "/poster.jpg",
+//     description: appConfig.description,
+//   },
+//   twitter: {
+//     card: "summary_large_image",
+//     title: appConfig.title,
+//     description: appConfig.description,
+//     siteId: "",
+//     creator: "Monib",
+//     creatorId: "",
+//     images: ["https://monibapp.ir/poster.jpg"],
+//   },
+//   other: {
+//     "mobile-web-app-capable": "yes",
+//     "apple-mobile-web-app-capable": "yes",
+//     "apple-mobile-web-app-status-bar-style": "default",
+//     "apple-mobile-web-app-title": appConfig.title,
+//     "format-detection": "telephone=no",
+//     "apple-itunes-app": "app-argument=monib-ai",
+//   },
+// };
 
 export const viewport = {
   width: "device-width",
@@ -72,7 +69,7 @@ export default async function RootLayout({ children }) {
 
   const theme = await SSR_GetTheme();
 
-  const viewport = await getViewport();
+  const viewport = "mobile";
 
   // const session = await getIronSession(await cookies(), {
   //   password: process.env.AUTH_SECRET,
@@ -106,12 +103,12 @@ export default async function RootLayout({ children }) {
         className={`${fonts[theme.theme.fontFamily].variable} ${tArabic.variable
           }`}
       >
+
         <EventLayout />
         <IOSAudioManager />
-        {/* <ServiceWorkerRegistration /> */}
+        <ServiceWorkerRegistration />
         <NextTopLoader color="#FE4A23" height={4} showSpinner={false} />
         <StyleProvider theme={theme} dir={dir} viewport={viewport}>
-          <UserStore user={user} />
           {children}
         </StyleProvider>
         <GoogleAnalytics gaId="G-BH8L7RC80X" />

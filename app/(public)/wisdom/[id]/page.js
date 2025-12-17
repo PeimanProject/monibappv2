@@ -1,55 +1,38 @@
-import { getViewport } from "@/app/libs/isMobileDetect";
-import React from "react";
+"use client";
+import React, { use, useEffect, useState } from "react";
 import { MobileWisdom } from "@/app/pages/wisdom/mobileWisdom";
 import { API } from "@/core/config/api";
-import { appConfig } from "@/core/config/values";
+import { Typography } from "@mui/material";
 
-export async function generateMetadata({ params }) {
-  const { id } = await params;
+const WisdomPage = ({ params }) => {
+  const { id } = use(params)
+  const viewport = "mobile";
+  const [list, setList] = useState(null)
+  const [wisdom, setWisdom] = useState(null)
 
-  const req = await fetch(`${API().core}wisdom/${id}`);
-  const wisdom = await req.json();
+  const handleListReq = async () => {
+    const listReq = await fetch(`${API().core}wisdom?page=0&size=100`);
+    const data = await listReq.json();
+    setList(data)
+  }
 
-  const title = `${wisdom.title} | ${appConfig.title}`;
-
-  return {
-    title,
-    openGraph: {
-      title,
-      images: wisdom?.image,
-      type: "video.other",
-      url: wisdom?.file,
-      description: appConfig.description,
-      videos: [{
-        url: wisdom?.file,
-        width: 1280,  // adjust according to your video dimensions
-        height: 720,  // adjust according to your video dimensions
-        type: "video/mp4"  // adjust based on your video format
-      }]
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description: appConfig.description,
-      siteId: "",
-      creator: "Monib",
-      creatorId: "",
-      images: [wisdom?.image],
-    },
-  };
-}
-
-const WisdomPage = async ({ params }) => {
-  const { id } = await params;
-  const viewport = await getViewport();
-  const listReq = await fetch(`${API().core}wisdom?page=0&size=100`);
-  const list = await listReq.json();
-
-  let wisdom;
-
-  if (id) {
+  const handleGetSingeWisdom = async () => {
     const req = await fetch(`${API().core}wisdom/${id}`);
-    wisdom = await req.json();
+    const data = await req.json();
+    setWisdom(data)
+  }
+
+  useEffect(() => {
+    handleListReq()
+    if (id) {
+      handleGetSingeWisdom()
+    }
+  }, [])
+
+  if (!list || !wisdom) {
+    return <Typography m={5} textAlign={"center"}>
+      در حال بارگذاری ...
+    </Typography>
   }
 
   return (

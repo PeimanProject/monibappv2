@@ -2,7 +2,6 @@
 
 import { Box } from "@mui/material";
 import React from "react";
-import { useTranslations } from "next-intl";
 import _ from "lodash";
 import { TabNormalItem, TabStyle } from "@/app/component/tabStyle";
 import { TextList } from "@/app/component/quran/textList";
@@ -17,7 +16,6 @@ export const MobileQuranLecture = ({
 }) => {
   const [value, setValue] = React.useState("quran");
   const [index, setIndex] = React.useState(0);
-  const t = useTranslations("Lecture");
 
   const handleChange = React.useCallback(
     (value, index) => () => {

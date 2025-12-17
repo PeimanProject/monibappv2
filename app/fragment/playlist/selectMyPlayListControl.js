@@ -15,8 +15,11 @@ import { useMyPlayListStore } from "@/store/playListStore";
 import { PlayListItemsList } from "./playListItems";
 import { ManagePlaylist } from "./manage";
 import { useTranslate } from "@/core/useTranslation";
+import { AddUserPlayListByType } from "@/app/data/user/playlist/add/[type]/route";
+import { useUserStore } from "@/store/useUserStore";
 
 export const SelectMyPlayListControl = () => {
+  const { user } = useUserStore()
   const [{ showManage, playlist }, setManage] = React.useState({
     showManage: false,
     playlist: null,
@@ -40,13 +43,13 @@ export const SelectMyPlayListControl = () => {
       setCurrent(newValue);
 
       if (!!item?.lecture) {
-        await fetch(`/api/user/playlist/add/lecture`, {
-          method: "POST",
-          body: JSON.stringify({
-            playlistIds: [{ id: newValue.id }],
-            lectureId: item.lectureId,
-          }),
-        });
+        await AddUserPlayListByType({
+          token: user.token,
+          lectureId: item.lectureId,
+          playlistIds: [{ id: newValue.id }],
+          type: "lecture"
+        })
+
       }
 
       setShow(false);
