@@ -58,7 +58,7 @@ export const MobileTitle = ({
                 <Typography sx={{ mt: 1 }}>{description}</Typography>
                 {value === "lecture" && (
                   <Typography>
-                    {digitsEnToFa(`${lectureCount}`)} {t("lecture")}
+                    {digitsEnToFa(`${lectureCount}`)} {get("Lecture.lecture")}
                   </Typography>
                 )}
               </Box>
@@ -67,7 +67,7 @@ export const MobileTitle = ({
                 <Box>
                   {!!lastCourseId && value === "lecture" && (
                     <Box sx={{ pl: 1 }}>
-                      <Link href={`/${locale}/series/${lastCourseId}`}>
+                      <Link href={`/series/${lastCourseId}`}>
                         <Button
                           size="small"
                           variant="contained"
@@ -75,8 +75,8 @@ export const MobileTitle = ({
                           sx={{ minWidth: 120 }}
                         >
                           {mainId === 1
-                            ? t("previousInterpretationRound")
-                            : t("previousRound")}
+                            ? get("Lecture.previousInterpretationRound")
+                            : get("Lecture.previousRound")}
                         </Button>
                       </Link>
                     </Box>
@@ -128,7 +128,7 @@ export const MobileTitle = ({
                             mt: 1,
                           }}
                         >
-                          <Typography sx={{ mr: 1 }}>{t("page")}</Typography>
+                          <Typography sx={{ mr: 1 }}>{get("Lecture.page")}</Typography>
                           <Box
                             sx={{
                               bgcolor: "background.paper",

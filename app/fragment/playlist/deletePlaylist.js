@@ -28,8 +28,6 @@ export const DeletePlayList = ({
   const { fetchList } = useMyPlayListStore((state) => state);
   const { user } = useUserStore()
   const { get } = useTranslate()
-
-
   const submit = React.useCallback(async () => {
     setIsLoading(true);
     if (!!item) {
@@ -66,20 +64,21 @@ export const DeletePlayList = ({
         })
       }
     } else {
-      await DeleteUserPlayList({ token, id })
+      await DeleteUserPlayList({ token: user.token, id })
     }
 
     await fetchList(user.token);
     onClose();
   }, [
     id,
-    setIsLoading,
     onClose,
     currentList,
     isLecture,
     isTopic,
     item,
     isWisdom,
+    user.token, // Added missing dependency
+    fetchList
   ]);
 
   useEffect(() => setIsLoading(false), [show, setIsLoading]);

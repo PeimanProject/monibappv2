@@ -72,7 +72,6 @@ export async function DeleteUserPlayList({ token, id }) {
       Authorization: `Bearer ${token}`,
     },
   });
-  console.log({ response })
   if (!response.ok) return { error: "not-valid" }
 
   return {};

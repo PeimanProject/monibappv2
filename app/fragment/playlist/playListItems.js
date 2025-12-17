@@ -30,7 +30,6 @@ export const PlayListItemsList = ({
 
 
   const onWisdomPlayer = React.useCallback((item) => { }, []);
-
   return (
     <Box
       sx={{
@@ -106,7 +105,7 @@ export const PlayListItemsList = ({
                       src={`/icons/${theme.palette.mode}/share.svg`}
                     />
                   </IconButton> */}
-                  <IconButton onClick={onDelete({ show: true, item })}>
+                  <IconButton onClick={onDelete({ show: true, id: item.id })}>
                     <Box
                       component={"img"}
                       sx={{ width: 16 }}

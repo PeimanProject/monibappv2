@@ -14,7 +14,7 @@ export const QuranMonib = () => {
   return (
     <Box href="https://quran.monibapp.ir/" component={"a"}>
       <Box
-        sx={{        
+        sx={{
           height: 60,
           bgcolor: "#000067",
           borderRadius: desktopValues({}).BORDER,
@@ -35,7 +35,7 @@ export const QuranMonib = () => {
 
 export const MiskatMonib = () => {
   return (
-    <Link href={"/fa/content/quran/?type=miskat"}>
+    <Link href={"/content/quran/?type=miskat"}>
       <Box
         sx={{
           height: 60,

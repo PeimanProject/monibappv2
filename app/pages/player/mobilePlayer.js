@@ -59,6 +59,7 @@ export const MobilePlayer = ({
           />
         )}
       </Box>
+      {/** subject section */}
       <MobileSubjectText
         {...lecture}
         quranData={quranData}

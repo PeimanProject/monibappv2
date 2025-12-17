@@ -1,45 +1,76 @@
+"use client";
 import { GetOs } from "@/app/libs/getOs";
 import { MobilePlayer } from "@/app/pages/player/mobilePlayer";
 import { API } from "@/core/config/api";
-import React from "react";
+import { Typography } from "@mui/material";
+import { useSearchParams } from "next/navigation";
+import React, { use, useEffect, useState } from "react";
 
-const PlayerPage = async ({ params, searchParams }) => {
-  const { lectureId } = await params;
-  const mediaCurrent = (await searchParams)?.media || null; // Extract 'media' query parameter
-  const time = (await searchParams)?.time || null; // Extract 'media' query parameter
+const PlayerPage = ({
+  params,
+}) => {
+  const searchParams = useSearchParams()
+  const { lectureId } = use(params);
+  const mediaCurrent = searchParams.get("media") || null; // Extract 'media' query parameter
+  const time = searchParams.get("time") || null; // Extract 'media' query parameter
+  //states
+  const [lecture, setLecture] = useState(null)
+  const [quranData, setQuranData] = useState(null)
+  const [srtArr, setSrtArr] = useState(null)
+  const [srtEnArr, setSrtEnArr] = useState(null)
 
-
-
-  const req = await fetch(`${API().core}content/lecture/${lectureId}`);
-  const lecture = await req.json();
-
-  let quranData = null;
-  if (lecture?.mainId === 1) {
+  //handlers
+  const handleGetLecture = async () => {
+    const req = await fetch(`${API().core}content/lecture/${lectureId}`);
+    const data = await req.json();
+    setLecture(data)
+  }
+  const handleGetQuranData = async () => {
     const data = await fetch(
       `https://api.monibapp.ir/v3/service/quran/pages/?surahId=${lecture.contextId * -1
       }&less=true`
     );
-    quranData = await data.json();
+    const res = await data.json();
+    setQuranData(res)
   }
 
-  let srtArr = null;
-  if (!!lecture?.srt?.serverSrc) {
+  const handleGetSrtArr = async () => {
     const listJson = await fetch(
       `https://bundles.monibapp.ir/srt_json/${lectureId}/?filename=${lecture?.srt?.fileName}`
     );
-    srtArr = await listJson.json();
+    const data = await listJson.json();
+    setSrtArr(data)
   }
-
-  let srtEnArr = null;
-  if (!!lecture?.srt_en?.serverSrc) {
+  const handleGetEnSrtArr = async () => {
     const listJson = await fetch(
       `https://bundles.monibapp.ir/srt_json/${lectureId}/?filename=${lecture?.srt_en?.fileName}`
     );
-    srtEnArr = await listJson.json();
+    const data = await listJson.json();
+    setSrtEnArr(data)
+  }
+
+  //init fetch
+  useEffect(() => {
+    handleGetLecture()
+  }, [])
+
+  if (lecture?.mainId === 1) {
+    handleGetQuranData()
+  }
+
+  if (!!lecture?.srt?.serverSrc) {
+    handleGetSrtArr()
+  }
+
+  if (!!lecture?.srt_en?.serverSrc) {
+    handleGetEnSrtArr
   }
 
   const os = GetOs();
 
+  if (!lecture) {
+    return <Typography textAlign={"center"} m={5}>در حال بارگذاری...</Typography>
+  }
   return (
     <MobilePlayer
       {...{ srtArr, quranData, lecture, srtEnArr, os, mediaCurrent, time }}

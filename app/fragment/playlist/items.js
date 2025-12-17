@@ -21,39 +21,37 @@ const PlayListItem = ({
   matches,
   onClose,
 }) => {
-  
+
   const getLink = React.useCallback(() => {
     if (isWisdom) {
-      return `/fa/wisdom/${item.id}`;
+      return `/wisdom/${item.id}`;
     } else {
       return isTopic
-        ? `/fa/player/${item.lectureId}?goto=${item.startTime}`
-        : `/fa/player/${item.lectureId}`;
+        ? `/player/${item.lectureId}?goto=${item.startTime}`
+        : `/player/${item.lectureId}`;
     }
   }, [isTopic, item, isWisdom]);
 
   const theme = useTheme();
 
   return (
-    <>
+    <Box sx={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
       <Link
         href={getLink()}
-        style={{ textDecoration: "none", color: "inherit" }}
+        style={{ textDecoration: "none", color: "inherit", flex: 1 }}
       >
         <ButtonBase
           onClick={onClose}
-           component="div"
+          component="div"
           sx={{
             display: "flex",
             alignItems: "center",
-            cursor: "pointer",
-            width: 1 / 1,
+            width: "100%",
             borderRadius: 4,
-            flex: 1,
             height: 42,
             my: 1,
+            px: 1, // Add some padding so text doesn't hit the edges
             justifyContent: "flex-start",
-
             "&:hover": {
               boxShadow: (theme) =>
                 `${alpha(theme.palette.primary.main, 0.3)} 0 0 0 0.2rem`,
@@ -88,21 +86,7 @@ const PlayListItem = ({
             src={`/icons/${theme.palette.mode}/share.svg`}
           />
         </IconButton> */}
-          <IconButton
-            onClick={onDelete({
-              show: true,
-              item,
-              isTopic,
-              isLecture,
-              isWisdom,
-            })}
-          >
-            <Box
-              component={"img"}
-              sx={{ width: 18 }}
-              src={`/icons/${theme.palette.mode}/delete.svg`}
-            />
-          </IconButton>
+
 
           {/* <Button
           variant="outlined"
@@ -120,7 +104,29 @@ const PlayListItem = ({
         </Button> */}
         </ButtonBase>
       </Link>
-    </>
+      <IconButton
+        sx={{
+          position: 'absolute',
+          right: 8,
+          zIndex: 2 // Ensure it sits above the Link layer
+        }}
+        onClick={
+          onDelete({
+            show: true,
+            item,
+            isTopic,
+            isLecture,
+            isWisdom,
+          })
+        }
+      >
+        <Box
+          component={"img"}
+          sx={{ width: 18 }}
+          src={`/icons/${theme.palette.mode}/delete.svg`}
+        />
+      </IconButton>
+    </Box>
   );
 };
 

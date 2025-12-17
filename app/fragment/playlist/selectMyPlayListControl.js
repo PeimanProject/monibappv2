@@ -32,7 +32,7 @@ export const SelectMyPlayListControl = () => {
   const { get } = useTranslate()
   React.useEffect(() => {
     const load = async () => {
-      await fetchList();
+      await fetchList(user.token);
     };
 
     load();

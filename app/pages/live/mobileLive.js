@@ -174,7 +174,7 @@ const NoLive = ({ data, live, desktop }) => {
             >
               <Typography variant="body2">{data?.displayDate}</Typography>
               <Box sx={{ flex: 1 }} />
-              <Typography sx={{ ml: 2, mr: 0.5 }}>{t("time")}:</Typography>
+              <Typography sx={{ ml: 2, mr: 0.5 }}>{get("Live.time")}:</Typography>
               <Typography variant="body2">{data?.time}</Typography>
             </Box>
             <Divider sx={{ width: 1 / 1, my: 1, borderColor: "#94a29d" }} />
