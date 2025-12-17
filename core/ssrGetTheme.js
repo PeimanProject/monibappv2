@@ -1,6 +1,5 @@
 import { defaultTheme, themeList } from "@/data/themeList/themeList";
 import _ from "lodash";
-import { getHeaders, API } from "./config/api";
 
 export const SSR_GetTheme = async () => {
   // const res = await fetch(`${API().core}auth/info`, {

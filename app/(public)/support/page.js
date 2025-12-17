@@ -17,6 +17,7 @@ import React, { useState } from "react";
 import { alpha, styled } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
+import { ContactReq } from "@/app/data/contact/route";
 
 const BootstrapInputMessage = styled(InputBase)(({ theme }) => ({
   "& .MuiInputBase-input": {
@@ -137,13 +138,12 @@ export default function SupportPage() {
     if (!message[preferredContact]) {
       setSnackbar({
         open: true,
-        message: `لطفا ${
-          preferredContact === "phone"
+        message: `لطفا ${preferredContact === "phone"
             ? "شماره موبایل"
             : preferredContact === "email"
-            ? "ایمیل"
-            : "شماره واتس‌اپ"
-        } را وارد کنید`,
+              ? "ایمیل"
+              : "شماره واتس‌اپ"
+          } را وارد کنید`,
         severity: "error",
       });
       return;
@@ -186,10 +186,7 @@ export default function SupportPage() {
       severity: "success",
     });
 
-    fetch("/api/contact", {
-      method: "POST",
-      body: JSON.stringify({ data: message }),
-    });
+    ContactReq({ data: message })
 
     // Reset form
     setMessage({

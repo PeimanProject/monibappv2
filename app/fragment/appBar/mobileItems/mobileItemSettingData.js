@@ -9,21 +9,21 @@ import { useQuranFontSizeStore } from "@/store/layout/useQuranFontSizeStore";
 import { useTranslateFontSizeStore } from "@/store/layout/useTranslateFontSizeStore";
 import { TabCircleItem, TabStyle } from "@/app/component/tabStyle";
 
-const sizeSettingMarks = (t) => [
+const sizeSettingMarks = (get) => [
   {
     value: 0,
     shade: 300,
-    label: t("small"),
+    label: get("Menu.small"),
   },
   {
     value: 50,
     shade: 500,
-    label: t("normal"),
+    label: get("Menu.normal"),
   },
   {
     value: 100,
     shade: 700,
-    label: t("large"),
+    label: get("Menu.large"),
   },
 ];
 
@@ -51,7 +51,7 @@ const Index = {
 export const SettingData = [
   {
     id: "mode",
-    render: ({}) => {
+    render: ({ }) => {
       const { setMode, mode } = useThemeModeStore((state) => state);
       return (
         <TabStyle style="circle" index={Index[mode]}>
@@ -61,9 +61,9 @@ export const SettingData = [
               value={theme.type}
               index={index}
               onChange={() => () => setMode(theme.type)}
-              // color={theme.type === mode ? "dark" : "normal"}
-              // ctrIcon={theme.icon}
-              // title={t(theme.type)}
+            // color={theme.type === mode ? "dark" : "normal"}
+            // ctrIcon={theme.icon}
+            // title={t(theme.type)}
             >
               {theme.icon}
             </TabCircleItem>
@@ -88,7 +88,7 @@ export const SettingData = [
   // })),
   {
     id: "size1",
-    render: ({ t }) => {
+    render: ({ get }) => {
       const { setQuranFontSize, quranFontSize } = useQuranFontSizeStore(
         (state) => state
       );
@@ -100,7 +100,7 @@ export const SettingData = [
 
       return (
         <Box sx={{ flex: 1, mt: 2, px: 2 }}>
-          <Typography>{t("quranSize")}</Typography>
+          <Typography>{get("Menu.quranSize")}</Typography>
           <Slider
             color="secondary"
             sx={{
@@ -113,7 +113,7 @@ export const SettingData = [
             onChange={handleChangeQuranSize}
             step={null}
             valueLabelDisplay="off"
-            marks={sizeSettingMarks(t)}
+            marks={sizeSettingMarks(get)}
           />
         </Box>
       );
@@ -121,7 +121,7 @@ export const SettingData = [
   },
   {
     id: "size2",
-    render: ({ t }) => {
+    render: ({ get }) => {
       const { setTranslateFontSize, translateFontSize } =
         useTranslateFontSizeStore((state) => state);
 
@@ -132,7 +132,7 @@ export const SettingData = [
 
       return (
         <Box sx={{ flex: 1, mt: 2, px: 2 }}>
-          <Typography>{t("translateSize")}</Typography>
+          <Typography>{get("Menu.translateSize")}</Typography>
           <Slider
             color="secondary"
             sx={{
@@ -145,7 +145,7 @@ export const SettingData = [
             onChange={handleTranslateQuranSize}
             step={null}
             valueLabelDisplay="off"
-            marks={sizeSettingMarks(t)}
+            marks={sizeSettingMarks(get)}
           />
         </Box>
       );

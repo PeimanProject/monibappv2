@@ -1,4 +1,4 @@
-import { getSSRToken } from "../ssrToken";
+import { getToken } from "../ssrToken";
 
 const BASE_ASSETS = "https://core.monibapp.ir/";
 const PRO_CORE = "https://core.monibapp.ir/";
@@ -13,15 +13,15 @@ export const API = () => {
   };
 };
 
-export const getHeaders = async () => {
+export const getHeaders = () => {
   return {
     "content-Type": "application/json",
-    Authorization: await getSSRToken(),
+    Authorization: getToken(),
     AppName: "monib_ai",
   };
 };
 
 export const getShareURL = () => {
-  
+
   return `https://monibapp.ir/`;
 };

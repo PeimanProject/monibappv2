@@ -1,21 +1,8 @@
-"use server";
+import { useUserStore } from "@/store/useUserStore";
 
-import { getIronSession } from "iron-session";
-import { cookies } from "next/headers";
+export const getToken = () => {
+  const state = useUserStore.getState()
+  const user = state.user
 
-export const getSSRToken = async () => {
-  const session = await getIronSession(await cookies(), {
-    password: process.env.AUTH_SECRET,
-    cookieName: process.env.AUTH_TOKEN,
-  });
-  return session?.token;
-};
-
-
-export const getSSRAppRole = async () => {
-  const session = await getIronSession(await cookies(), {
-    password: process.env.AUTH_SECRET,
-    cookieName: process.env.AUTH_TOKEN,
-  });
-  return session;
+  return user.token;
 };
