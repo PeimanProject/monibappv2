@@ -46,7 +46,7 @@ export const PlayerAction = () => {
   const handleBack = React.useCallback(() => {
     if (!!data?.lectureId) {
       setShow(false, data, false);
-      router.push(`/player/${data?.lectureId}/?media=video`);
+      router.push(`/player?id=${data?.lectureId}&media=video`);
     } else {
       setShow(true, data, false);
     }

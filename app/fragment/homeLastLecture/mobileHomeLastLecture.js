@@ -86,7 +86,7 @@ export const MobileHomeLastLecture = ({ list, titleStyle = "normal" }) => {
           </Box>
         </Link>
         {_.map(_.take(list?.list, 4), (item, index) => (
-          <Link key={index} href={`/player/${item.id}`}>
+          <Link key={index} href={`/player?id=${item.id}`}>
             <ItemKey show={true}>
               <LastLectureContentKey {...item} />
             </ItemKey>

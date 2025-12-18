@@ -105,7 +105,7 @@ export default function MobileMiskat({ content, viewport }) {
 
         {
           title: content.surah,
-          href: `quran/${content.surah_id}/${content.surah}?type=miskat`,
+          href: `quran?surahId=${content.surah_id}&surahName=${content.surah}?type=miskat`,
         },
       ],
       title: `آیه ${digitsEnToFa(content.verse_id)}`,

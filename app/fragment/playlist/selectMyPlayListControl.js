@@ -15,8 +15,8 @@ import { useMyPlayListStore } from "@/store/playListStore";
 import { PlayListItemsList } from "./playListItems";
 import { ManagePlaylist } from "./manage";
 import { useTranslate } from "@/core/useTranslation";
-import { AddUserPlayListByType } from "@/app/data/user/playlist/add/[type]/route";
 import { useUserStore } from "@/store/useUserStore";
+import { AddUserPlayListByType } from "@/app/data/user/playlist/add/route";
 
 export const SelectMyPlayListControl = () => {
   const { user } = useUserStore()

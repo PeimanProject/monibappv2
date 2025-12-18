@@ -101,7 +101,7 @@ export const DesktopLectureList = ({
           }}
           key={index}
         >
-          <Link href={`/player/${item.id}`}>
+          <Link href={`/player?id=${item.id}`}>
             <ButtonBase
               component="div"
               sx={{

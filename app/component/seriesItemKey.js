@@ -122,7 +122,7 @@ export const SeriesItemKey = ({
       }}
       href={
         type === "miskat"
-          ? `/quran/${rowId}/${title}?type=${type}`
+          ? `/quran?surahId=${rowId}&surahName=${title}&type=${type}`
           : `/series/${id}?type=${type}`
       }
     >

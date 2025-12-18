@@ -13,7 +13,7 @@ export const Book = ({ resultBook }) => {
           resultBook?.result?.result?.map((book, index) => (
             <Link
               key={index}
-              href={`/miskat/id/${book.id}/${book.page_id}/?title=${book.bookInfo?.title}`}
+              href={`/miskat/id?id=${book.id}&page_id=${book.page_id}&title=${book.bookInfo?.title}`}
             >
               <ButtonBase
                 sx={{

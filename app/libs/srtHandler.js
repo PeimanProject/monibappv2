@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { SrtReq } from "../data/srt/vtt/[lectureId]/route";
+import { SrtReq } from "../data/srt/route";
 
 export function useVttTrack({ lectureId, filename }) {
     const [url, setUrl] = useState(null);

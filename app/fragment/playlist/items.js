@@ -27,8 +27,8 @@ const PlayListItem = ({
       return `/wisdom/${item.id}`;
     } else {
       return isTopic
-        ? `/player/${item.lectureId}?goto=${item.startTime}`
-        : `/player/${item.lectureId}`;
+        ? `/player?id=${item.lectureId}&goto=${item.startTime}`
+        : `/player?id=${item.lectureId}`;
     }
   }, [isTopic, item, isWisdom]);
 

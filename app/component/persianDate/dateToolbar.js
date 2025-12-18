@@ -17,6 +17,7 @@ import Link from "next/link";
 import { useEventCalendarStore } from "@/store/useEventCalendar";
 import { format } from "date-fns-jalali";
 import { useTranslate } from "@/core/useTranslation";
+import { useRouter } from "next/navigation";
 
 const CustomStyledMenu = styled(
   ({
@@ -112,7 +113,7 @@ export const DateToolbar = ({ year, desktop }) => {
   const anchorYearRef = React.useRef(null);
   const anchorEventRef = React.useRef(null);
   const { event, setEvent } = useEventCalendarStore();
-
+  const router = useRouter()
   const handleYearClose = React.useCallback((event) => {
     if (anchorYearRef.current && anchorYearRef.current.contains(event.target)) {
       return;
@@ -145,6 +146,11 @@ export const DateToolbar = ({ year, desktop }) => {
     [setEvent]
   );
 
+  const goToYear = (year) => {
+    // This sends the user to /calendar?year=1405
+    router.push(`/calendar?year=${year}`);
+  };
+
   return (
     <>
       <CustomStyledMenu
@@ -165,15 +171,17 @@ export const DateToolbar = ({ year, desktop }) => {
           }}
         >
           {_.map(_.range(1404, 1392), (y) => (
-            <Link key={y} href={`/calendar/${y}`}>
-              <Button
-                variant={+year === y ? "contained" : "text"}
-                sx={{ flexBasis: 50 }}
-                color="inherit"
-              >
-                {digitsEnToFa(y)}
-              </Button>
-            </Link>
+            // <Link key={y} href={`/calendar/${y}`}>
+            <Button
+              onClick={() => goToYear(y)}
+              key={y}
+              variant={+year === y ? "contained" : "text"}
+              sx={{ flexBasis: 50 }}
+              color="inherit"
+            >
+              {digitsEnToFa(y)}
+            </Button>
+            // </Link>
           ))}
         </Box>
       </CustomStyledMenu>

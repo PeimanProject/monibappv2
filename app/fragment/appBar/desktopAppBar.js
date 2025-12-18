@@ -76,7 +76,7 @@ export const DesktopAppBar = () => {
   const handleSearchSubmit = (e) => {
     if (e.key === "Enter" && searchValue.trim()) {
       // Handle search submission here
-      router.push(`/${locale}/search?q=${searchValue}`);
+      router.push(`/search?q=${searchValue}`);
       // You can navigate to search page or trigger search
     }
   };
@@ -92,7 +92,7 @@ export const DesktopAppBar = () => {
       >
         <Container disableGutters>
           <Toolbar>
-            <Link href={`/${locale}/`}>
+            <Link href={`/`}>
               <Image
                 src={`/icons/${theme.palette.mode}/monib-text.svg`}
                 alt="Monib Text"
@@ -100,7 +100,7 @@ export const DesktopAppBar = () => {
                 height={30}
               />
             </Link>
-            <Typography sx={{ fontWeight:"bold" }}>آزمایشی</Typography>
+            <Typography sx={{ fontWeight: "bold" }}>آزمایشی</Typography>
             <Box>
               {navBar?.title && (
                 <Box
@@ -114,13 +114,13 @@ export const DesktopAppBar = () => {
                     },
                   }}
                 >
-                  <Link href={`/${locale}/`}>
+                  <Link href={`/`}>
                     <Typography variant="body2">صفحه نخست</Typography>
                   </Link>
                   {navBar?.links?.map((link, index) => (
                     <React.Fragment key={index}>
                       <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />
-                      <Link href={`/${locale}/${link.href}`}>
+                      <Link href={`/${link.href}`}>
                         <Typography variant="body2">{link.title}</Typography>
                       </Link>
                     </React.Fragment>
@@ -130,7 +130,7 @@ export const DesktopAppBar = () => {
                 </Box>
               )}
             </Box>
-          
+
             <Box sx={{ flex: 1 }} />
             {!show && (
               <Button

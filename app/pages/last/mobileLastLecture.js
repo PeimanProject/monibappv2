@@ -23,7 +23,7 @@ export const MobileLastLecture = ({ list }) => {
       <Grid container spacing={2} sx={{ pt: 3, pb: 22 }}>
         {_.map(_.take(list?.list, 100), (item, index) => (
           <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }} key={index}>
-            <Link key={index} href={`/player/${item.id}`}>
+            <Link key={index} href={`/player?id=${item.id}`}>
               <ItemKey show={true}>
                 <LastLectureContentKey {...item} />
               </ItemKey>

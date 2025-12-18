@@ -112,7 +112,7 @@ export const TafsirVerseText = ({ locale, item, rId }) => {
 
   return item.verseId !== 0 ? (
     <Link
-      href={`/${locale}/miskat/${rId}/${item.verseId}`}
+      href={`/miskat?surah=${rId}&verseId=${item.verseId}`}
       style={{ textDecoration: "none" }}
     >
       {VerseContent}

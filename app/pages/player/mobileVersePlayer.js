@@ -18,7 +18,7 @@ export const MobileVersePlayer = ({
   const [media, setMedia] = React.useState("sound");
   const [index, setIndex] = React.useState(0);
 
- 
+
 
   React.useEffect(() => {
     if (!!verseId) {
@@ -60,7 +60,7 @@ export const MobileVersePlayer = ({
         lectureList={series?.lectureList}
         seriesId={seriesId}
         verseId={verseId}
-        rId={series.rId}
+        rId={series?.rId}
       />
     </>
   );

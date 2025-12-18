@@ -79,6 +79,7 @@ const cleanBookName = (name) => {
 };
 
 export default function PageMobileMiskat({ content, viewport, page_id, id }) {
+
   const { setNavBar } = useNavBarStore();
   useEffect(() => {
     setNavBar({
@@ -87,7 +88,7 @@ export default function PageMobileMiskat({ content, viewport, page_id, id }) {
 
         {
           title: content.surah,
-          href: `quran/${content.surah_id}/${content.surah}?type=miskat`,
+          href: `quran?surahId=${content.surah_id}&surahName${content.surah}&type=miskat`,
         },
       ],
       title: "",
@@ -225,10 +226,10 @@ export default function PageMobileMiskat({ content, viewport, page_id, id }) {
             </Box>
           ))}
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Link href={`/miskat/id/${id}/${+page_id - 1}`}>
+            <Link href={`/miskat/id/?id=${id}&page_id=${+page_id - 1}`}>
               <Button color="secondary" startIcon={<ArrowForwardIcon />}>صفحه قبل</Button>
             </Link>
-            <Link href={`/miskat/id/${id}/${+page_id + 1}`}>
+            <Link href={`/miskat/id/?id=${id}&page_id=${+page_id + 1}`}>
               <Button color="secondary" endIcon={<ArrowBackIcon />}>صفحه بعد</Button>
             </Link>
           </Box>

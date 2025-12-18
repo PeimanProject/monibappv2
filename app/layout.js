@@ -7,6 +7,7 @@ import { EventLayout } from "./eventLayout";
 import { IOSAudioManager } from "@/app/component/iosAudioManager";
 import { MicrosoftClarity } from "@/metric/microsoftClarity";
 import { ServiceWorkerRegistration } from "@/app/component/serviceWorkerRegistration";
+import BackButtonHandler from "@/core/backButtonHandler";
 
 // export const metadata = {
 //   title: appConfig.title,
@@ -103,7 +104,7 @@ export default async function RootLayout({ children }) {
         className={`${fonts[theme.theme.fontFamily].variable} ${tArabic.variable
           }`}
       >
-
+        <BackButtonHandler />
         <EventLayout />
         <IOSAudioManager />
         <ServiceWorkerRegistration />

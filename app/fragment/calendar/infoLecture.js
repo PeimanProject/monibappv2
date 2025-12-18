@@ -152,7 +152,7 @@ export const InfoData = ({ lectures, selectedDate, hijri_month }) => {
       {_.map(lectures, (lec, index) => (
         <Box key={index}>
           {lec.file_type ? (
-            <Link href={`/player/${lec.id}`}>
+            <Link href={`/player?id=${lec.id}`}>
               {renderLecture(lec)}
             </Link>
           ) : (

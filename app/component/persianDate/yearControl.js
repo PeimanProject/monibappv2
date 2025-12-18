@@ -162,9 +162,8 @@ export const YearControl = ({ year = "1404", list, onSelect, desktop }) => {
           last_hijri,
           hijri_len:
             last_hijri.day - last_hijri.hijri_day + first_hijri.hijri_day - 1,
-          hijri_name: `${list.hijri_month[first_hijri?.hijri_month - 1]} - ${
-            list.hijri_month[last_hijri?.hijri_month - 1]
-          }`,
+          hijri_name: `${list.hijri_month[first_hijri?.hijri_month - 1]} - ${list.hijri_month[last_hijri?.hijri_month - 1]
+            }`,
           hijri_year: digitsEnToFa(first_hijri?.hijri_year),
           monthDays,
           gregorian: `${gFormat(date, "MMM")} - ${gFormat(

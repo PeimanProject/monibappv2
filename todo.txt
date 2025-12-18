@@ -1,10 +1,10 @@
 ==============TODO===================
-make all pages client side 
-reading user in layout and set it in the local storage using zustand
+make all pages client side ✅
+reading user in layout and set it in the local storage using zustand ✅
 removing all intl (i18n) dependencies asap ✅
-using another way for navigation in app and edit all Link component to have true url
-fix this   // const type = (await searchParams)?.type || "default"; at (public)  content quran page.js 
-complete .env file  (cookie varibles)
-fix get os helper function
+using another way for navigation in app and edit all Link component to have true url ...
+fix this   // const type = (await searchParams)?.type || "default"; at (public)  content quran page.js ✅
+complete .env file  (cookie varibles) ✅
+fix get os helper function ✅
 handle download logic 
-remove all pi routs and replace them with simple async function 
+remove all api routs and replace them with simple async function 

@@ -138,7 +138,7 @@ const Tools = ({ }) => {
             },
           }}
         >
-          <Link href={`/${locale}/search`}>
+          <Link href={`/search`}>
             <>
               <Typography
                 variant="caption"

@@ -24,7 +24,7 @@ const TitleControl = ({ title, start_time, selected = false }) => {
   const video = useVideoControlStore((state) => state.video);
 
   const handleTitleClick = React.useCallback(() => {
-   
+
     if (!!audio) {
       audio.currentTime = start_time;
     }
@@ -141,7 +141,7 @@ export const SubjectList = ({ list, lectureId, title }) => {
         // await navigator.share({
         //   // title: dic.title,
         //   text: `${title} ${item.title}\n`,
-        //   url: `https://${getCurrentDomain()}/player/${lectureId}/?goto=${startPosition}`,
+        //   url: `https://${getCurrentDomain()}/player?id=${lectureId}/&goto=${startPosition}`,
         // });
       },
     [title, lectureId]

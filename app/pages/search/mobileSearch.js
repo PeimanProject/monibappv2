@@ -319,7 +319,7 @@ export const MobileSearch = ({ desktop, q }) => {
             ) => {
               return (
                 <Link
-                  href={`/player/${lecture_id}?time=${start_time}`}
+                  href={`/player?id=${lecture_id}&time=${start_time}`}
                   key={index}
                 >
                   <Box>

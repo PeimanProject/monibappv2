@@ -15,7 +15,7 @@ export const QuranText = ({ quranData, surahId, surahName }) => {
         // [
         //   {
         //     title: surahName?.fa,
-        //     href: `quran/${surahId}/${surahName?.fa}?type=miskat`,
+        //     href: `quran?surahId=${surahId}&surahName=${surahName?.fa}&type=miskat`,
         //   },
         // ],
       ],
@@ -23,7 +23,7 @@ export const QuranText = ({ quranData, surahId, surahName }) => {
     });
   }, [setNavBar, surahName]);
 
-  
+
   return (
     <Box sx={{ py: 1 }}>
       <Container maxWidth={"md"} sx={{ pt: 1 }}>

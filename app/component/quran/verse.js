@@ -252,7 +252,7 @@ export const Verse = ({
               }}
             >
               {rId < 18 && (
-                <Link href={`/${locale}/miskat/${rId}/${item.verseId}`}>
+                <Link href={`/miskat?surah=${rId}&verseId=${item.verseId}`}>
                   <IconButton>
                     <Image
                       alt="Text"
@@ -334,7 +334,7 @@ export const Verse = ({
       }}
     >
       {item?.verseId !== 0 ? (
-        <Link href={`/${locale}/verse/${seriesId}/${item.verseId}`}>
+        <Link href={`/verse/${seriesId}/${item.verseId}`}>
           {verseContent}
           {verseText}
         </Link>

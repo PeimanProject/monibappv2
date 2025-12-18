@@ -290,7 +290,7 @@ export const DesktopVerse = ({
               />
             </IconButton>
             {rId < 18 && (
-              <Link href={`/${locale}/miskat/${rId}/${item.verseId}`}>
+              <Link href={`/miskat?surah=${rId}&verseId=${item.verseId}`}>
                 <ButtonBase title="متن مشکات">
                   <Image
                     alt="Play"
@@ -348,8 +348,8 @@ export const DesktopVerse = ({
           <Link
             href={
               type === "miskat"
-                ? `/${locale}/miskat/${surahId}/${item.verseId}`
-                : `/${locale}/verse/${seriesId}/${item.verseId}`
+                ? `/miskat?surah=${surahId}&verseId=${item.verseId}`
+                : `/verse/${seriesId}/${item.verseId}`
             }
           >
             <V />
