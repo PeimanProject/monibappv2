@@ -190,6 +190,7 @@ export const MobilePlayerAI = ({
         hideBackdrop={false}
         onClose={handleShowText(false)}
       >
+
         <DrawerToolbar onClose={handleShowText(false)}>
           {!!rowNumber && (
             <Box>
@@ -241,6 +242,7 @@ export const MobilePlayerAI = ({
         >
           <Container>
             <Typography
+              component={"div"}
               sx={{
                 textAlign: "justify",
                 pt: 2,
@@ -249,8 +251,8 @@ export const MobilePlayerAI = ({
                 lineHeight: 1.8,
               }}
             >
-              {srtArray[value].map((item, index) => (
-                <div key={index}>{item.text}</div>
+              {srtArray[value]?.map((item, index) => (
+                <p key={index}>{item.text}</p>
               ))}
             </Typography>
           </Container>

@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation";
 import { VerseMobileInfo } from "./verseMobileInfo";
 import { useVerseDataStore } from "@/store/useVerseData";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
+import { useVttTrack } from "@/app/libs/srtHandler";
 
 export const MobileVersePlayerControl = ({
   video,
@@ -41,6 +42,14 @@ export const MobileVersePlayerControl = ({
   verse,
   desktop,
 }) => {
+  const faVtt = useVttTrack({
+    lectureId,
+    filename: srt?.fileName,
+  });
+  const enVtt = useVttTrack({
+    lectureId,
+    filename: srt_en?.fileName,
+  });
   const [isPlaying, setIsPlaying] = React.useState(false);
   const playerRef = React.useRef(null);
   const [show, setShow] = React.useState(false);
@@ -257,7 +266,7 @@ export const MobileVersePlayerControl = ({
                   ? [
                     {
                       kind: "subtitles",
-                      src: `/api/srt/vtt/${lectureId}?filename=${srt?.fileName}`, // Path to your SRT file
+                      src: faVtt, // Path to your SRT file
                       srcLang: "fa",
                       default: true,
                     },
@@ -265,7 +274,7 @@ export const MobileVersePlayerControl = ({
                       ? [
                         {
                           kind: "subtitles",
-                          src: `/api/srt/vtt/${lectureId}?filename=${srt_en.fileName}`, // Path to your SRT file
+                          src: enVtt, // Path to your SRT file
                           srcLang: "en",
                         },
                       ]

@@ -1,6 +1,5 @@
 "use client";
 
-import { desktopValues } from "@/core/config/values";
 import {
   Box,
   CircularProgress,
@@ -21,6 +20,7 @@ import Image from "next/image";
 import Equalizer from "./equalizer";
 import { useSyncMediaSourceStore } from "@/store/useSyncMediaSourceStore";
 import { DesktopInfo } from "./desktopInfo";
+import { useVttTrack } from "@/app/libs/srtHandler";
 
 export const DesktopPlayerControl = ({
   time,
@@ -41,6 +41,14 @@ export const DesktopPlayerControl = ({
   seriesId,
   verse
 }) => {
+  const faVtt = useVttTrack({
+    lectureId,
+    filename: srt?.fileName,
+  });
+  const enVtt = useVttTrack({
+    lectureId,
+    filename: srt_en?.fileName,
+  });
   const [isPlaying, setIsPlaying] = React.useState(false);
   const playerRef = React.useRef(null);
   const [show, setShow] = React.useState(false);
@@ -82,7 +90,7 @@ export const DesktopPlayerControl = ({
   }, [srtArray, ccType, setSync, sync]);
 
   React.useEffect(() => {
-   
+
     if (!audioRef) return;
 
     if (!!time && media === "sound") {
@@ -91,7 +99,7 @@ export const DesktopPlayerControl = ({
       playerRef.current.seekTo(time);
     }
   }, [time]);
-  
+
 
   React.useEffect(() => {
     const audio = audioRef.current;
@@ -133,8 +141,8 @@ export const DesktopPlayerControl = ({
       });
     }
   };
-  
- 
+
+
   const enableSubtitleByLang = (lang) => {
     const videoEl = playerRef.current?.getInternalPlayer();
     if (videoEl?.textTracks) {
@@ -147,7 +155,7 @@ export const DesktopPlayerControl = ({
   React.useEffect(() => {
     const videoEl = playerRef.current?.getInternalPlayer();
     if (!videoEl || !videoEl.textTracks) return;
-  
+
     if (ccType === "off") {
       disableSubtitles();
     } else if (ccType === "fa") {
@@ -269,22 +277,22 @@ export const DesktopPlayerControl = ({
                 attributes: { playsInline: true },
                 tracks: srt
                   ? [
-                      {
-                        kind: "subtitles",
-                        src: `/api/srt/vtt/${lectureId}?filename=${srt?.fileName}`,
-                        srcLang: "fa",
-                        default: true,
-                      },
-                      ...(srt_en?.fileName
-                        ? [
-                            {
-                              kind: "subtitles",
-                              src: `/api/srt/vtt/${lectureId}?filename=${srt_en.fileName}`,
-                              srcLang: "en",
-                            },
-                          ]
-                        : []),
-                    ]
+                    {
+                      kind: "subtitles",
+                      src: faVtt,
+                      srcLang: "fa",
+                      default: true,
+                    },
+                    ...(srt_en?.fileName
+                      ? [
+                        {
+                          kind: "subtitles",
+                          src: enVtt,
+                          srcLang: "en",
+                        },
+                      ]
+                      : []),
+                  ]
                   : [],
               },
             }}

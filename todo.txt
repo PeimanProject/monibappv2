@@ -6,5 +6,5 @@ using another way for navigation in app and edit all Link component to have true
 fix this   // const type = (await searchParams)?.type || "default"; at (public)  content quran page.js 
 complete .env file  (cookie varibles)
 fix get os helper function
-
+handle download logic 
 remove all pi routs and replace them with simple async function 

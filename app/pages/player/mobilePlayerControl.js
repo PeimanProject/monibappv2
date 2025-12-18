@@ -19,6 +19,7 @@ import { MobileInfo } from "./mobileInfo";
 import { iosAudioSession } from "@/app/libs/iosAudioSession";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
 import { useTranslate } from "@/core/useTranslation";
+import { useVttTrack } from "@/app/libs/srtHandler";
 
 export const MobilePlayerControl = ({
   video,
@@ -40,6 +41,14 @@ export const MobilePlayerControl = ({
   verse,
   time,
 }) => {
+  const faVtt = useVttTrack({
+    lectureId,
+    filename: srt?.fileName,
+  });
+  const enVtt = useVttTrack({
+    lectureId,
+    filename: srt_en?.fileName,
+  });
   const { get } = useTranslate()
   const [isPlaying, setIsPlaying] = React.useState(false);
   const playerRef = React.useRef(null);
@@ -288,7 +297,7 @@ export const MobilePlayerControl = ({
                   ? [
                     {
                       kind: "subtitles",
-                      src: `/api/srt/vtt/${lectureId}?filename=${srt?.fileName}`, // Path to your SRT file
+                      src: faVtt, // Path to your SRT file
                       srcLang: "fa",
                       default: true,
                     },
@@ -296,7 +305,7 @@ export const MobilePlayerControl = ({
                       ? [
                         {
                           kind: "subtitles",
-                          src: `/api/srt/vtt/${lectureId}?filename=${srt_en.fileName}`, // Path to your SRT file
+                          src: enVtt, // Path to your SRT file
                           srcLang: "en",
                         },
                       ]

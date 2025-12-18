@@ -3,7 +3,6 @@
 import { Box } from "@mui/material";
 import React from "react";
 import _ from "lodash";
-import { TabNormalItem, TabStyle } from "@/app/component/tabStyle";
 import { TextList } from "@/app/component/quran/textList";
 import { DesktopLectureList } from "../series/desktopLectureList";
 

@@ -12,10 +12,9 @@ export const DrawerToolbar = ({ children, showClose = true, onClose }) => {
         height: 32,
         zIndex: 9,
         borderRadius: (theme) => theme.spacing(4, 4, 0, 0),
-        px: 2,
+        p: 2,
         display: "flex",
         alignItems: "center",
-        py: 2,
         bgcolor: "background.paper",
         boxShadow: 2,
       }}

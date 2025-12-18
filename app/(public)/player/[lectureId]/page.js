@@ -54,17 +54,25 @@ const PlayerPage = ({
     handleGetLecture()
   }, [])
 
-  if (lecture?.mainId === 1) {
-    handleGetQuranData()
-  }
+  useEffect(() => {
+    if (lecture) {
+      if (lecture?.mainId === 1) {
+        handleGetQuranData()
+      }
 
-  if (!!lecture?.srt?.serverSrc) {
-    handleGetSrtArr()
-  }
+      if (!!lecture?.srt?.serverSrc) {
+        handleGetSrtArr()
+      }
 
-  if (!!lecture?.srt_en?.serverSrc) {
-    handleGetEnSrtArr
-  }
+      if (!!lecture?.srt_en?.serverSrc) {
+        handleGetEnSrtArr()
+      }
+    }
+  }, [
+    lecture
+  ])
+
+
 
   const os = GetOs();
 

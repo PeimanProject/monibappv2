@@ -17,6 +17,7 @@ import { setDate } from "date-fns-jalali";
 import { usePlayerActionStore } from "@/store/usePlayerActionStore";
 import { getShareURL } from "@/core/config/api";
 import { useNavBarStore } from "@/store/layout/useNavBarStore";
+import { WisdomReq } from "@/app/data/wisdom/route";
 
 const Section = ({ title, image, stringDuration, stringSize, file, id }) => {
   const theme = useTheme();
@@ -131,13 +132,12 @@ export const MobileWisdom = ({ SSRList, wisdom }) => {
     setList(SSRList.list);
     setDate(SSRList);
   }, [SSRList]);
-
+  ``
   const handleEndLess = React.useCallback(async () => {
     setLoading(true);
-    const response = await fetch(
-      `/api/wisdom/?page=${(+data?.pagination?.page || +SSRList?.pagination?.page) + 1
-      }`
-    );
+
+    const response = WisdomReq({ page: (+data?.pagination?.page || +SSRList?.pagination?.page) + 1 })
+
     const li = await response?.json();
 
     setList((prv) => [...(prv || []), ...(li?.list || [])]);

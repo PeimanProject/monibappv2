@@ -1,12 +1,6 @@
-"use server";
 
-import { NextResponse } from "next/server";
-
-export async function GET(request, { params }) {
+export async function SrtReq({ lectureId, filename }) {
   try {
-    const { lectureId } = await params;
-    const url = new URL(request.url);
-    const filename = url.searchParams.get("filename");
 
     const response = await fetch(
       `https://bundles.monibapp.ir/srt_vtt/${lectureId}/?filename=${filename}`,
@@ -21,20 +15,8 @@ export async function GET(request, { params }) {
 
     let data = await response.text();
 
-    return new NextResponse(data, {
-      status: 200,
-      headers: {
-        "Content-Type": "text/plain",
-        "Content-Disposition": "attachment; filename=example.vtt",
-      },
-    });
+    return data;
   } catch (err) {
-    return NextResponse.json(
-      { err },
-      {
-        status: 200,
-        headers: { "content-type": "application/json" },
-      }
-    );
+    return { err }
   }
 }
