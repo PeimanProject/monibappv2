@@ -67,13 +67,6 @@ export const AuthLoginControl = ({ }) => {
       mobile,
       code: "+98",
     })
-    // const codeReq = await fetch("/api/security/code", {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     mobile,
-    //     code: "+98",
-    //   }),
-    // });
     setCodeData(code.res);
     setShowCode(true);
     setIsSubmit(false);

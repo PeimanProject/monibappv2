@@ -8,6 +8,7 @@ import { DesktopInfoLecture } from "./desktopInfoLecture";
 import { Container } from "@mui/material";
 import { useNavBarStore } from "@/store/layout/useNavBarStore";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
+import { LectureReq } from "@/app/data/lecture/ids/route";
 
 export const DesktopCalendar = ({ list, year }) => {
   const [selectedDate, setSelectedDate] = React.useState(null);
@@ -40,12 +41,8 @@ export const DesktopCalendar = ({ list, year }) => {
         setShow(true);
         setLoading(true);
         setLecture(null);
-        const req = await fetch("/api/lecture/ids", {
-          method: "POST",
-          body: JSON.stringify({ list: items }),
-        });
-        const lecture = await req.json();
-        setLecture(lecture);
+        const req = await LectureReq({ list: items })
+        setLecture(req);
         setLoading(false);
       }
     },

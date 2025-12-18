@@ -20,6 +20,7 @@ import { desktopValues } from "@/core/config/values";
 import Link from "next/link";
 import { Book } from "./book";
 import { useTranslate } from "@/core/useTranslation";
+import { SearchReq } from "@/app/data/search/route";
 
 export const MobileSearch = ({ desktop, q }) => {
   const [value, setValue] = React.useState("tag");
@@ -74,11 +75,7 @@ export const MobileSearch = ({ desktop, q }) => {
       if (!!!gy) return;
 
       setSearch(true);
-      const req = await fetch("/api/search", {
-        method: "POST",
-        body: JSON.stringify({ query: gy, doc: value }),
-      });
-      const list = await req.json();
+      const list = await SearchReq({ query: gy, doc: value })
       setSearch(false);
       if (value === "quran") {
         setResultQuran(list);

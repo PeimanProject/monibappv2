@@ -1,10 +1,7 @@
-"use server";
 
 import { API } from "@/core/config/api";
-import { NextResponse } from "next/server";
 
-export async function POST(request) {
-  const body = await request.json();
+export async function LectureReq(body) {
 
   const response = await fetch(`${API().core}content/lectures`, {
     method: "POST",
@@ -15,15 +12,8 @@ export async function POST(request) {
       AppName: "monibWebApp",
     },
   });
+  if (!response.ok) return { error: "not-valid" }
+  const data = await response.json()
 
-  const status = response.status;
-  const xResponse = NextResponse.json(
-    status === 200 ? await response.json() : { error: "not-valid" },
-    {
-      status: status,
-      headers: { "content-type": "application/json" },
-    }
-  );
-
-  return xResponse;
+  return data;
 }

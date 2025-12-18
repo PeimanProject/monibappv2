@@ -1,17 +1,11 @@
-"use server";
-
 import { API } from "@/core/config/api";
-import { NextResponse } from "next/server";
 
-export async function GET(request, { params }) {
-  const { lectureId } = await params;
-  const url = new URL(request.url);
-  const type = url.searchParams.get("type") || "sound";
+export async function DownloadReq({ lectureId, type = "sound" }) {
 
   const req = await fetch(`${API().core}content/lecture/${lectureId}`);
   const lecture = await req.json();
 
- // const fileUrl = lecture[type]?.url;
+  // const fileUrl = lecture[type]?.url;
   const fileUrl = lecture.download[type];
 
   // const response = await fetch(fileUrl);
@@ -25,5 +19,5 @@ export async function GET(request, { params }) {
   //   },
   // });
 
-  return NextResponse.redirect(fileUrl);
+  return fileUrl;
 }

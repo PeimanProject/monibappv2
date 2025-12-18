@@ -5,6 +5,7 @@ import { YearControl } from "@/app/component/persianDate/yearControl";
 import _ from "lodash";
 import { isEqual, format } from "date-fns-jalali";
 import { InfoLecture } from "./infoLecture";
+import { LectureReq } from "@/app/data/lecture/ids/route";
 
 export const MobileCalendar = ({ list, year, desktop }) => {
   const [selectedDate, setSelectedDate] = React.useState(null);
@@ -29,12 +30,8 @@ export const MobileCalendar = ({ list, year, desktop }) => {
         setShow(true);
         setLoading(true);
         setLecture(null);
-        const req = await fetch("/api/lecture/ids", {
-          method: "POST",
-          body: JSON.stringify({ list: items }),
-        });
-        const lecture = await req.json();
-        setLecture(lecture);
+        const req = await LectureReq({ list: items })
+        setLecture(req);
         setLoading(false);
       }
     },
