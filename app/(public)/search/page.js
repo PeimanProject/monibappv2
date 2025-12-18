@@ -1,11 +1,12 @@
 "use client";
 import { MobileSearch } from "@/app/pages/search/mobileSearch";
+import { useSearchParams } from "next/navigation";
 import React from "react";
 
-const SearchPage = ({ }) => {
-
+const SearchPage = () => {
+  const searchParams = useSearchParams()
   const viewport = "mobile";
-  const query = "";
+  const query = searchParams.get('q') || "";
   return <MobileSearch desktop={viewport === "desktop"} q={query} />;
 };
 

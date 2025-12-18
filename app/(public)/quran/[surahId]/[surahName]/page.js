@@ -1,59 +1,42 @@
-import { getViewport } from "@/app/libs/isMobileDetect";
+"use client"
 import { QuranText } from "@/app/pages/series/quranText";
-import React from "react";
+import { Typography } from "@mui/material";
+import React, { use, useEffect, useState } from "react";
 
-// export async function generateMetadata({ params }) {
-//   const { seriesId } = await params;
-//   const seriesReq = await fetch(`${API().core}content/series/${seriesId}`);
-//   const series = await seriesReq.json();
 
-//   const title = `${series.title} | ${appConfig.title}`;
+const QuranPage = ({ params }) => {
+  const { surahId } = use(params);
 
-//   return {
-//     title,
-//     openGraph: {
-//       title,
-//       images: "/poster.jpg",
-//     },
-//     twitter: {
-//       card: "summary_large_image",
-//       title,
-//       description: appConfig.description,
-//       siteId: "",
-//       creator: "Monib",
-//       creatorId: "",
-//       images: ["https://monib.ai/poster.jpg"],
-//     },
-//   };
-// }
+  const [quranData, setQuranData] = useState(null)
+  const [surahName, setSurahName] = useState(null)
 
-const QuranPage = async ({ params, searchParams }) => {
-  const { surahId } = await params;
-  //   let type = (await searchParams)?.type || "default";
-  const viewport = await getViewport();
 
-  //   type = type === "undefined" ? "lecture" : type;
+  const handleQuranData = async () => {
+    const data = await fetch(
+      `https://api.monibapp.ir/v3/service/quran/pages/?surahId=${surahId * -1
+      }&less=true`
+    );
+    const res = await data.json();
+    setQuranData(res)
+  }
 
-  //   const seriesReq = await fetch(`${API().core}content/series/${seriesId}`);
-  //   const series = await seriesReq.json();
-
-  let quranData = null;
-
-  const data = await fetch(
-    `https://api.monibapp.ir/v3/service/quran/pages/?surahId=${
-      surahId * -1
-    }&less=true`
-  );
-  quranData = await data.json();
-
-  const data2 = await fetch(
-    `https://api.monibapp.ir/v3/service/quran?id=${surahId}`
-  );
-  const surahName2 = (await data2.json())?.surah;
-
+  const handleSurahName = async () => {
+    const res = await fetch(
+      `https://api.monibapp.ir/v3/service/quran?id=${surahId}`
+    );
+    const data = (await res.json())?.surah;
+    setSurahName(data)
+  }
+  useEffect(() => {
+    handleQuranData()
+    handleSurahName()
+  }, [])
+  if (!quranData || !surahName) {
+    return <Typography m={5} textAlign={"center"}>در حال بارگذاری...</Typography>
+  }
   return (
     <>
-      <QuranText {...{ quranData, surahId, surahName: surahName2 }} />
+      <QuranText {...{ quranData, surahId, surahName }} />
     </>
   );
 };

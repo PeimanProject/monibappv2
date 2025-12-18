@@ -1,31 +1,52 @@
+"use client"
 import { GetOs } from "@/app/libs/getOs";
 import { MobileSeries } from "@/app/pages/series/mobileSeries";
 import { API } from "@/core/config/api";
-import React from "react";
+import { Typography } from "@mui/material";
+import { useSearchParams } from "next/navigation";
+import React, { use, useEffect, useState } from "react";
 
 
-const SeriesPage = async ({ params, searchParams }) => {
-  const { seriesId } = await params;
-  let type = (await searchParams)?.type || "default";
+const SeriesPage = ({ params }) => {
+  const searchParams = useSearchParams()
+  const { seriesId } = use(params);
+  let type = searchParams.get("type") || "default";
 
 
   type = type === "undefined" ? "lecture" : type;
 
-  const seriesReq = await fetch(`${API().core}content/series/${seriesId}`);
-  const series = await seriesReq.json();
+  const [series, setSeries] = useState(null)
+  const [quranData, setqQuranData] = useState(null)
 
-  let quranData = null;
+  const handleSeriesReq = async () => {
 
-  if (series?.mainId === 1) {
-    const data = await fetch(
+    const seriesReq = await fetch(`${API().core}content/series/${seriesId}`);
+    const data = await seriesReq.json();
+    setSeries(data)
+  }
+
+  const handleQuranDataReq = async () => {
+    const res = await fetch(
       `https://api.monibapp.ir/v3/service/quran/pages/?surahId=${series.rId * -1
       }&less=true`
     );
-    quranData = await data.json();
+    const data = await res.json();
+    setqQuranData(data)
+  }
+
+  useEffect(() => {
+    handleSeriesReq()
+  }, [])
+  if (series?.mainId === 1) {
+    handleQuranDataReq()
   }
 
   const os = GetOs();
 
+
+  if (!series) {
+    return <Typography m={5} textAlign={"center"}>در حال بارگذاری...</Typography>
+  }
 
   return <MobileSeries {...{ quranData, series, seriesId, type, os }} />
 };
