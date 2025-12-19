@@ -72,8 +72,8 @@ export const MobileSeries = ({
             }}
           >
             <Link
-              href={`/series/${series.lastCourseId || series.newCourseId
-                }?type=${type}`}
+              href={`/series?seriesId=${series.lastCourseId || series.newCourseId
+                }&type=${type}`}
             >
               <Button variant="contained" color="primary" size="small">
                 {series.lastCourseId ? "دور پیشین" : "دور جدید"}

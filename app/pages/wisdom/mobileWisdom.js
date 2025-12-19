@@ -27,7 +27,7 @@ const Section = ({ title, image, stringDuration, stringSize, file, id }) => {
     e.stopPropagation();
     await navigator.share({
       text: ``,
-      url: `${getShareURL()}/wisdom/${id}/`,
+      url: `${getShareURL()}/wisdom?id=${id}/`,
     });
   }, []);
 

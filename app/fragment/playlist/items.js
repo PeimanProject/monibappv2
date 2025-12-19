@@ -24,7 +24,7 @@ const PlayListItem = ({
 
   const getLink = React.useCallback(() => {
     if (isWisdom) {
-      return `/wisdom/${item.id}`;
+      return `/wisdom?id=${item.id}`;
     } else {
       return isTopic
         ? `/player?id=${item.lectureId}&goto=${item.startTime}`

@@ -79,7 +79,7 @@ export const DesktopLectureList = ({
                 px: 1,
               }}
             >
-              <Link href={`/series/${lastCourseId || newCourseId}`}>
+              <Link href={`/series?seriesId=${lastCourseId || newCourseId}`}>
                 <Button variant="contained" color="primary" size="small">
                   {lastCourseId ? "دور پیشین" : "دور جدید"}
                 </Button>

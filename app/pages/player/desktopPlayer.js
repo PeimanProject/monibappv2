@@ -22,7 +22,7 @@ export const DesktopPlayer = ({
   const [media, setMedia] = React.useState("sound");
   const [index, setIndex] = React.useState(0);
 
- 
+
 
 
   React.useEffect(() => {
@@ -48,7 +48,7 @@ export const DesktopPlayer = ({
         ...getLinks(lecture?.mainId),
         {
           title: lecture?.contextName,
-          href: `/series/${lecture?.seriesId}`,
+          href: `/series?seriesId=${lecture?.seriesId}`,
         },
       ],
       title: `جلسه ${digitsEnToFa(lecture?.rowNumber)}`,

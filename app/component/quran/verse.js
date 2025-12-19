@@ -334,7 +334,7 @@ export const Verse = ({
       }}
     >
       {item?.verseId !== 0 ? (
-        <Link href={`/verse/${seriesId}/${item.verseId}`}>
+        <Link href={`/verse?seriesId=${seriesId}&verseId=${item.verseId}`}>
           {verseContent}
           {verseText}
         </Link>

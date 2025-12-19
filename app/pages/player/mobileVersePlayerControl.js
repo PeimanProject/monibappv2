@@ -131,7 +131,7 @@ export const MobileVersePlayerControl = ({
   }, [setShowPlayerAction, playerRef, video, sound, lectureId, title]);
 
   const verseAction = (num) => () => {
-    router.push(`/verse/${seriesId}/${+verseId + num}`);
+    router.push(`/verse?seriesId=${seriesId}&verseId=${+verseId + num}`);
   };
 
   return (

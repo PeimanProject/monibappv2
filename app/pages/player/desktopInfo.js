@@ -51,7 +51,7 @@ export const DesktopInfo = ({
               },
             }}
           >
-            <Link href={`/series/${seriesId}`}>
+            <Link href={`/series?seriesId=${seriesId}`}>
               <Button color="inherit" sx={{ minWidth: 20 }}>
                 {series.title}
                 {/* <Typography
@@ -83,7 +83,7 @@ export const DesktopInfo = ({
                 },
               }}
             >
-              <Link href={`/series/${seriesId}`}>
+              <Link href={`/series?seriesId=${seriesId}`}>
                 <Button color="inherit" sx={{ minWidth: 50, px: 0 }}>
                   <Typography
                     variant="body1"

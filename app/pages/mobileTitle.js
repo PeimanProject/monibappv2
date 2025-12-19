@@ -67,7 +67,7 @@ export const MobileTitle = ({
                 <Box>
                   {!!lastCourseId && value === "lecture" && (
                     <Box sx={{ pl: 1 }}>
-                      <Link href={`/series/${lastCourseId}`}>
+                      <Link href={`/series?seriesId=${lastCourseId}`}>
                         <Button
                           size="small"
                           variant="contained"
@@ -84,7 +84,7 @@ export const MobileTitle = ({
 
                   {!!newCourseId && value === "lecture" && (
                     <Box sx={{ pl: 1 }}>
-                      <Link href={`/series/${newCourseId}`}>
+                      <Link href={`/series?seriesId=${newCourseId}`}>
                         <Button
                           size="small"
                           variant="contained"

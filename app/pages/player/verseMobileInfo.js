@@ -75,7 +75,7 @@ export const VerseMobileInfo = ({
                 },
               }}
             >
-              <Link href={`/series/${seriesId}`}>
+              <Link href={`/series?seriesId=${seriesId}`}>
                 <Button color="inherit" sx={{ minWidth: 50, px: 0 }}>
                   <Typography
                     variant="body1"

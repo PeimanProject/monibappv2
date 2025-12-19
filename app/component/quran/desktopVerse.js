@@ -349,7 +349,7 @@ export const DesktopVerse = ({
             href={
               type === "miskat"
                 ? `/miskat?surah=${surahId}&verseId=${item.verseId}`
-                : `/verse/${seriesId}/${item.verseId}`
+                : `/verse?seriesId=${seriesId}&verseId=${item.verseId}`
             }
           >
             <V />

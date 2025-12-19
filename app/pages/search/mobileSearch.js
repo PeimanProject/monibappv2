@@ -254,7 +254,7 @@ export const MobileSearch = ({ desktop, q }) => {
             ({ highlight, surah_name, verse_id, page_no, surah_id }, index) => {
               return (
                 <Link
-                  href={`/surah/${surah_id}/${verse_id}`}
+                  href={`/surah?surahId=${surah_id}&verseId=${verse_id}`}
                   key={index}
                 >
                   <Box>

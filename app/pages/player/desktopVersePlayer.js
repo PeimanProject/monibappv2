@@ -45,7 +45,7 @@ export const DesktopVersePlayer = ({
         ...getLinks(1),
         // {
         //   title: series?.title,
-        //   href: `/series/${series?.id}`,
+        //   href: `/series?seriesId=${series?.id}`,
         // },
       ],
       title: `${series?.title} ${t("verse")} ${digitsEnToFa(verseId)}`,
