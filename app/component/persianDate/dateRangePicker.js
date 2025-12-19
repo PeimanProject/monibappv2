@@ -8,8 +8,8 @@ import Menu from "@mui/material/Menu";
 import { PersianDatePicker } from "./persianDatePicker";
 import { formatDate } from "@/utils/format.date";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
-import { useTranslations } from "next-intl";
 import { Clear } from "@mui/icons-material";
+import { useTranslate } from "@/core/useTranslation";
 
 export const CustomStyledMenu = styled(
   ({
@@ -59,8 +59,7 @@ export const DateRangePicker = ({
 }) => {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
-  const t = useTranslations("Date");
-
+  const { get } = useTranslate()
   const handleClose = (event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
@@ -123,7 +122,7 @@ export const DateRangePicker = ({
             )}
             {!!dateRange?.end && (
               <>
-                <Typography sx={{ mx: 2 }}>{t("to")}</Typography>
+                <Typography sx={{ mx: 2 }}>{get("Date.to")}</Typography>
                 <Typography variant="caption">
                   {digitsEnToFa(
                     formatDate({

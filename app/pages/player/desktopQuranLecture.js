@@ -2,11 +2,11 @@
 
 import { Box } from "@mui/material";
 import React from "react";
-import { useTranslations } from "next-intl";
 import _ from "lodash";
 import { TabNormalItem, TabStyle } from "@/app/component/tabStyle";
 import { DesktopTextList } from "@/app/component/quran/desktopTextList";
 import { DesktopLectureList } from "../series/desktopLectureList";
+import { useTranslate } from "@/core/useTranslation";
 
 export const DesktopQuranLecture = ({
   quranData,
@@ -16,7 +16,7 @@ export const DesktopQuranLecture = ({
 }) => {
   const [value, setValue] = React.useState("quran");
   const [index, setIndex] = React.useState(0);
-  const t = useTranslations("Lecture");
+  const { get } = useTranslate()
 
   const handleChange = React.useCallback(
     (value, index) => () => {
@@ -42,14 +42,14 @@ export const DesktopQuranLecture = ({
           value={"quran"}
           index={0}
           selected={value === "quran"}
-          text={t("quran")}
+          text={get("Lecture.quran")}
         />
         <TabNormalItem
           onChange={handleChange}
           value={"lectures"}
           index={1}
           selected={value === "lectures"}
-          text={t("lectures")}
+          text={get("Lecture.lectures")}
         />
       </TabStyle>
       <Box sx={{ pt: 1, pb: 22, width: 1 / 1 }}>

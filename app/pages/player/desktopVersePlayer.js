@@ -7,7 +7,7 @@ import { DesktopPlayerTools } from "./desktopPlayerTools";
 import { useNavBarStore } from "@/store/layout/useNavBarStore";
 import { getLinks } from "../series/desktopSeries";
 import { DesktopQuranLecture } from "./desktopQuranLecture";
-import { useTranslations } from "next-intl";
+import { useTranslate } from "@/core/useTranslation";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
 
 export const DesktopVersePlayer = ({
@@ -19,7 +19,7 @@ export const DesktopVersePlayer = ({
 }) => {
   const [media, setMedia] = React.useState("sound");
   const [index, setIndex] = React.useState(0);
-  const t = useTranslations("Lecture");
+  const { get } = useTranslate()
 
   // React.useEffect(() => {
   //   if (!!verseId) {
@@ -48,7 +48,7 @@ export const DesktopVersePlayer = ({
         //   href: `/series?seriesId=${series?.id}`,
         // },
       ],
-      title: `${series?.title} ${t("verse")} ${digitsEnToFa(verseId)}`,
+      title: `${series?.title} ${get("Lecture.verse")} ${digitsEnToFa(verseId)}`,
     });
   }, [setNavBar, series?.title, series?.id]);
 

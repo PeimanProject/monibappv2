@@ -1,10 +1,10 @@
 import React from "react";
 import { Box, Container, Typography } from "@mui/material";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
-import { useTranslations } from "next-intl";
+import { useTranslate } from "@/core/useTranslation";
 
 export const DesktopTitle = ({ title, description, lectureCount }) => {
-  const t = useTranslations("Lecture");
+  const { get } = useTranslate()
 
   return (
     <Box sx={{ minHeight: 100, bgcolor: "primary.dark" }}>
@@ -23,7 +23,7 @@ export const DesktopTitle = ({ title, description, lectureCount }) => {
           <Box sx={{ flex: 1 }} />
           <Box>
             <Typography>
-              {digitsEnToFa(`${lectureCount}`)} {t("lecture")}
+              {digitsEnToFa(`${lectureCount}`)} {get("Lecture.lecture")}
             </Typography>
           </Box>
         </Box>

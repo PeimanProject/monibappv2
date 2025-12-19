@@ -269,13 +269,13 @@ export const MobileSearch = ({ desktop, q }) => {
                           /
                         </Typography>
                         <Typography sx={{ mx: 1 }} variant="caption">
-                          {t("verse")} {digitsEnToFa(`${verse_id}`)}
+                          {get("Lecture.verse")} {digitsEnToFa(`${verse_id}`)}
                         </Typography>
                         <Typography sx={{ mx: 1 }} variant="caption">
                           /
                         </Typography>
                         <Typography sx={{ mx: 1 }} variant="caption">
-                          {t("page")} {digitsEnToFa(`${page_no}`)}
+                          {get("Lecture.page")} {digitsEnToFa(`${page_no}`)}
                         </Typography>
                         {/* <Box sx={{ flex: 1 }} />
                   <Button variant="outlined" color="inherit" size="small">

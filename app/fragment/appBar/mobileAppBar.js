@@ -150,6 +150,12 @@ const MenuKey = ({ icon, pos = -40, top = 0, title, onClick, showMenu }) => {
     }),
   });
 
+  // Clean the icon path: remove leading slash from the icon variable if it exists
+  const cleanIconPath = icon.startsWith('/') ? icon.substring(1) : icon;
+
+  // Construct the final path without a leading slash for Capacitor
+  const finalSrc = `icons/${theme.palette.mode}/${cleanIconPath}`;
+
   return (
     <animated.div
       style={{
@@ -183,10 +189,11 @@ const MenuKey = ({ icon, pos = -40, top = 0, title, onClick, showMenu }) => {
           }}
         >
           <Image
-            src={`/icons/${theme.palette.mode}/${icon}`}
+            src={finalSrc}
             width={30}
             height={30}
-            alt="Menu Icon"
+            alt={title || "Icon"}
+            unoptimized
           />
         </ButtonBase>
       </animated.div>

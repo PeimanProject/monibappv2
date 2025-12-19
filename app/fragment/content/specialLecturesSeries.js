@@ -3,16 +3,15 @@
 import { Box, Container, alpha } from "@mui/material";
 import React from "react";
 import _ from "lodash";
-import { useLocale, useTranslations } from "next-intl";
 import { SearchControl } from "@/app/component/search";
 import { SeriesItemKey } from "@/app/component/seriesItemKey";
 import { desktopValues } from "@/core/config/values";
 import { TabNormalItem, TabStyle } from "@/app/component/tabStyle";
+import { useTranslate } from "@/core/useTranslation";
 
 export const MobileSeries = ({ list, nhj, sahifa }) => {
   const [valueSearch, setValue] = React.useState("");
-  const t = useTranslations("Series");
-  const locale = useLocale();
+  const { get } = useTranslate()
 
   const handleChange = React.useCallback((event) => {
     setValue(event?.target?.value);
@@ -70,21 +69,21 @@ export const MobileSeries = ({ list, nhj, sahifa }) => {
               <TabNormalItem
                 index={0}
                 value={"sermon"}
-                text={t("sermon")}
+                text={get("Series.sermon")}
                 onChange={handleNhjChange}
                 selected={nhjValue === "sermon"}
               />
               <TabNormalItem
                 index={1}
                 value={"letter"}
-                text={t("letter")}
+                text={get("Series.letter")}
                 onChange={handleNhjChange}
                 selected={nhjValue === "letter"}
               />
               <TabNormalItem
                 index={2}
                 value={"wisdom"}
-                text={t("wisdom")}
+                text={get("Series.wisdom")}
                 onChange={handleNhjChange}
                 selected={nhjValue === "wisdom"}
               />
@@ -106,7 +105,7 @@ export const MobileSeries = ({ list, nhj, sahifa }) => {
             <SeriesItemKey
               key={indexList}
               {...value}
-              locale={locale}
+              locale={"fa"}
               showRow={!!!nhj && !!!sahifa}
               showItem={!!nhj ? value.type === index + 1 : true}
               value={valueSearch}

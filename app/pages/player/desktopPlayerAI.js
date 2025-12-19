@@ -1,10 +1,10 @@
 import { Box, Button, Typography } from "@mui/material";
-import { useTranslations } from "next-intl";
+import { useTranslate } from "@/core/useTranslation";
 import Image from "next/image";
 import React from "react";
 
 export const DesktopPlayerAI = () => {
-  const t = useTranslations("Lecture");
+  const { get } = useTranslate()
 
   return (
     <Box
@@ -27,7 +27,7 @@ export const DesktopPlayerAI = () => {
           bgcolor: "background.default",
         }}
       >
-        {t("AI_Tools")}
+        {get("Lecture.AI_Tools")}
       </Typography>
       <Box sx={{ display: "flex", alignItems: "center", py: 2 }}>
         <Button
@@ -40,7 +40,7 @@ export const DesktopPlayerAI = () => {
             <Image alt="cc" src="/icons/cc.svg" width={24} height={24} />
           }
         >
-          {t("cc")}
+          {get("Lecture.cc")}
         </Button>
         <Button
           size="small"
@@ -48,12 +48,12 @@ export const DesktopPlayerAI = () => {
           variant="outlined"
           sx={{ mx: 0.2 }}
           fullWidth
-          
+
           endIcon={
             <Image alt="summary" src="/icons/summary.svg" width={24} height={24} />
           }
         >
-          {t("summary")}
+          {get("Lecture.summary")}
         </Button>
         <Button
           size="small"
@@ -70,7 +70,7 @@ export const DesktopPlayerAI = () => {
             />
           }
         >
-          {t("transcript")}
+          {get("Lecture.transcript")}
         </Button>
       </Box>
     </Box>

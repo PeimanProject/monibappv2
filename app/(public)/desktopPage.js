@@ -10,17 +10,15 @@ import {
 import { Grid, useTheme, Box, Typography } from "@mui/material";
 import Image from "next/image";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
-import { useTranslations } from "next-intl";
 import { Timer } from "@/app/component/timer";
 import { useAuthLoginStore } from "@/store/layout/useProfileStore";
 import { usePlayListStore } from "@/store/usePlayListStore";
 import { useUserStore } from "@/store/useUserStore";
 import { MobileHomeLastLecture } from "@/app/fragment/homeLastLecture/mobileHomeLastLecture";
+import { useTranslate } from "@/core/useTranslation";
 
 export default function DesktopPage({ data, list }) {
-  const t = useTranslations("Main");
-  const tItems = useTranslations("Items");
-  const tLive = useTranslations("Live");
+  const { get } = useTranslate()
   const theme = useTheme();
 
   const user = useUserStore((state) => state.user);
@@ -42,40 +40,40 @@ export default function DesktopPage({ data, list }) {
     <Grid container spacing={1}>
       <Grid size={12}>
         <MainButton
-          title={t("Quran")}
+          title={get("Main.Quran")}
           link={"content/quran"}
           border
           back={"b1.png"}
           textIcon={`/icons/${theme.palette.mode}/quran.svg`}
           fullWidth
-          info={digitsEnToFa(`${data.count["1"]?.count} ${t("lecture")}`)}
+          info={digitsEnToFa(`${data.count["1"]?.count} ${get("Items.lecture")}`)}
         />
         <MainButton
-          title={t("Nhj")}
+          title={get("Main.Nhj")}
           border
           link={"content/nahjAlBalagha"}
           back={"b2.png"}
           textIcon={`/icons/${theme.palette.mode}/nhj.svg`}
           fullWidth
-          info={digitsEnToFa(`${data.count["3"]?.count} ${t("lecture")}`)}
+          info={digitsEnToFa(`${data.count["3"]?.count} ${get("Items.lecture")}`)}
         />
         <MainButton
-          title={t("Shf")}
+          title={get("Main.Shf")}
           border
           link={"content/sahifaSajjadiya"}
           back={"b3.png"}
           textIcon={`/icons/${theme.palette.mode}/sahifa.svg`}
           fullWidth
-          info={digitsEnToFa(`${data.count["4"]?.count} ${t("lecture")}`)}
+          info={digitsEnToFa(`${data.count["4"]?.count} ${get("Items.lecture")}`)}
         />
         <MainButton
-          title={t("Sp")}
+          title={get("Main.Sp")}
           border
           fullWidth
           link={"content/specialLectures"}
           back={"b4.png"}
           textIcon={`/icons/${theme.palette.mode}/sp.svg`}
-          info={digitsEnToFa(`${data.count["5"]?.count} ${t("lecture")}`)}
+          info={digitsEnToFa(`${data.count["5"]?.count} ${get("Items.lecture")}`)}
         />
       </Grid>
 
@@ -108,7 +106,7 @@ export default function DesktopPage({ data, list }) {
             <Box>
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Typography sx={{ mr: 1 }} variant="caption">
-                  {tLive("toLive")}:
+                  {get("Live.toLive")}:
                 </Typography>
                 <Timer pure time={data.liveCounter?.time} />
               </Box>

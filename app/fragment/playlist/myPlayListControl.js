@@ -19,53 +19,74 @@ import { useTranslate } from "@/core/useTranslation";
 import { useUserStore } from "@/store/useUserStore";
 
 export const MyPlayListControl = () => {
-  const { get } = useTranslate()
-  const { user } = useUserStore()
+  const { get } = useTranslate();
+  const { user } = useUserStore();
+
+  // 1. More robust state initialization to prevent undefined property errors
   const [{ showManage, playlist }, setManage] = React.useState({
     showManage: false,
     playlist: null,
   });
+
   const [current, setCurrent] = React.useState(null);
   const show = usePlayListStore((state) => state.show);
   const setShow = usePlayListStore((state) => state.setShow);
   const { list, fetchList } = useMyPlayListStore((state) => state);
+
   const [
     { showDeleteList, deletedPlaylistId, item, isLecture, isTopic, isWisdom },
     setDeletedPlaylist,
-  ] = React.useState({ showDeleteList: false });
-
+  ] = React.useState({
+    showDeleteList: false,
+    deletedPlaylistId: null,
+    item: null,
+    isLecture: false,
+    isTopic: false,
+    isWisdom: false,
+  });
+  // Page 1 & Page 2 useEffect
   React.useEffect(() => {
-    const get = async () => {
-      await fetchList(user.token);
+    const load = async () => {
+      // Be VERY strict: check specifically for the token string
+      if (show && user) {
+        try {
+          await fetchList(user.token);
+        } catch (err) {
+          console.error("Playlist fetch failed", err);
+        }
+      }
     };
 
-    get();
-  }, [show]);
+    load();
+  }, [show, user, fetchList]);// Add user?.token to dependencies
 
   const handleSelected = React.useCallback(
     (newValue) => () => {
       setCurrent(newValue);
     },
-    [setCurrent]
+    []
   );
 
   const handleDeleted = React.useCallback(
-    ({ show, id, item, isTopic, isLecture, isWisdom }) =>
+    ({ show: shouldShow, id, item: delItem, isTopic: it, isLecture: il, isWisdom: iw }) =>
       async (event) => {
-        if (!show && current?.id) {
+        event?.stopPropagation();
+
+        // Guard: only fetch if we have a token
+        if (!shouldShow && current?.id && user) {
           await fetchList(user.token);
         }
-        event?.stopPropagation();
+
         setDeletedPlaylist({
-          showDeleteList: show,
+          showDeleteList: shouldShow,
           deletedPlaylistId: id,
-          item,
-          isTopic,
-          isLecture,
-          isWisdom,
+          item: delItem,
+          isTopic: it,
+          isLecture: il,
+          isWisdom: iw,
         });
       },
-    [setDeletedPlaylist, current]
+    [current, user, fetchList] // Use token in dependencies
   );
   return (
     <>

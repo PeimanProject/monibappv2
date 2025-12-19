@@ -3,16 +3,15 @@
 import React from "react";
 import { MainButton } from "@/app/component/mainButton";
 import { Box, Typography, useTheme } from "@mui/material";
-import { useTranslations } from "next-intl";
 import { useAuthLoginStore } from "@/store/layout/useProfileStore";
 import { usePlayListStore } from "@/store/usePlayListStore";
 import { useUserStore } from "@/store/useUserStore";
 import { Timer } from "@/app/component/timer";
 import Image from "next/image";
+import { useTranslate } from "@/core/useTranslation";
 
 export const DesktopHomeActions = ({ liveCounter, isLive }) => {
-  const t = useTranslations("Items");
-  const tLive = useTranslations("Live");
+  const { get } = useTranslate()
   const theme = useTheme();
   const user = useUserStore((state) => state.user);
   const setShowLogin = useAuthLoginStore((state) => state.setShow);
@@ -35,7 +34,7 @@ export const DesktopHomeActions = ({ liveCounter, isLive }) => {
         <MainButton
           fullWidth
           bgcolor="var(--event-color)"
-          text={t("calendar")}
+          text={get("Items.calendar")}
           link="calendar"
         />
         <MainButton
@@ -43,7 +42,7 @@ export const DesktopHomeActions = ({ liveCounter, isLive }) => {
           bgcolor={
             !!liveCounter?.time || isLive ? "var(--live-color)" : "#555555"
           }
-          text={t("live")}
+          text={get("Live.live")}
           link="live"
         >
           {!!liveCounter?.time ? (
@@ -58,7 +57,7 @@ export const DesktopHomeActions = ({ liveCounter, isLive }) => {
           ) : (
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <Typography variant="body1" sx={{ mr: 1 }}>
-                {t("live")}
+                {get("Live.live")}
               </Typography>
               <Image src="/icons/live.svg" alt="live" width={30} height={30} />
             </Box>
@@ -70,20 +69,20 @@ export const DesktopHomeActions = ({ liveCounter, isLive }) => {
           fullWidth
           link={`/wisdom`}
           icon={`/icons/${theme.palette.mode}/wisdom.svg`}
-          text={t("wisdom")}
+          text={get("Items.wisdom")}
         />
 
         <MainButton
           fullWidth
           onClick={handlePlayListClick(true)}
           icon={`/icons/${theme.palette.mode}/playlist.svg`}
-          text={t("playlist")}
+          text={get("Items.playlist")}
         />
         <MainButton
           fullWidth
           link={"search"}
           icon={`/icons/${theme.palette.mode}/find.svg`}
-          text={t("Search")}
+          text={get("Items.Search")}
         />
       </Box>
     </>

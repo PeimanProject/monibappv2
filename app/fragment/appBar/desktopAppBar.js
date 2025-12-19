@@ -15,7 +15,6 @@ import {
   Modal,
   Button,
 } from "@mui/material";
-import { useTranslations, useLocale } from "next-intl";
 import React from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -27,12 +26,12 @@ import {
 } from "@/store/layout/useProfileStore";
 import { useUserStore } from "@/store/useUserStore";
 import { useSpring, animated } from "@react-spring/web";
+import { useTranslate } from "@/core/useTranslation";
 
 export const DesktopAppBar = () => {
   const router = useRouter();
-  const t = useTranslations("Common");
+  const { get } = useTranslate()
   const theme = useTheme();
-  const locale = useLocale();
   const { navBar } = useNavBarStore();
   const setShowLogin = useAuthLoginStore((state) => state.setShow);
   const setShowProfile = useProfileStore((state) => state.setShow);
@@ -148,7 +147,7 @@ export const DesktopAppBar = () => {
                   mx: 1,
                 }}
               >
-                {t("GoToLastVersion")}
+                {get("Common.GoToLastVersion")}
               </Button>
             )}
             {/* Animated Search Input */}
@@ -183,7 +182,7 @@ export const DesktopAppBar = () => {
                         opacity: 1,
                       },
                     }}
-                    placeholder={t("search")}
+                    placeholder={get("Common.search")}
                     value={searchValue}
                     onChange={(e) => setSearchValue(e.target.value)}
                     onKeyDown={handleSearchSubmit}

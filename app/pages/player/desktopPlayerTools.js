@@ -176,7 +176,7 @@ export const DesktopPlayerTools = ({
               fullWidth
               onClick={handleDownloadFile(download.sound)}
             >
-              {t("audioDownload")}
+              {get("Lecture.audioDownload")}
             </Button>
 
             <Box sx={{ flexBasis: 10 }} />
@@ -187,7 +187,7 @@ export const DesktopPlayerTools = ({
               fullWidth
               onClick={handleDownloadFile(download.video)}
             >
-              {t("videoDownload")}
+              {get("Lecture.videoDownload")}
             </Button>
           </Box>
           <Box sx={{ mt: 1, px: 2, pb: 4, display: "flex" }}>
@@ -313,7 +313,7 @@ export const DesktopPlayerTools = ({
                 <FormControlLabel
                   value="fa"
                   control={<Radio color="default" />}
-                  label={t("cc_fa")}
+                  label={get("Lecture.cc_fa")}
                 />
                 {srt_en?.fileName && (
                   <FormControlLabel
@@ -369,7 +369,7 @@ export const DesktopPlayerTools = ({
                       </Typography>
                     </Box>
                     <Typography>
-                      {t("lecture")}{" "}
+                      {get("Lecture.lecture")}{" "}
                       {numberToWords(rowNumber, { ordinal: true })}
                     </Typography>
                   </Box>
@@ -391,7 +391,7 @@ export const DesktopPlayerTools = ({
                       index={1}
                       selected={value === "en"}
                     >
-                      <Typography>{t("cc_s_en")}</Typography>
+                      <Typography>{get("Lecture.cc_s_en")}</Typography>
                     </TabCircleItem>
                   </TabStyle>
                 )}

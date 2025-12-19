@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">monib</string>
+    <string name="title_activity_main">monib</string>
+    <string name="package_name">com.monibapp.app</string>
+    <string name="custom_url_scheme">com.monibapp.app</string>
+</resources>

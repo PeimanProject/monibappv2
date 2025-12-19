@@ -1,7 +1,6 @@
 import { Box, Typography, ButtonBase, lighten } from "@mui/material";
 import React from "react";
 import _ from "lodash";
-import { useTranslations } from "next-intl";
 import {
   holidayColor,
   jalaliWeekDayIndex,
@@ -19,6 +18,7 @@ import {
   parse,
 } from "date-fns-jalali";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
+import { useTranslate } from "@/core/useTranslation";
 
 const CellSection = ({ children }) => {
   return (
@@ -88,8 +88,8 @@ const CellDaySection = ({
                 format(selectedDate, "yyyy-MM-dd"),
                 format(currentDate, "yyyy-MM-dd")
               ) && {
-                bgcolor: (theme) => lighten(theme.palette.primary.light, 0.5),
-              }),
+              bgcolor: (theme) => lighten(theme.palette.primary.light, 0.5),
+            }),
           }}
         >
           {children}
@@ -98,18 +98,18 @@ const CellDaySection = ({
           format(new Date().toISOString().substring(0, 10), "yyyy-MM-dd"),
           format(currentDate, "yyyy-MM-dd")
         ) && (
-          <Box
-            sx={{
-              position: "absolute",
-              right: 5,
-              top: 5,
-              bgcolor: "primary.main",
-              borderRadius: "50%",
-              width: 10,
-              height: 10,
-            }}
-          ></Box>
-        )}
+            <Box
+              sx={{
+                position: "absolute",
+                right: 5,
+                top: 5,
+                bgcolor: "primary.main",
+                borderRadius: "50%",
+                width: 10,
+                height: 10,
+              }}
+            ></Box>
+          )}
       </ButtonBase>
     )
   );
@@ -189,9 +189,8 @@ export const MonthSection = ({
   React.useEffect(() => {
     if (!!date) {
       if (!!monthIndex) {
-        const dateString = `${year}-${
-          monthIndex < 10 ? `0${monthIndex}` : monthIndex
-        }-01`;
+        const dateString = `${year}-${monthIndex < 10 ? `0${monthIndex}` : monthIndex
+          }-01`;
 
         const dateObj = parse(dateString, "yyyy-MM-dd", new Date());
         setMonth(monthIndex);
@@ -211,7 +210,7 @@ export const MonthSection = ({
     }
   }, [date, monthIndex, year]);
 
-  const t = useTranslations("Scheduler");
+  const { get } = useTranslate("Scheduler");
 
   return (
     !!currentDate && (
@@ -250,7 +249,7 @@ export const MonthSection = ({
                 variant="caption"
                 sx={{ ...(day === 6 && { color: holidayColor }) }}
               >
-                {t(weekDays[jalaliWeekDay[day]])}
+                {get(`Scheduler.${weekDays[jalaliWeekDay[day]]}`)}
               </Typography>
             </CellSection>
           ))}

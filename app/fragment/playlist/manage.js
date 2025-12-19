@@ -45,13 +45,13 @@ export const ManagePlaylist = ({ playlist, show, onClose }) => {
     if (title) {
       setIsLoading(true);
       if (!id) {
-        await AddToPlayListAction(title, user.token)
+        await AddToPlayListAction(title, user?.token)
       } else {
-        await UpdateUserPlayList({ title, token: user.token, id })
+        await UpdateUserPlayList({ title, token: user?.token, id })
       }
       setIsLoading(false);
       setIsSubmit(false);
-      await fetchList(user.token);
+      await fetchList(user?.token);
       onClose();
     }
   }, [setIsSubmit, title, id, onClose, setIsLoading]);

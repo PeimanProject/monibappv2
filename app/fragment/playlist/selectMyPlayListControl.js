@@ -30,13 +30,16 @@ export const SelectMyPlayListControl = () => {
   const setShow = useAddToPlayListStore((state) => state.setShow);
   const { list, fetchList } = useMyPlayListStore((state) => state);
   const { get } = useTranslate()
+  // Page 1 & Page 2 useEffect
   React.useEffect(() => {
     const load = async () => {
+      // Check for show AND user?.token
+      if (!show || !user?.token) return;
       await fetchList(user.token);
     };
 
     load();
-  }, [show]);
+  }, [show, user?.token]); // Add user?.token to dependencies
 
   const handleSelected = React.useCallback(
     (newValue) => async () => {
@@ -44,7 +47,7 @@ export const SelectMyPlayListControl = () => {
 
       if (!!item?.lecture) {
         await AddUserPlayListByType({
-          token: user.token,
+          token: user?.token,
           lectureId: item.lectureId,
           playlistIds: [{ id: newValue.id }],
           type: "lecture"
@@ -55,7 +58,7 @@ export const SelectMyPlayListControl = () => {
       setShow(false);
       setCurrent(null);
     },
-    [setCurrent, setShow, item]
+    [setCurrent, setShow, item, user?.token]
   );
 
   return (

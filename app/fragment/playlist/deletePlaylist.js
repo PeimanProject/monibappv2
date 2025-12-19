@@ -37,7 +37,7 @@ export const DeletePlayList = ({
             playlistId: currentList.id,
             topicId: item.topicId,
           },
-          token: user.token,
+          token: user?.token,
           type: "topic"
         })
 
@@ -49,7 +49,7 @@ export const DeletePlayList = ({
             playlistId: currentList.id,
             lectureId: item.lectureId,
           },
-          token: user.token,
+          token: user?.token,
           type: "lecture"
         })
       }
@@ -60,14 +60,14 @@ export const DeletePlayList = ({
             playlistId: currentList.id,
             wisdomId: item.id,
           },
-          token: user.token,
+          token: user?.token,
         })
       }
     } else {
-      await DeleteUserPlayList({ token: user.token, id })
+      await DeleteUserPlayList({ token: user?.token, id })
     }
 
-    await fetchList(user.token);
+    await fetchList(user?.token);
     onClose();
   }, [
     id,
@@ -77,7 +77,7 @@ export const DeletePlayList = ({
     isTopic,
     item,
     isWisdom,
-    user.token, // Added missing dependency
+    user, // Added missing dependency
     fetchList
   ]);
 

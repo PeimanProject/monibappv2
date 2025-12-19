@@ -58,7 +58,6 @@ export async function UpdateUserPlayList({ token, title, id }) {
 }
 
 export async function DeleteUserPlayList({ token, id }) {
-  console.log({ token, id })
   if (!id) {
     return { error: "id is required" };
   }

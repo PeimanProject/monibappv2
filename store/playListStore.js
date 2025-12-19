@@ -7,6 +7,7 @@ export const useMyPlayListStore = create((set) => ({
   error: null,
   setList: (list) => set({ list }),
   fetchList: async (token) => {
+    if (!token) return;
     set({ loading: true, error: null });
     try {
       const response = await GetUserPlayList(token)
