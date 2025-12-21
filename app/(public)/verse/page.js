@@ -1,7 +1,7 @@
 "use client";
 import { MobileVersePlayer } from "@/app/pages/player/mobileVersePlayer";
 import { API } from "@/core/config/api";
-import { Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState, Suspense } from "react";
 
@@ -13,18 +13,20 @@ const VersePlayerContent = () => {
   const verseId = searchParams.get("verseId");
 
   // States
-  const [series, setSeries] = useState(null);
-  const [quranData, setQuranData] = useState(null);
-  const [verse, setVerse] = useState(null);
+  const [series, setSeries] = useState(undefined);
+  const [quranData, setQuranData] = useState(undefined);
+  const [verse, setVerse] = useState(undefined);
 
   // Handler: Fetch Series Details
   const handleSeriesReq = async () => {
+    setSeries(undefined)
     if (!seriesId) return;
     try {
       const seriesReq = await fetch(`${API().core}content/series/${seriesId}`);
       const data = await seriesReq.json();
       setSeries(data);
     } catch (error) {
+      setSeries(null)
       console.error("Error fetching series:", error);
     }
   };
@@ -38,18 +40,21 @@ const VersePlayerContent = () => {
       const res = await data.json();
       setQuranData(res);
     } catch (error) {
+      setQuranData(null)
       console.error("Error fetching Quran data:", error);
     }
   };
 
   // Handler: Fetch Specific Verse
   const handleVerseReq = async () => {
+    setVerse(undefined)
     if (!seriesId || !verseId) return;
     try {
       const verseReq = await fetch(`${API().core}verse/${seriesId}/${verseId}`);
       const data = await verseReq.json();
       setVerse(data);
     } catch (error) {
+      setVerse(null)
       console.error("Error fetching verse:", error);
     }
   };
@@ -72,8 +77,23 @@ const VersePlayerContent = () => {
     return <Typography m={5} textAlign={"center"}>شناسه وارد شده صحیح نیست</Typography>;
   }
 
-  if (!series || !verse) {
+  if (series === undefined || verse === undefined) {
     return <Typography m={5} textAlign={"center"}>در حال بارگذاری...</Typography>;
+  }
+
+  if (series === null || verse === null) {
+    return <Box sx={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      height: "100vh",
+      gap: 2,
+    }}>
+      <Typography>خطایی رخ داده است</Typography>
+      <Typography>لطفا اتصال اینترنت خود را بررسی کنید و دوباره تلاش کنید</Typography>
+      <Button onClick={() => { handleSeriesReq(); handleVerseReq() }} variant="contained">تلاش دوباره</Button>
+    </Box>;
   }
 
   return (

@@ -12,10 +12,5 @@ export const SpecialLecturesSeries = ({ list, viewport, quran }) => {
       title: "گفتارهای ویژه",
     });
   }, [setNavBar]);
-  return (
-    <>
-      {viewport === "mobile" && <MobileSeries sp sahifa {...list} quran={quran} />}
-      {viewport === "desktop" && <MobileSeries sp sahifa desktop {...list} quran={quran} />}
-    </>
-  );
+  return <MobileSeries sp sahifa {...list} quran={quran} />
 };
