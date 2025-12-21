@@ -26,6 +26,7 @@ export const MobileSearch = ({ desktop, q }) => {
   const [value, setValue] = React.useState("tag");
   const [query, setQuery] = React.useState("");
   const [search, setSearch] = React.useState(false);
+  const [error, setError] = React.useState(false);
   const [resultQuran, setResultQuran] = React.useState(null);
   const [resultTag, setResultTag] = React.useState(null);
   const [resultBook, setResultBook] = React.useState(null);
@@ -75,21 +76,30 @@ export const MobileSearch = ({ desktop, q }) => {
       if (!!!gy) return;
 
       setSearch(true);
-      const list = await SearchReq({ query: gy, doc: value })
-      setSearch(false);
-      if (value === "quran") {
-        setResultQuran(list);
-        localStorage.setItem("search_query", gy);
-        localStorage.setItem("search_result", JSON.stringify(list));
-      } else if (value === "book") {
-        setResultBook(list);
-        localStorage.setItem("search_query_book", gy);
-        localStorage.setItem("search_result_book", JSON.stringify(list));
-      } else {
-        setResultTag(list);
-        localStorage.setItem("search_query_tag", gy);
-        localStorage.setItem("search_result_tag", JSON.stringify(list));
+      setError(false);
+      try {
+        const list = await SearchReq({ query: gy, doc: value })
+        setSearch(false);
+        if (value === "quran") {
+          setResultQuran(list);
+          localStorage.setItem("search_query", gy);
+          localStorage.setItem("search_result", JSON.stringify(list));
+        } else if (value === "book") {
+          setResultBook(list);
+          localStorage.setItem("search_query_book", gy);
+          localStorage.setItem("search_result_book", JSON.stringify(list));
+        } else {
+          setResultTag(list);
+          localStorage.setItem("search_query_tag", gy);
+          localStorage.setItem("search_result_tag", JSON.stringify(list));
+        }
+        return;
+
+      } catch (e) {
+        setError(true);
+        setSearch(false);
       }
+
     },
     [query, value]
   );
@@ -247,6 +257,7 @@ export const MobileSearch = ({ desktop, q }) => {
           },
         }}
       >
+        {!!error && <Typography variant="caption" color="error">خطایی رخ داده است</Typography>}
         {!!search && <LoadingAnimations />}
         {value === "quran" &&
           _.map(

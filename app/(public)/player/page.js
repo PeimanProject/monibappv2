@@ -2,9 +2,10 @@
 import { GetOs } from "@/app/libs/getOs";
 import { MobilePlayer } from "@/app/pages/player/mobilePlayer";
 import { API } from "@/core/config/api";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState, Suspense } from "react";
+import { Button } from "react-scroll";
 
 // 1. Move the logic into a content component
 const PlayerContent = () => {
@@ -16,10 +17,10 @@ const PlayerContent = () => {
   const time = searchParams.get("time") || null;
 
   // States
-  const [lecture, setLecture] = useState(null);
-  const [quranData, setQuranData] = useState(null);
-  const [srtArr, setSrtArr] = useState(null);
-  const [srtEnArr, setSrtEnArr] = useState(null);
+  const [lecture, setLecture] = useState(undefined);
+  const [quranData, setQuranData] = useState(undefined);
+  const [srtArr, setSrtArr] = useState(undefined);
+  const [srtEnArr, setSrtEnArr] = useState(undefined);
 
   // Handlers
   const handleGetLecture = async () => {
@@ -29,6 +30,7 @@ const PlayerContent = () => {
       const data = await req.json();
       setLecture(data);
     } catch (error) {
+      setLecture(null)
       console.error("Error fetching lecture:", error);
     }
   };
@@ -41,6 +43,7 @@ const PlayerContent = () => {
       const res = await data.json();
       setQuranData(res);
     } catch (error) {
+      setQuranData(null)
       console.error("Error fetching Quran data:", error);
     }
   };
@@ -53,6 +56,7 @@ const PlayerContent = () => {
       const data = await listJson.json();
       setSrtArr(data);
     } catch (error) {
+      setSrtArr(null)
       console.error("Error fetching SRT:", error);
     }
   };
@@ -65,6 +69,7 @@ const PlayerContent = () => {
       const data = await listJson.json();
       setSrtEnArr(data);
     } catch (error) {
+      setSrtEnArr(null)
       console.error("Error fetching English SRT:", error);
     }
   };
@@ -94,8 +99,23 @@ const PlayerContent = () => {
     return <Typography textAlign={"center"} m={5}>شناسه یافت نشد.</Typography>;
   }
 
-  if (!lecture) {
+  if (lecture === undefined) {
     return <Typography textAlign={"center"} m={5}>در حال بارگذاری...</Typography>;
+  }
+
+  if (lecture === null) {
+    return <Box sx={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      height: "100vh",
+      gap: 2,
+    }}>
+      <Typography>خطایی رخ داده است</Typography>
+      <Typography>لطفا اتصال اینترنت خود را بررسی کنید و دوباره تلاش کنید</Typography>
+      <Button onClick={() => { handleGetLecture() }} variant="contained">تلاش دوباره</Button>
+    </Box>
   }
 
   return (

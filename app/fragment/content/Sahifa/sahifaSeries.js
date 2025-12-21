@@ -15,10 +15,5 @@ export const SahifaSeries = ({ list, viewport }) => {
   }, [setNavBar]);
 
 
-  return (
-    <>
-      {viewport === "mobile" && <MobileSeries sahifa  {...list} />}
-      {viewport === "desktop" && <MobileSeries sahifa desktop {...list} />}
-    </>
-  );
+  return <MobileSeries sahifa  {...list} />;
 };
