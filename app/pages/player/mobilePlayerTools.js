@@ -17,6 +17,7 @@ import { useAddToPlayListStore } from "@/store/usePlayListStore";
 import { useUserStore } from "@/store/useUserStore";
 import { useAuthLoginStore } from "@/store/layout/useProfileStore";
 import { useTranslate } from "@/core/useTranslation";
+import { Share } from "@capacitor/share";
 
 export const MobilePlayerTools = ({
   lectureId,
@@ -38,10 +39,10 @@ export const MobilePlayerTools = ({
   );
 
   const handleShare = React.useCallback(async () => {
-    await navigator.share({
-      text: ``,
-      url: window.location.href,
+    await Share.share({
+      text: window.location.href,
     });
+
   }, []);
 
   const handlePlayList = React.useCallback(() => {

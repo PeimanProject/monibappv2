@@ -18,6 +18,7 @@ import { usePlayerActionStore } from "@/store/usePlayerActionStore";
 import { getShareURL } from "@/core/config/api";
 import { useNavBarStore } from "@/store/layout/useNavBarStore";
 import { WisdomReq } from "@/app/data/wisdom/route";
+import { Share } from "@capacitor/share";
 
 const Section = ({ title, image, stringDuration, stringSize, file, id }) => {
   const theme = useTheme();
@@ -25,10 +26,10 @@ const Section = ({ title, image, stringDuration, stringSize, file, id }) => {
 
   const handleShare = React.useCallback(async (e) => {
     e.stopPropagation();
-    await navigator.share({
-      text: ``,
-      url: `${getShareURL()}/wisdom?id=${id}/`,
+    await Share.share({
+      text: `${getShareURL()}/wisdom?id=${id}/`,
     });
+
   }, []);
 
   return (

@@ -35,6 +35,7 @@ import _ from "lodash";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { useCallback } from "react";
 import { useTranslate } from "@/core/useTranslation";
+import { Share } from "@capacitor/share";
 
 export const DesktopPlayerTools = ({
   lectureId,
@@ -82,10 +83,10 @@ export const DesktopPlayerTools = ({
   );
 
   const handleShare = React.useCallback(async () => {
-    await navigator.share({
-      text: ``,
-      url: window.location.href,
+    await Share.share({
+      text: window.location.href,
     });
+
   }, []);
 
   const handlePlayList = React.useCallback(() => {
