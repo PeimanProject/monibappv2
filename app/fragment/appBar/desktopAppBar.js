@@ -99,7 +99,7 @@ export const DesktopAppBar = () => {
                 height={30}
               />
             </Link>
-            <Typography sx={{ fontWeight: "bold" }}>آزمایشی</Typography>
+            {/* <Typography sx={{ fontWeight: "bold" }}>آزمایشی</Typography> */}
             <Box>
               {navBar?.title && (
                 <Box

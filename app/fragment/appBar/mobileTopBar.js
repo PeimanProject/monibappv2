@@ -120,7 +120,7 @@ const Tools = ({ }) => {
           </Box>
         )}
 
-        <Box sx={{ flex: 1 }}>
+        {/* <Box sx={{ flex: 1 }}>
           {show && (
             <Typography
               sx={{ color: "primary.main", fontWeight: "bold" }}
@@ -128,7 +128,7 @@ const Tools = ({ }) => {
               آزمایشی
             </Typography>
           )}
-        </Box>
+        </Box> */}
         {/* <Box
           sx={{
             display: "flex",
