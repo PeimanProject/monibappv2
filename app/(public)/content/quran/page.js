@@ -2,11 +2,13 @@
 import { QuranSeries } from "@/app/fragment/content/quran/quranSeries";
 import { API } from "@/core/config/api";
 import { Box, Typography, Button } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import React, { Suspense, useEffect, useState } from "react";
 
 const QuranPage = () => {
+  const searchParams = useSearchParams();
+  const type = searchParams.get("type") || "default";
   const [list, setList] = useState(undefined);
-  const type = "default";
 
 
   const handleContentReq = async () => {
@@ -45,4 +47,10 @@ const QuranPage = () => {
   return <QuranSeries list={list} viewport={"mobile"} type={type} quran />;
 };
 
-export default QuranPage;
+export default function Page() {
+  return (
+    <Suspense fallback={<Typography m={5} textAlign={"center"} >در حال بارگذاری...</Typography>}>
+      <QuranPage />
+    </Suspense>
+  );
+}
