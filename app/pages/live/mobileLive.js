@@ -12,7 +12,7 @@ import { useNavBarStore } from "@/store/layout/useNavBarStore";
 import { useTranslate } from "@/core/useTranslation";
 
 const Live = ({ live, data, desktop }) => {
-
+  const { get } = useTranslate()
   return (
     <>
       {live?.active && (
@@ -60,7 +60,7 @@ const Live = ({ live, data, desktop }) => {
               }}
             >
               <Typography variant="body2">{data?.displayDate}</Typography>
-              <Typography sx={{ ml: 2, mr: 0.5 }}>{t("time")}:</Typography>
+              <Typography sx={{ ml: 2, mr: 0.5 }}>{get("Live.time")}:</Typography>
               <Typography variant="body2">{data?.time}</Typography>
               <Box sx={{ flex: 1 }} />
               {!!live?.liveCounter && <Timer time={live?.liveCounter?.time} />}
