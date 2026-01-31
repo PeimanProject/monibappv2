@@ -22,16 +22,17 @@ import { useTranslate } from "@/core/useTranslation";
 import { useVttTrack } from "@/app/libs/srtHandler";
 
 export const MobilePlayerControl = ({
-  video,
   media,
+  srtArray,
+  time,
+  onChange,
+  index,
+  video,
   sound,
   lectureId,
   srt,
   srt_en,
-  srtArray,
   title,
-  index,
-  onChange,
   contextName,
   rowNumber,
   description,
@@ -39,7 +40,6 @@ export const MobilePlayerControl = ({
   verseId,
   seriesId,
   verse,
-  time,
 }) => {
   const faVtt = useVttTrack({
     lectureId,

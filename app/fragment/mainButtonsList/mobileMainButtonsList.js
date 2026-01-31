@@ -20,7 +20,7 @@ export const MobileMainButtonsList = ({ data }) => {
           back={"b1.png"}
           textIcon={`/icons/${theme.palette.mode}/quran.svg`}
           fullWidth
-          info={digitsEnToFa(`${data["1"]?.count} ${get("Main.lecture")}`)}
+        // info={digitsEnToFa(`${data["1"]?.count} ${get("Main.lecture")}`)}
         />
       </Grid>
       <Grid size={12}>
@@ -31,7 +31,7 @@ export const MobileMainButtonsList = ({ data }) => {
           back={"b2.png"}
           textIcon={`/icons/${theme.palette.mode}/nhj.svg`}
           fullWidth
-          info={digitsEnToFa(`${data["3"]?.count} ${get("Main.lecture")}`)}
+        // info={digitsEnToFa(`${data["3"]?.count} ${get("Main.lecture")}`)}
         />
       </Grid>
       <Grid size={6}>
@@ -43,7 +43,7 @@ export const MobileMainButtonsList = ({ data }) => {
           center
           fullWidth
           position="bottom"
-          info={digitsEnToFa(`${data["4"]?.count} ${get("Main.lecture")}`)}
+        // info={digitsEnToFa(`${data["4"]?.count} ${get("Main.lecture")}`)}
         />
       </Grid>
       <Grid size={6}>
@@ -55,7 +55,7 @@ export const MobileMainButtonsList = ({ data }) => {
           textIcon={`/icons/${theme.palette.mode}/sp.svg`}
           center
           position="bottom"
-          info={digitsEnToFa(`${data["5"]?.count} ${get("Main.lecture")}`)}
+        // info={digitsEnToFa(`${data["5"]?.count} ${get("Main.lecture")}`)}
         />
       </Grid>
     </Grid>

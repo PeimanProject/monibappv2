@@ -9,8 +9,9 @@ import {
   DialogTitle,
   IconButton,
   alpha,
+  LinearProgress,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import CloseIcon from "@mui/icons-material/Close";
 import { useAddToPlayListStore } from "@/store/usePlayListStore";
@@ -18,8 +19,11 @@ import { useUserStore } from "@/store/useUserStore";
 import { useAuthLoginStore } from "@/store/layout/useProfileStore";
 import { useTranslate } from "@/core/useTranslation";
 import { Share } from "@capacitor/share";
+import { downloadMedia, downloadMediaHandler } from "@/core/downloadHandler";
+import { saveMediaIndb } from "@/core/dbHandler";
 
 export const MobilePlayerTools = ({
+  title,
   lectureId,
   sound,
   video,
@@ -29,12 +33,21 @@ export const MobilePlayerTools = ({
 }) => {
   const { get } = useTranslate()
   const [showDownload, setShowDownload] = React.useState(false);
+  const [downloadProgress, setDownloadProgress] = useState(0); // Track progress
+  const [isDownloading, setIsDownloading] = useState(false);   // Track state
+  const [showSownloadOption, setShowDownloadOption] = useState({
+    audio: false,
+    video: false
+  })
   const setShowPlayList = useAddToPlayListStore((state) => state.setShow);
   const user = useUserStore((state) => state.user);
   const setShowLogin = useAuthLoginStore((state) => state.setShow);
 
   const handleDownload = React.useCallback(
-    (show) => () => setShowDownload(show),
+    (show) => () => {
+      setShowDownload(show)
+      setShowDownloadOption({ audio: false, video: false });
+    },
     []
   );
 
@@ -53,18 +66,31 @@ export const MobilePlayerTools = ({
     setShowPlayList(true, { lectureId, lecture: true });
   }, [setShowPlayList, user, setShowLogin]);
 
-  const handleDownloadFile = React.useCallback(
-    (url) => () => {
-      const link = document.createElement("a");
-      link.href = os === "iOS" ? "x-safari-" + url : url;
-      link.setAttribute("download", "");
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    },
-    []
-  );
+  const handleDownloadFileOffline = async () => {
+    const isAudio = showSownloadOption.audio;
+    const type = isAudio ? "sound" : "video";
 
+    // مقادیر را از آبجکت JSON جلسه که در پراپس دارید بگیرید
+    const downloadUrl = isAudio ? download.sound : download.video;
+    const size = isAudio ? sound.display : video.display;
+
+    try {
+      setIsDownloading(true);
+      setDownloadProgress(0);
+
+      await downloadMediaHandler({
+        lectureId: lectureId,
+        type: type,
+        url: downloadUrl,
+        displaySize: size,
+        onProgress: (percent) => setDownloadProgress(percent)
+      });
+    } catch (error) {
+      console.error("Download Error:", error);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
   return (
     <>
       <Dialog
@@ -86,7 +112,8 @@ export const MobilePlayerTools = ({
         }}
       >
         <DialogTitle component="div">
-          <IconButton onClick={handleDownload(false)} sx={{ ml: 2 }}>
+          <IconButton onClick={handleDownload(false)}
+            sx={{ ml: 2 }}>
             <CloseIcon />
           </IconButton>
         </DialogTitle>
@@ -105,7 +132,7 @@ export const MobilePlayerTools = ({
               variant="contained"
               color="secondary"
               fullWidth
-              onClick={handleDownloadFile(download.sound)}
+              onClick={() => setShowDownloadOption({ audio: true, video: false })}
             >
               {get("Lecture.audioDownload")}
             </Button>
@@ -116,7 +143,7 @@ export const MobilePlayerTools = ({
               variant="contained"
               color="secondary"
               fullWidth
-              onClick={handleDownloadFile(download.video)}
+              onClick={() => setShowDownloadOption({ audio: false, video: true })}
             >
               {get("Lecture.videoDownload")}
             </Button>
@@ -130,6 +157,36 @@ export const MobilePlayerTools = ({
               {video?.display}
             </Typography>
           </Box>
+          {isDownloading && (
+            <Box sx={{ width: '100%', mt: 2, px: 2 }}>
+              <Typography variant="caption" color="white">
+                {downloadProgress}%  در حال دانلود:
+              </Typography>
+              <LinearProgress
+                variant="determinate"
+                value={downloadProgress}
+                color="secondary"
+                sx={{ height: 10, borderRadius: 5, mt: 1 }}
+              />
+            </Box>
+          )}
+          {(showSownloadOption.audio || showSownloadOption.video) && <Box sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+            gap: 1,
+            mb: 2
+          }}>
+            <Button
+              onClick={() => handleDownloadFileOffline(showSownloadOption.audio ? download.sound : download.video)}
+              variant="contained" sx={{ width: 150 }}>
+              {get("Lecture.saveOffline")}
+            </Button>
+            <Button variant="contained" sx={{ width: 150 }}>
+              {get("Lecture.saveDevice")}
+            </Button>
+          </Box>}
         </DialogContent>
       </Dialog>
       <Box

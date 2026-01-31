@@ -1,6 +1,8 @@
 "use client";
 import { QuranSeries } from "@/app/fragment/content/quran/quranSeries";
+import { db } from "@/app/libs/db";
 import { API } from "@/core/config/api";
+import { useConnectivity } from "@/core/ConnectivityProvider";
 import { Box, Typography, Button } from "@mui/material";
 import { useSearchParams } from "next/navigation";
 import React, { Suspense, useEffect, useState } from "react";
@@ -9,6 +11,7 @@ const QuranPage = () => {
   const searchParams = useSearchParams();
   const type = searchParams.get("type") || "default";
   const [list, setList] = useState(undefined);
+  const { isConnected } = useConnectivity(); // وضعیت اینترنت
 
 
   const handleContentReq = async () => {
@@ -22,10 +25,33 @@ const QuranPage = () => {
     }
 
   }
-
+  const loadFromOffline = async () => {
+    try {
+      // فیلتر کردن تمام رکوردهایی که مربوط به قرآن (main_id: 1) هستند
+      const offlineData = await db.series
+        .where("mainId")
+        .equals(1)
+        .toArray();
+      if (offlineData.length > 0) {
+        setList({ "mainId": 1, "list": offlineData });
+      } else {
+        setList(null); // هیچ دیتایی حتی در دیتابیس نیست
+      }
+    } catch (error) {
+      console.error("Offline DB fetch failed:", error);
+      setList(null);
+    }
+  };
   useEffect(() => {
-    handleContentReq()
-  }, [])
+    const load = async () => {
+      if (isConnected) {
+        await handleContentReq();
+      } else {
+        await loadFromOffline();
+      }
+    }
+    load()
+  }, [isConnected, type]); // اگر وضعیت اینترنت تغییر کرد، دوباره تلاش کن
 
   if (list === undefined) return <Typography textAlign={"center"} m={5}>در حال بارگذاری ...</Typography>
 
@@ -40,7 +66,7 @@ const QuranPage = () => {
     }}>
       <Typography>خطایی رخ داده است</Typography>
       <Typography>لطفا اتصال اینترنت خود را بررسی کنید و دوباره تلاش کنید</Typography>
-      <Button onClick={handleContentReq} variant="contained">تلاش دوباره</Button>
+      {/* <Button onClick={load} variant="contained">تلاش دوباره</Button> */}
     </Box>
   )
 

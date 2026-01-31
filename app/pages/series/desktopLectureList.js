@@ -139,7 +139,7 @@ export const DesktopLectureList = ({
                     color: "text.primary",
                   }}
                 >
-                  {item?.lectureName || item.title}
+                  {item?.lectureName || item.title || `جلسه ${index + 1}`}
                 </Typography>
 
                 <Typography

@@ -11,9 +11,11 @@ export const TabNormalItem = ({
   value,
   selected,
   wSize = 100,
+  disabled = false,
 }) => {
   return (
     <Button
+      disabled={disabled}
       onClick={onChange(value, index)}
       sx={{
         width: wSize,

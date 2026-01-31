@@ -257,6 +257,10 @@ export const MobileAppBar = () => {
     () => router.push(`/search`),
     [router]
   );
+  const handleDownloadClick = React.useCallback(
+    () => router.push(`/downloads`),
+    [router]
+  );
 
   return (
     <>
@@ -283,12 +287,12 @@ export const MobileAppBar = () => {
                 title={get("Menu.profile")}
               />
               <MenuKey
-                icon={"/menu/playlist.svg"}
+                icon={"/menu/download.svg"}
                 pos={-35 - 55 - m}
                 top={16 + topValue}
                 showMenu={show}
-                title={get("Menu.playlist")}
-                onClick={handlePlayListClick(true)}
+                title={get("Menu.download")}
+                onClick={handleDownloadClick}
               />
               <MainMenuKey
                 onClick={handleMenuClick(!show)}

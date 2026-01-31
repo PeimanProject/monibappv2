@@ -3,6 +3,7 @@
 import { Box } from "@mui/material";
 import { TabNormalItem, TabStyle } from "@/app/component/tabStyle";
 import { useTranslate } from "@/core/useTranslation";
+import { useConnectivity } from "@/core/ConnectivityProvider";
 
 // const Key = ({ children, subItem, selected, onClick }) => {
 //   return (
@@ -28,6 +29,7 @@ import { useTranslate } from "@/core/useTranslation";
 
 export const QuranTitle = ({ value, onChange, rId }) => {
   const { get } = useTranslate()
+  const { isConnected } = useConnectivity()
   return (
     <Box
       sx={{
@@ -53,6 +55,7 @@ export const QuranTitle = ({ value, onChange, rId }) => {
           onChange={onChange}
         />
         <TabNormalItem
+          disabled={!isConnected}
           text={get("Series.Verse")}
           value={"quran"}
           index={0}
@@ -60,6 +63,7 @@ export const QuranTitle = ({ value, onChange, rId }) => {
           onChange={onChange}
         />
         {rId < 17 && <TabNormalItem
+          disabled={!isConnected}
           text={get("Series.Mishkat")}
           value={"miskat"}
           index={2}

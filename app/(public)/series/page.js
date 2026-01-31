@@ -1,15 +1,16 @@
 "use client";
+import { db } from "@/app/libs/db";
 import { GetOs } from "@/app/libs/getOs";
 import { MobileSeries } from "@/app/pages/series/mobileSeries";
 import { API } from "@/core/config/api";
+import { useConnectivity } from "@/core/ConnectivityProvider";
 import { Box, Typography } from "@mui/material";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState, Suspense } from "react";
-import { Button } from "react-scroll";
 
 const SeriesContent = () => {
   const searchParams = useSearchParams();
-
+  const { isConnected } = useConnectivity()
   // Extract parameters from URL: ?id=123&type=lecture
   const seriesId = searchParams.get("seriesId");
   let typeParam = searchParams.get("type") || "default";
@@ -31,6 +32,19 @@ const SeriesContent = () => {
       console.error("Error fetching series:", error);
     }
   };
+  const handleSeriesReqOffline = async () => {
+    setSeries(undefined)
+    try {
+      const seriesdb = await db.lectures.where("series_id").equals(206).toArray();
+      const data = {
+        lectureList: seriesdb
+      }
+      setSeries(data);
+    } catch (error) {
+      setSeries(null)
+      console.error("Error fetching series offline:", error);
+    }
+  }
 
   const handleQuranDataReq = async (rId) => {
     try {
@@ -46,12 +60,19 @@ const SeriesContent = () => {
 
   // Lifecycle
   useEffect(() => {
-    handleSeriesReq();
-  }, [seriesId]);
+    const load = async () => {
+      if (isConnected) {
+        await handleSeriesReq();
+      } else {
+        await handleSeriesReqOffline()
+      }
+    }
+    load()
+  }, [seriesId, isConnected]);
 
   useEffect(() => {
     // Check if we need Quran data once series is loaded
-    if (series?.mainId === 1 && series?.rId) {
+    if (series?.mainId === 1 && series?.rId && isConnected) {
       handleQuranDataReq(series.rId);
     }
   }, [series]);
@@ -76,7 +97,7 @@ const SeriesContent = () => {
     }}>
       <Typography>خطایی رخ داده است</Typography>
       <Typography>لطفا اتصال اینترنت خود را بررسی کنید و دوباره تلاش کنید</Typography>
-      <Button onClick={() => { handleSeriesReq() }} variant="contained">تلاش دوباره</Button>
+      {/* <Button onClick={() => { handleSeriesReq() }} variant="contained">تلاش دوباره</Button> */}
     </Box>;
   }
 

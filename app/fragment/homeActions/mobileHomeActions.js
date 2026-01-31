@@ -9,7 +9,7 @@ import Link from "next/link";
 import { Timer } from "@/app/component/timer";
 import { useTranslate } from "@/core/useTranslation";
 
-export const MobileHomeActions = ({ liveCounter, isLive }) => {
+export const MobileHomeActions = ({ isConnected, liveCounter, isLive }) => {
   const { get } = useTranslate()
   const theme = useTheme();
 
@@ -56,41 +56,44 @@ export const MobileHomeActions = ({ liveCounter, isLive }) => {
           </Link>
         </Box>
       </Box>
-      <Box sx={{ display: "flex" }}>
-        <MainButton
-          fullWidth
-          bgcolor="var(--event-color)"
-          text={get("Items.calendar")}
-          link="calendar"
-        />
-        <MainButton
-          fullWidth
-          bgcolor={
-            !!liveCounter?.time || isLive ? "var(--live-color)" : "#555555"
-          }
-          text={get("Items.live")}
-          link="live"
-        >
-          {!!liveCounter?.time && (
-            <Box>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Typography sx={{ mr: 1 }} variant="caption">
-                  {get("Live.toLive")}:
-                </Typography>
-                <Timer pure time={liveCounter?.time} />
+      {
+        isConnected && <Box sx={{ display: "flex" }}>
+          <MainButton
+            fullWidth
+            bgcolor="var(--event-color)"
+            text={get("Items.calendar")}
+            link="calendar"
+          />
+          <MainButton
+            fullWidth
+            bgcolor={
+              !!liveCounter?.time || isLive ? "var(--live-color)" : "#555555"
+            }
+            text={get("Items.live")}
+            link="live"
+          >
+            {!!liveCounter?.time && (
+              <Box>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Typography sx={{ mr: 1 }} variant="caption">
+                    {get("Live.toLive")}:
+                  </Typography>
+                  <Timer pure time={liveCounter?.time} />
+                </Box>
               </Box>
-            </Box>
-          )}
-          {!liveCounter && (
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Typography variant="body1" sx={{ mr: 1 }}>
-                {get("Items.live")}
-              </Typography>
-              <Image src="/icons/live.svg" alt="live" width={30} height={30} />
-            </Box>
-          )}
-        </MainButton>
-      </Box>
+            )}
+            {!liveCounter && (
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Typography variant="body1" sx={{ mr: 1 }}>
+                  {get("Items.live")}
+                </Typography>
+                <Image src="/icons/live.svg" alt="live" width={30} height={30} />
+              </Box>
+            )}
+          </MainButton>
+        </Box>
+      }
+
     </>
   );
 };

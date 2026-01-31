@@ -38,7 +38,7 @@ export const MobileSeries = ({
   React.useEffect(
     () =>
       setVerse(
-        `${series?.title} ${series?.description}`,
+        `${series?.title ?? ""} ${series?.description ?? ""}`,
         null,
         series.mainId === 1 ? "quran" : null
       ),

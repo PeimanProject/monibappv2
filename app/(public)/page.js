@@ -7,43 +7,64 @@ import { API } from "@/core/config/api";
 import { Container, Typography, Button, Box } from "@mui/material";
 import { HomeStore } from "./home";
 import { useEffect, useState } from "react";
+import { db } from "../libs/db";
+import { useConnectivity } from "@/core/ConnectivityProvider";
 
 export default function Home() {
   const viewport = "mobile";
   const [homeData, setHomeData] = useState(undefined);
   const [list, setList] = useState(undefined)
   const [loading, setLoading] = useState(true)
-
-  const handlehHomeDateReq = async () => {
+  const { isConnected, isInitialized } = useConnectivity();
+  const loadOfflineData = async () => {
+    setLoading(true)
     try {
+      // گرفتن ۴ لکچر آخر که قبلاً در دیتابیس ذخیره شده‌اند
+      const offlineLectures = await db.lectures
+        .orderBy('id')
+        .reverse()
+        .limit(4)
+        .toArray();
+      if (offlineLectures.length > 0) {
+        // تبدیل فرمت لکچرهای Dexie به فرمتی که کامپوننت لیست انتظار دارد
+        setList(offlineLectures);
+      }
+    } catch (error) {
+      console.error("Error loading offline data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRequests = async () => {
+    setLoading(true);
+    try {
+      // ۱. درخواست اطلاعات خانه
       const homeDateReq = await fetch(`${API().core}home/?forceDetect=${viewport}`);
-      const data = await homeDateReq.json();
-      setHomeData(data);
-      setLoading(false)
-    } catch (e) {
-      setHomeData(null);
-      setLoading(false)
-      console.error(e);
-    }
-  }
-  const handleListReq = async () => {
-    try {
+      const hData = await homeDateReq.json();
+      setHomeData(hData);
+
+      // ۲. درخواست لیست آخرین لکچرها
       const listReq = await fetch(`${API().core}lastLecture/?size=4`);
-      const data = await listReq.json();
-      setList(data)
-      setLoading(false)
+      const lData = await listReq.json();
+      setList(lData);
     } catch (e) {
-      setList(null);
-      setLoading(false)
-      console.error(e);
+      console.log(e);
+    } finally {
+      setLoading(false);
     }
+  };
 
-  }
   useEffect(() => {
-    handlehHomeDateReq()
-    handleListReq()
-  }, [])
-
+    const load = async () => {
+      if (isConnected) {
+        await handleRequests();
+      } else {
+        await loadOfflineData()
+      }
+    }
+    load();
+  }, []);
 
 
   if (loading) {
@@ -51,27 +72,34 @@ export default function Home() {
   }
   if ((homeData === null || list === null) && !loading) {
     return (
-      <Box sx={{ display: "flex", gap: 2, flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh" }}>
-        <Typography textAlign={"center"}> خطایی رخ داده است</Typography>
-        <Typography textAlign={"center"}>لطفا از اتصال اینترنت خود مطمئن شوید و دوباره تلاش کنید</Typography>
-        <Button onClick={() => { setLoading(true); handlehHomeDateReq(); handleListReq(); }}>
-          تلاش دوباره
-        </Button>
+      <Box sx={{ display: "flex", gap: 2, flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh", p: 3 }}>
+        <Typography textAlign={"center"}>محتوایی برای نمایش یافت نشد</Typography>
+        <Typography textAlign={"center"} variant="caption">لطفاً اتصال اینترنت خود را چک کنید</Typography>
+        <Button variant="contained" onClick={handleRequests}>تلاش دوباره</Button>
       </Box>
-    )
+    );
   }
 
   return (
     <>
       <HomeStore />
-      <MobileSlider list={homeData?.sliders} />
+      {/* اسلایدر فقط در حالت آنلاین نمایش داده می‌شود */}
+      {isConnected && homeData?.sliders && (
+        <MobileSlider list={homeData.sliders} />
+      )}
       <Container maxWidth="sm" sx={{ pt: 1, pb: 20 }}>
         <MobileMainButtonsList data={homeData?.count} />
+        {/* بخش زنده و اکشن‌ها در حالت آفلاین حذف یا غیرفعال می‌شوند */}
+
         <MobileHomeActions
+          isConnected={isConnected}
           liveCounter={homeData?.liveCounter}
           isLive={homeData?.isLive}
         />
-        <HomeLastLecture viewport="mobile" list={list} />
+        {
+          isConnected &&
+          <HomeLastLecture viewport="mobile" list={list} />
+        }
       </Container>
     </>
   );

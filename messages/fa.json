@@ -18,7 +18,7 @@
     "logout": "خروج"
   },
   "Common": {
-    "SelectVerse":"انتخاب آیه",
+    "SelectVerse": "انتخاب آیه",
     "search": "جستجو...",
     "searchAct": "جستجو...",
     "verse": "آیه",
@@ -50,7 +50,7 @@
   },
   "Menu": {
     "menu": "منو",
-    "home":"صفحه نخست",
+    "home": "صفحه نخست",
     "download": "دانلودها",
     "playlist": "فهرست من",
     "support": "پشتیبانی",
@@ -83,7 +83,7 @@
     "device": "بر اساس سیستم"
   },
   "Lecture": {
-    "SelectVerse":"انتخاب آیه",
+    "SelectVerse": "انتخاب آیه",
     "lecture": "جلسه",
     "lectures": "جلسه‌ها",
     "download": "دانلود",
@@ -108,6 +108,8 @@
     "previousRound": "دور پیشین",
     "newRound": "دور جدید",
     "audioDownload": "دانلود صوتی",
+    "saveOffline": "ذخیره در اپلیکیشن",
+    "saveDevice": "ذخیره در دستگاه",
     "videoDownload": "دانلود تصویری",
     "SessionSchedule": "تقویم برگزاری جلسات",
     "event": "مناسبت‌ها",
@@ -119,7 +121,7 @@
     "gadir": "غدیر",
     "rajab": "رجب",
     "shaban": "شعبان",
-    "page":"صفحه"
+    "page": "صفحه"
   },
   "Calendar": {
     "last": "تقویم جلسات برگزار شده"
@@ -173,13 +175,13 @@
     "toLive": "تا شروع پخش",
     "lecture": "جلسه"
   },
-  "Search":{
-    "subject":"موضوعی",
-    "quran":"متن قرآن",
-    "page":"صفحه",
-    "verse":"آیه",
-    "resultCount":"تعداد نتایج",
-    "play":"پخش سریع",
-    "book":"مشکات"
+  "Search": {
+    "subject": "موضوعی",
+    "quran": "متن قرآن",
+    "page": "صفحه",
+    "verse": "آیه",
+    "resultCount": "تعداد نتایج",
+    "play": "پخش سریع",
+    "book": "مشکات"
   }
 }

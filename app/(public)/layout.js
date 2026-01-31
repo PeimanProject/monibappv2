@@ -7,6 +7,7 @@ import { MyPlayListControl } from "@/app/fragment/playlist/myPlayListControl";
 import { ProfileControl } from "@/app/fragment/auth/profileControl";
 import { SelectMyPlayListControl } from "@/app/fragment/playlist/selectMyPlayListControl";
 import { PlayerAction } from "@/app/fragment/player/playerAction";
+import { NetworkStatusBanner } from "../component/connectivityView";
 
 const PublicLayout = ({ children }) => {
   const viewport = "mobile";
@@ -19,6 +20,7 @@ const PublicLayout = ({ children }) => {
       <PlayerAction />
       <ProfileControl />
       <MobileTopBar />
+      <NetworkStatusBanner />
       <MainAppBar viewport={viewport} />
       {children}
     </>
