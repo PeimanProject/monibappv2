@@ -35,7 +35,7 @@ const SeriesContent = () => {
   const handleSeriesReqOffline = async () => {
     setSeries(undefined)
     try {
-      const seriesdb = await db.lectures.where("series_id").equals(206).toArray();
+      const seriesdb = await db.lectures.where("series_id").equals(Number(seriesId)).toArray();
       const data = {
         lectureList: seriesdb
       }

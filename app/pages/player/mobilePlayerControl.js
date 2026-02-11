@@ -20,7 +20,8 @@ import { iosAudioSession } from "@/app/libs/iosAudioSession";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
 import { useTranslate } from "@/core/useTranslation";
 import { useVttTrack } from "@/app/libs/srtHandler";
-
+import { useConnectivity } from "@/core/ConnectivityProvider";
+import { Capacitor } from '@capacitor/core';
 export const MobilePlayerControl = ({
   media,
   srtArray,
@@ -41,6 +42,10 @@ export const MobilePlayerControl = ({
   seriesId,
   verse,
 }) => {
+  // استفاده از علامت سوال قبل از نقطه برای جلوگیری از خطا در صورت null بودن
+  const soundFinalSrc = sound?.localPath ? Capacitor.convertFileSrc(sound.localPath) : null;
+  const videoFinalSrc = video?.localPath ? Capacitor.convertFileSrc(video.localPath) : null;
+
   const faVtt = useVttTrack({
     lectureId,
     filename: srt?.fileName,
@@ -49,6 +54,7 @@ export const MobilePlayerControl = ({
     lectureId,
     filename: srt_en?.fileName,
   });
+  const { isConnected } = useConnectivity()
   const { get } = useTranslate()
   const [isPlaying, setIsPlaying] = React.useState(false);
   const playerRef = React.useRef(null);
@@ -147,8 +153,9 @@ export const MobilePlayerControl = ({
   };
 
   React.useEffect(() => {
+    if (!isConnected) return;
     setMediaSession();
-  }, []);
+  }, [isConnected]);
 
   React.useEffect(() => {
     if (!playerRef?.current) return;
@@ -278,7 +285,7 @@ export const MobilePlayerControl = ({
                 width: "calc(100% - 20px)",
               }}
             >
-              <source src={sound?.url} type="audio/mpeg" />
+              <source src={sound?.url || soundFinalSrc} type="audio/mpeg" />
               Your browser does not support the audio element.
             </audio>
           </Box>
@@ -326,7 +333,7 @@ export const MobilePlayerControl = ({
             }}
             width={"100%"}
             controls={true}
-            url={video?.url}
+            url={video?.url || videoFinalSrc}
           />
         )}
 

@@ -14,6 +14,7 @@ import Image from "next/image";
 import { TabCircleItem, TabStyle } from "@/app/component/tabStyle";
 import Link from "next/link";
 import { useTranslate } from "@/core/useTranslation";
+import { useConnectivity } from "@/core/ConnectivityProvider";
 
 export const MobileInfo = ({
   contextName,
@@ -32,7 +33,7 @@ export const MobileInfo = ({
 }) => {
   const { get } = useTranslate()
   const theme = useTheme();
-
+  const { isConnected } = useConnectivity()
   return (
     <Box
       sx={{
@@ -143,7 +144,7 @@ export const MobileInfo = ({
         )}
         <TabStyle style="circle" index={index}>
           <TabCircleItem
-            disabled={!sound?.url}
+            disabled={isConnected ? !sound?.url : !sound?.localPath}
             onChange={onChange}
             value={"sound"}
             index={0}
@@ -160,7 +161,7 @@ export const MobileInfo = ({
           </TabCircleItem>
 
           <TabCircleItem
-            disabled={!video?.url}
+            disabled={isConnected ? !video?.url : !video?.localPath}
             onChange={onChange}
             value={"video"}
             index={1}

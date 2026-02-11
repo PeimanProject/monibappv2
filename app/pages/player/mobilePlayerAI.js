@@ -24,6 +24,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { TabCircleItem, TabStyle } from "@/app/component/tabStyle";
 import { useTranslate } from "@/core/useTranslation";
+import { useConnectivity } from "@/core/ConnectivityProvider";
 
 
 export const CustomStyledMenu = styled(
@@ -76,7 +77,7 @@ export const MobilePlayerAI = ({
     },
     []
   );
-
+  const { isConnected } = useConnectivity()
   const { get } = useTranslate()
   const [open, setOpen] = React.useState(false);
   const [showText, setShowText] = React.useState(false);
@@ -120,6 +121,7 @@ export const MobilePlayerAI = ({
       >
         <Button
           size="small"
+          disabled={!isConnected}
           color="primary"
           variant="contained"
           disableElevation
@@ -166,6 +168,7 @@ export const MobilePlayerAI = ({
 
         <Button
           size="small"
+          disabled={!isConnected}
           color="primary"
           variant="contained"
           disableElevation

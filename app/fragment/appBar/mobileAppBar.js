@@ -1,6 +1,6 @@
 "use client";
 
-import { AppBar, ButtonBase, Typography, useTheme } from "@mui/material";
+import { Alert, AppBar, ButtonBase, Snackbar, Typography, useTheme } from "@mui/material";
 import React from "react";
 import { AppBarBack } from "./appBarBack";
 import Image from "next/image";
@@ -15,6 +15,7 @@ import { usePlayListStore } from "@/store/usePlayListStore";
 import { useUserStore } from "@/store/useUserStore";
 import { useRouter } from "next/navigation";
 import { useTranslate } from "@/core/useTranslation";
+import { useConnectivity } from "@/core/ConnectivityProvider";
 
 const MainMenuKey = ({ pos = -40, top = 0, title, onClick, showMenu }) => {
   const theme = useTheme();
@@ -125,7 +126,7 @@ const MainMenuKey = ({ pos = -40, top = 0, title, onClick, showMenu }) => {
   );
 };
 
-const MenuKey = ({ icon, pos = -40, top = 0, title, onClick, showMenu }) => {
+const MenuKey = ({ icon, pos = -40, top = 0, title, onClick, showMenu, disabled }) => {
   const theme = useTheme();
 
   const springs = useSpring({
@@ -182,6 +183,7 @@ const MenuKey = ({ icon, pos = -40, top = 0, title, onClick, showMenu }) => {
         }}
       >
         <ButtonBase
+          disabled={disabled}
           onClick={onClick}
           sx={{
             width: 38,
@@ -206,6 +208,7 @@ const m = 18;
 const topValue = 10;
 
 export const MobileAppBar = () => {
+  const { isConnected } = useConnectivity()
   const user = useUserStore((state) => state.user);
   const setShowLogin = useAuthLoginStore((state) => state.setShow);
   const setShowProfile = useProfileStore((state) => state.setShow);
@@ -213,6 +216,19 @@ export const MobileAppBar = () => {
   const { show, setShow } = useMainMenuStore((state) => state);
   const setShowPlayList = usePlayListStore((state) => state.setShow);
   const router = useRouter();
+  const [open, setOpen] = React.useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   const [showButtons, setShowButtons] = React.useState(false);
 
@@ -223,13 +239,17 @@ export const MobileAppBar = () => {
 
   const handleToggleLogin = React.useCallback(
     (show) => () => {
+      if (!isConnected) {
+        handleClick()
+        return
+      }
       if (!!!user) {
         setShowLogin(show);
         return;
       }
       setShowProfile(show);
     },
-    [setShow, user, setShowLogin, setShowProfile]
+    [setShow, user, setShowLogin, setShowProfile, isConnected]
   );
 
   const handlePlayListClick = React.useCallback(
@@ -277,6 +297,15 @@ export const MobileAppBar = () => {
         <AppBarBack>
           {!!showButtons && (
             <>
+              <Snackbar anchorOrigin={{ vertical: "top", horizontal: "center" }} open={open} autoHideDuration={3000} onClose={handleClose}>
+                <Alert
+                  onClose={handleClose}
+                  severity="warning"
+                  variant="filled"
+                >
+                  دسترسی به اینترنت وجود ندارد!
+                </Alert>
+              </Snackbar>
               <MobileItems />
               <MenuKey
                 icon={!!!user ? "/menu/user.svg" : "/menu/profile.svg"}

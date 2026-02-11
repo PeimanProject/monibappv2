@@ -11,7 +11,7 @@ import { db } from "@/app/libs/db";
  * @param {string} params.displaySize - حجم فایل برای ذخیره در دیتابیس (مثلا 115.71 MB)
  * @param {Function} params.onProgress - کالبک برای آپدیت درصد پیشرفت در UI
  */
-export const downloadMediaHandler = async ({ lectureId, mainId, type, url, displaySize, onProgress }) => {
+export const downloadMediaHandler = async ({ lectureId, mainId, title, type, url, displaySize, onProgress }) => {
     const extension = type === 'video' ? 'mp4' : 'mp3';
     const fileName = `lecture-${lectureId}-${type}.${extension}`;
     const relativePath = `media/${fileName}`;
@@ -57,6 +57,7 @@ export const downloadMediaHandler = async ({ lectureId, mainId, type, url, displ
             id: `${lectureId}-${type}`, // کلید یکتا برای هر نوع رسانه در هر درس
             lectureId: lectureId,
             fileName: fileName,
+            title: title,
             type: type,
             categoryId: mainId,
             localPath: fileUri.uri, // مسیری که بعدا برای پخش آفلاین استفاده می‌کنید

@@ -1,7 +1,9 @@
 "use client";
+import { db } from "@/app/libs/db";
 import { GetOs } from "@/app/libs/getOs";
 import { MobilePlayer } from "@/app/pages/player/mobilePlayer";
 import { API } from "@/core/config/api";
+import { useConnectivity } from "@/core/ConnectivityProvider";
 import { Box, Typography } from "@mui/material";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState, Suspense } from "react";
@@ -10,7 +12,7 @@ import { Button } from "react-scroll";
 // 1. Move the logic into a content component
 const PlayerContent = () => {
   const searchParams = useSearchParams();
-
+  const { isConnected } = useConnectivity();
   // Extract all parameters from the URL
   const lectureId = searchParams.get("id"); // Now using ?id= instead of [lectureId]
   const mediaCurrent = searchParams.get("media") || null;
@@ -21,6 +23,7 @@ const PlayerContent = () => {
   const [quranData, setQuranData] = useState(undefined);
   const [srtArr, setSrtArr] = useState(undefined);
   const [srtEnArr, setSrtEnArr] = useState(undefined);
+
 
   // Handlers
   const handleGetLecture = async () => {
@@ -34,6 +37,36 @@ const PlayerContent = () => {
       console.error("Error fetching lecture:", error);
     }
   };
+
+  const handleGetLectureOffline = async () => {
+    if (!lectureId) return;
+
+    try {
+      const lid = Number(lectureId);
+      const [downloadedVideo, downloadedSound] = await Promise.all([
+        db.downloads.where({ lectureId: lid, type: 'video' }).first(),
+        db.downloads.where({ lectureId: lid, type: 'sound' }).first()
+      ]);
+      const lectureData = await db.lectures.get(lid);
+      if (lectureData) {
+        // ۳. غنی‌سازی آبجکت لکچر با اطلاعات فایل‌های موجود
+        const enrichedLecture = {
+          ...lectureData,
+          // اگر فایل موجود بود، کل اطلاعاتش (مسیر محلی و ...) را اضافه کن، در غیر این صورت null
+          video: downloadedVideo ? downloadedVideo : null,
+          sound: downloadedSound ? downloadedSound : null,
+          // فلگ‌های کمکی برای نمایش در UI
+          hasOfflineVideo: !!downloadedVideo,
+          hasOfflineSound: !!downloadedSound
+        };
+
+        setLecture(enrichedLecture);
+      }
+    } catch (error) {
+      setLecture(null)
+      console.error("Error fetching lecture from offline db:", error);
+    }
+  }
 
   const handleGetQuranData = async () => {
     try {
@@ -76,11 +109,16 @@ const PlayerContent = () => {
 
   // Init fetch
   useEffect(() => {
-    handleGetLecture();
+    if (isConnected) {
+      handleGetLecture();
+    }
+    else {
+      handleGetLectureOffline()
+    }
   }, [lectureId]); // Re-fetch if the ID in the URL changes
 
   useEffect(() => {
-    if (lecture) {
+    if (lecture && !isConnected) {
       if (lecture?.mainId === 1) {
         handleGetQuranData();
       }
@@ -91,7 +129,7 @@ const PlayerContent = () => {
         handleGetEnSrtArr();
       }
     }
-  }, [lecture]);
+  }, [lecture, isConnected]);
 
   const os = GetOs();
 

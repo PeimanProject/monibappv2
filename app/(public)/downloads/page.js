@@ -1,5 +1,5 @@
 "use client";
-import { Box, Container, Divider, Typography, useTheme, IconButton } from "@mui/material";
+import { Box, Container, Divider, Typography, useTheme, IconButton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from "@mui/material";
 import Image from "next/image";
 import React, { useMemo } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
@@ -22,6 +22,18 @@ export default function Downloads() {
     const theme = useTheme();
     const [openId, setOpenId] = React.useState(null);
 
+    const [open, setOpen] = React.useState(false);
+    const [selected, setSelected] = React.useState(null);
+
+    const handleClickOpen = (item) => {
+        setSelected(item)
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setSelected(null)
+        setOpen(false);
+    };
 
     // تابع اصلی برای پخش فایل آفلاین
     const handlePlayOffline = (item) => {
@@ -60,18 +72,18 @@ export default function Downloads() {
 
     // ۳. تابع حذف فایل و رکورد دیتابیس
     const handleDelete = async (download) => {
-        if (confirm("آیا از حذف این فایل اطمینان دارید؟")) {
-            try {
-                // حذف فیزیکی فایل از گوشی
-                await Filesystem.deleteFile({
-                    path: download.localPath
-                });
-            } catch (e) {
-                console.error("فایل فیزیکی یافت نشد یا قبلا حذف شده است");
-            }
-            // حذف از دیتابیس (حتی اگر فایل فیزیکی نبود، رکورد پاک شود)
-            await db.downloads.delete(download.id);
+        try {
+            // حذف فیزیکی فایل از گوشی
+            await Filesystem.deleteFile({
+                path: download.localPath
+            });
+        } catch (e) {
+            console.error("فایل فیزیکی یافت نشد یا قبلا حذف شده است");
         }
+        // حذف از دیتابیس (حتی اگر فایل فیزیکی نبود، رکورد پاک شود)
+        await db.downloads.delete(download.id);
+        handleClose()
+
     };
 
     return (
@@ -96,7 +108,7 @@ export default function Downloads() {
                 // فیلتر کردن آیتم‌های مربوط به این دسته‌بندی
                 // نکته: اگر در زمان دانلود categoryId را ذخیره کرده باشید اینجا دقیق‌تر عمل می‌کند
                 const categoryItems = allDownloads.filter(d =>
-                    category.id === "last" ? true : d.category === category.id
+                    category.id === "last" ? true : d.categoryId.toString() === category.id
                 );
 
                 return (
@@ -130,13 +142,13 @@ export default function Downloads() {
                                         <Box key={item.id}>
                                             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", p: 2 }}>
                                                 <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
-                                                    <Typography variant="body1" fontSize={13} fontWeight={600}>{item.fileName}</Typography>
+                                                    <Typography variant="body1" fontSize={13} fontWeight={600}>{item.title || item.fileName}</Typography>
                                                     <Typography variant="caption" color="text.secondary">
                                                         {item.type === 'sound' ? 'فایل صوتی' : 'فایل تصویری'} | {item.size}
                                                     </Typography>
                                                 </Box>
                                                 <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-                                                    <IconButton onClick={() => handleDelete(item)} size="small">
+                                                    <IconButton onClick={() => handleClickOpen(item)} size="small">
                                                         <Image unoptimized src="/icons/dark/delete.svg" alt="delete" width={20} height={20} />
                                                     </IconButton>
                                                     <IconButton size="small" onClick={() => handlePlayOffline(item)}>
@@ -153,6 +165,28 @@ export default function Downloads() {
                     </React.Fragment>
                 );
             })}
+            <Dialog
+                open={open}
+                fullWidth
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle sx={{ m: 2, }} id="alert-dialog-title">
+                    حذف فایل دانلود شده
+                </DialogTitle>
+                <DialogContent sx={{ m: 1 }}>
+                    <DialogContentText id="alert-dialog-description">
+                        آیا از حذف این فایل اطمینان دارید؟
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button variant="outlined" onClick={handleClose}>خیر</Button>
+                    <Button variant="contained" onClick={() => handleDelete(selected)} autoFocus>
+                        بله
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Container>
     );
 }

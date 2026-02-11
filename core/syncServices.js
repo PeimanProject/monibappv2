@@ -44,7 +44,8 @@ export default function InitialSync({ children }) {
                     lectureId: s.lectureId,
                     lectureCount: s.lectureCount,
                     description: s.description,
-                    mainId: s.mainId
+                    mainId: s.mainId,
+                    type: s.type
                 })));
             }
             // ۳. ذخیره مرحله‌ای برای نمایش درصد پیشرفت (شبیه‌سازی شده یا واقعی)

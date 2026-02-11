@@ -21,16 +21,19 @@ import { useTranslate } from "@/core/useTranslation";
 import { Share } from "@capacitor/share";
 import { downloadMedia, downloadMediaHandler } from "@/core/downloadHandler";
 import { saveMediaIndb } from "@/core/dbHandler";
+import { useConnectivity } from "@/core/ConnectivityProvider";
 
 export const MobilePlayerTools = ({
   title,
   lectureId,
+  mainId,
   sound,
   video,
   download,
   os,
   vertical
 }) => {
+  const { isConnected } = useConnectivity()
   const { get } = useTranslate()
   const [showDownload, setShowDownload] = React.useState(false);
   const [downloadProgress, setDownloadProgress] = useState(0); // Track progress
@@ -80,7 +83,9 @@ export const MobilePlayerTools = ({
 
       await downloadMediaHandler({
         lectureId: lectureId,
+        mainId: mainId,
         type: type,
+        title: title,
         url: downloadUrl,
         displaySize: size,
         onProgress: (percent) => setDownloadProgress(percent)
@@ -209,6 +214,7 @@ export const MobilePlayerTools = ({
         }}
       >
         <Button
+          disabled={!isConnected}
           color="primary"
           variant="contained"
           disableElevation
@@ -248,6 +254,7 @@ export const MobilePlayerTools = ({
           {get("Lecture.share")}
         </Button>
         <Button
+          disabled={!isConnected}
           size="small"
           color="primary"
           variant="contained"
