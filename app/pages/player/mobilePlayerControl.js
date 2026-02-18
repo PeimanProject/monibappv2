@@ -185,6 +185,7 @@ export const MobilePlayerControl = ({
     }
   }, [ccType]);
 
+  console.log({ srt, srt_en })
   return (
     <>
       <Box
@@ -332,6 +333,7 @@ export const MobilePlayerControl = ({
                 setText(text?.text);
               }
             }}
+            crossOrigin="anonymous"
             onPlay={() => setIsPlaying(true)}
             onPause={() => setIsPlaying(false)}
             src={video?.url || videoFinalSrc}
@@ -339,7 +341,7 @@ export const MobilePlayerControl = ({
             {srt && (
               <track
                 kind="subtitles"
-                src={`/api/srt/vtt/${lectureId || id}?filename=${srt?.fileName}`}
+                src={`https://monibapp.ir/api/srt/vtt/${lectureId || id}?filename=${srt?.fileName}`}
                 srcLang="fa"
                 default
               />
@@ -347,7 +349,7 @@ export const MobilePlayerControl = ({
             {srt_en?.fileName && (
               <track
                 kind="subtitles"
-                src={`/api/srt/vtt/${lectureId || id}?filename=${srt_en.fileName}`}
+                src={`https://monibapp.ir/api/srt/vtt/${lectureId || id}?filename=${srt_en.fileName}`}
                 srcLang="en"
               />
             )}

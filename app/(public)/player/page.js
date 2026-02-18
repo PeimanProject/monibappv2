@@ -118,7 +118,7 @@ const PlayerContent = () => {
   }, [lectureId]); // Re-fetch if the ID in the URL changes
 
   useEffect(() => {
-    if (lecture && !isConnected) {
+    if (lecture && isConnected) {
       if (lecture?.mainId === 1) {
         handleGetQuranData();
       }

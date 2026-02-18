@@ -38,14 +38,14 @@ export function NotifierProvider({ children }) {
             {children}
             <Snackbar
                 open={open}
-                autoHideDuration={3000}
+                autoHideDuration={5000}
                 onClose={handleClose}
-                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
             >
                 <Box
                     sx={{
-                        bgcolor: "rgba(255, 255, 255, 0.15)", // Semi-transparent
-                        backdropFilter: "blur(12px)",        // The glass effect
+                        bgcolor: "rgba(0, 0, 0, 0.46)", // Semi-transparent
+                        backdropFilter: "blur(100px)",        // The glass effect
                         border: "1px solid rgba(255, 255, 255, 0.2)",
                         color: "#fff",
                         px: 3,
