@@ -40,21 +40,24 @@ export const MobileHomeActions = ({ isConnected, liveCounter, isLive }) => {
             </Button>
           </Link>
         </Box>
-        <Box sx={{ flex: 1, mx: 0.3, a: { height: 1 / 1 } }}>
-          <Link href={`/content/quran?type=miskat`}>
-            <Button
-              sx={{
-                borderRadius: desktopValues({}).BORDER,
-                background: "url(/images/miskat.jpg) center center",
-                backgroundSize: "cover",
-                height: 52,
-              }}
-              fullWidth
-              disableElevation
-              variant={theme.palette.mode === "dark" ? "outlined" : "contained"}
-            ></Button>
-          </Link>
-        </Box>
+        {
+          isConnected &&
+          <Box sx={{ flex: 1, mx: 0.3, a: { height: 1 / 1 } }}>
+            <Link href={`/content/quran?type=miskat`}>
+              <Button
+                sx={{
+                  borderRadius: desktopValues({}).BORDER,
+                  background: "url(/images/miskat.jpg) center center",
+                  backgroundSize: "cover",
+                  height: 52,
+                }}
+                fullWidth
+                disableElevation
+                variant={theme.palette.mode === "dark" ? "outlined" : "contained"}
+              ></Button>
+            </Link>
+          </Box>
+        }
       </Box>
       {
         isConnected && <Box sx={{ display: "flex" }}>

@@ -163,7 +163,7 @@ export const DesktopLectureList = ({
               </Typography>
             </ButtonBase>
           </Link>
-          {item?.files?.sound?.url && (
+          {/* {item?.files?.sound?.url && (
             <IconButton onClick={handleDownloadFile(item?.files?.sound?.url)}>
               <Box
                 sx={{ maxWidth: 20 }}
@@ -171,7 +171,7 @@ export const DesktopLectureList = ({
                 src={`/icons/${theme.palette.mode}/download.svg`}
               />
             </IconButton>
-          )}
+          )} */}
         </Box>
       ))}
     </Box>

@@ -4,8 +4,11 @@ import { MobileWisdom } from "@/app/pages/wisdom/mobileWisdom";
 import { API } from "@/core/config/api";
 import { Box, Button, Typography } from "@mui/material";
 import { useSearchParams } from "next/navigation";
+import { useConnectivity } from "@/core/ConnectivityProvider";
+import OfflinePage from "@/app/component/offlienPage";
 
 const WisdomContent = () => {
+  const { isConnected } = useConnectivity()
   const searchParams = useSearchParams();
   const id = searchParams.get("id"); // Get ?id=123 from URL
   const [list, setList] = useState(undefined);
@@ -56,6 +59,9 @@ const WisdomContent = () => {
   // 2. If an ID is in URL, we wait for both the list and the specific wisdom.
   const isLoading = id ? (list === undefined || wisdom === undefined) : list === undefined;
 
+  if (!isConnected) {
+    return <OfflinePage />;
+  }
   if (isLoading) {
     return (
       <Typography m={5} textAlign={"center"}>

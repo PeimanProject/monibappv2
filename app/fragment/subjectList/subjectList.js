@@ -26,22 +26,10 @@ const TitleControl = ({ title, start_time, selected = false }) => {
   const handleTitleClick = React.useCallback(() => {
 
     if (!!audio) {
-      // مشکل اصلی اینجاست: باید مطمئن شویم فایل آماده پذیرش زمان جدید است
-      if (audio.readyState >= 1) { // 1 = HAVE_METADATA
-        audio.currentTime = start_time;
-        audio.play();
-      } else {
-        // اگر فایل هنوز گیج است، اجبار به لود و سپس Seek
-        audio.load();
-        audio.oncanplay = () => {
-          audio.currentTime = start_time;
-          audio.play();
-          audio.oncanplay = null; // پاکسازی واقعه
-        };
-      }
+      audio.currentTime = start_time;
     }
     if (video) {
-      video.seekTo(start_time);
+      video.currentTime = start_time;
     }
   }, [audio, video]);
 

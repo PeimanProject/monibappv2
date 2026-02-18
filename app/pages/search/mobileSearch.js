@@ -21,8 +21,11 @@ import Link from "next/link";
 import { Book } from "./book";
 import { useTranslate } from "@/core/useTranslation";
 import { SearchReq } from "@/app/data/search/route";
+import { useConnectivity } from "@/core/ConnectivityProvider";
+import OfflinePage from "@/app/component/offlienPage";
 
 export const MobileSearch = ({ desktop, q }) => {
+  const { isConnected } = useConnectivity()
   const [value, setValue] = React.useState("tag");
   const [query, setQuery] = React.useState("");
   const [search, setSearch] = React.useState(false);
@@ -120,7 +123,7 @@ export const MobileSearch = ({ desktop, q }) => {
       handleSearch(q);
     }
   }, [q]);
-
+  if (!isConnected) return <OfflinePage />;
   return (
     <>
       <Box

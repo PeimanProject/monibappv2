@@ -4,6 +4,7 @@ import { db } from "@/app/libs/db";
 import { API } from "@/core/config/api";
 import { useConnectivity } from "@/core/ConnectivityProvider";
 import { Box, Typography, Button } from "@mui/material";
+import Dexie from "dexie";
 import { useSearchParams } from "next/navigation";
 import React, { Suspense, useEffect, useState } from "react";
 
@@ -29,8 +30,8 @@ const QuranPage = () => {
     try {
       // فیلتر کردن تمام رکوردهایی که مربوط به قرآن (main_id: 1) هستند
       const offlineData = await db.series
-        .where("mainId")
-        .equals(1)
+        .where('[mainId+rowId]')
+        .between([1, Dexie.minKey], [1, Dexie.maxKey])
         .toArray();
       if (offlineData.length > 0) {
         setList({ "mainId": 1, "list": offlineData });

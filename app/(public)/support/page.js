@@ -18,6 +18,8 @@ import { alpha, styled } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
 import { ContactReq } from "@/app/data/contact/route";
+import { useConnectivity } from "@/core/ConnectivityProvider";
+import OfflinePage from "@/app/component/offlienPage";
 
 const BootstrapInputMessage = styled(InputBase)(({ theme }) => ({
   "& .MuiInputBase-input": {
@@ -79,6 +81,7 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function SupportPage() {
+  const { isConnected } = useConnectivity()
   const [message, setMessage] = useState({
     message: "",
     name: "",
@@ -139,10 +142,10 @@ export default function SupportPage() {
       setSnackbar({
         open: true,
         message: `لطفا ${preferredContact === "phone"
-            ? "شماره موبایل"
-            : preferredContact === "email"
-              ? "ایمیل"
-              : "شماره واتس‌اپ"
+          ? "شماره موبایل"
+          : preferredContact === "email"
+            ? "ایمیل"
+            : "شماره واتس‌اپ"
           } را وارد کنید`,
         severity: "error",
       });
@@ -202,6 +205,9 @@ export default function SupportPage() {
     setSnackbar({ ...snackbar, open: false });
   };
 
+  if (!isConnected) {
+    return <OfflinePage />;
+  }
   return (
     <Container maxWidth="md" sx={{ pt: { xs: 1, md: 4 }, pb: 22, px: 4 }}>
       <form onSubmit={handleSubmit}>

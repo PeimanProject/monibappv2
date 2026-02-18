@@ -10,6 +10,7 @@ import { ServiceWorkerRegistration } from "@/app/component/serviceWorkerRegistra
 import BackButtonHandler from "@/core/backButtonHandler";
 import InitialSync from "@/core/syncServices";
 import { ConnectivityProvider } from "@/core/ConnectivityProvider";
+import { NotifierProvider } from "@/core/notifire";
 
 // export const metadata = {
 //   title: appConfig.title,
@@ -107,21 +108,24 @@ export default async function RootLayout({ children }) {
         className={`${fonts[theme.theme.fontFamily].variable} ${tArabic.variable
           }`}
       >
-        <ConnectivityProvider>
+        <NotifierProvider>
 
-          <BackButtonHandler />
-          <EventLayout />
-          <IOSAudioManager />
-          <ServiceWorkerRegistration />
-          <NextTopLoader color="#FE4A23" height={4} showSpinner={false} />
-          <StyleProvider theme={theme} dir={dir} viewport={viewport}>
-            <InitialSync>
-              {children}
-            </InitialSync>
-          </StyleProvider>
-          <GoogleAnalytics gaId="G-BH8L7RC80X" />
-          <MicrosoftClarity />
-        </ConnectivityProvider>
+          <ConnectivityProvider>
+
+            <BackButtonHandler />
+            <EventLayout />
+            <IOSAudioManager />
+            <ServiceWorkerRegistration />
+            <NextTopLoader color="#FE4A23" height={4} showSpinner={false} />
+            <StyleProvider theme={theme} dir={dir} viewport={viewport}>
+              <InitialSync>
+                {children}
+              </InitialSync>
+            </StyleProvider>
+            <GoogleAnalytics gaId="G-BH8L7RC80X" />
+            <MicrosoftClarity />
+          </ConnectivityProvider>
+        </NotifierProvider>
       </body>
     </html>
   );

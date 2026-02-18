@@ -22,6 +22,7 @@ import { useTranslate } from "@/core/useTranslation";
 import { useVttTrack } from "@/app/libs/srtHandler";
 import { useConnectivity } from "@/core/ConnectivityProvider";
 import { Capacitor } from '@capacitor/core';
+import { usePlayerHistoryStore } from "@/store/playerHistoryStore";
 export const MobilePlayerControl = ({
   media,
   srtArray,
@@ -31,6 +32,7 @@ export const MobilePlayerControl = ({
   video,
   sound,
   lectureId,
+  id,
   srt,
   srt_en,
   title,
@@ -42,6 +44,7 @@ export const MobilePlayerControl = ({
   seriesId,
   verse,
 }) => {
+  console.log({ lectureId })
   // استفاده از علامت سوال قبل از نقطه برای جلوگیری از خطا در صورت null بودن
   const soundFinalSrc = sound?.localPath ? Capacitor.convertFileSrc(sound.localPath) : null;
   const videoFinalSrc = video?.localPath ? Capacitor.convertFileSrc(video.localPath) : null;
@@ -69,7 +72,12 @@ export const MobilePlayerControl = ({
   const setShowPlayerAction = usePlayerActionStore((state) => state.setShow);
 
   const { sync, setSync } = useSyncMediaSourceStore((state) => state);
-  const [, setPlayer] = React.useState(null);
+
+  const savePosition = usePlayerHistoryStore((state) => state.savePosition);
+  const getPosition = usePlayerHistoryStore((state) => state.getPosition);
+  const lastTime = getPosition(lectureId || id);
+  const lastSavedTimeRef = React.useRef(0);
+  const [isReady, setIsReady] = React.useState(false);
 
   React.useEffect(() => {
     const timer = setTimeout(() => setShow(true), 1000);
@@ -79,18 +87,19 @@ export const MobilePlayerControl = ({
   React.useEffect(() => {
     if (!audioRef) return;
 
-    if (!!time && media === "sound") {
-      audioRef.current.currentTime = time;
-    } else if (!!time && media === "video") {
-      playerRef.current.seekTo(time);
+    if ((!!time || !!lastTime) && media === "sound") {
+      audioRef.current.currentTime = time || lastTime;
+    } else if ((!!time || !!lastTime) && media === "video") {
+      playerRef.current.currentTime = time || lastTime;
     }
-  }, [time]);
+  }, []);
 
   const handleTimeUpdate = React.useCallback(() => {
-    const currentTime = audioRef?.current.currentTime;
-
+    const currentTime = audioRef?.current?.currentTime;
+    if (!currentTime) return;
+    savePosition(lectureId || id, currentTime);
     setPosition(currentTime);
-    setSync({ ...sync, [lectureId]: currentTime });
+    setSync({ ...sync, [lectureId || id]: currentTime });
     if (!!srtArray?.[ccType]) {
       const text = srtArray[ccType].find(
         (caption) =>
@@ -121,22 +130,26 @@ export const MobilePlayerControl = ({
 
   const onReady = React.useCallback(
     (p) => {
-      setPlayer(p);
+      if (!isReady) {
+        setIsReady(true);
+        playerRef.current.currentTime = lastTime;
+      }
       setVideo(p);
     },
-    [setPlayer]
+    [setVideo, playerRef.current, lastTime]
   );
 
   const handlePictureInPicture = React.useCallback(() => {
     setShowPlayerAction(
       false,
-      { title, video: video?.url, sound: sound?.url, lectureId },
+      { title, video: video?.url, sound: sound?.url, lectureId: lectureId || id },
       true
     );
     if (playerRef?.current) {
-      playerRef?.current?.getInternalPlayer()?.pause?.();
+      playerRef.current.pause();
     }
-  }, [setShowPlayerAction, playerRef, video, sound, lectureId, title]);
+  }, [setShowPlayerAction, playerRef, video, sound, lectureId || id, title]);
+
 
   const setMediaSession = () => {
     if ("mediaSession" in navigator) {
@@ -160,7 +173,7 @@ export const MobilePlayerControl = ({
   React.useEffect(() => {
     if (!playerRef?.current) return;
 
-    const videoEl = playerRef.current.getInternalPlayer();
+    const videoEl = playerRef.current;
     if (videoEl && videoEl.textTracks) {
       Array.from(videoEl.textTracks).forEach((track) => {
         if (ccType === "off") {
@@ -271,6 +284,7 @@ export const MobilePlayerControl = ({
               ref={audioRef}
               preload="metadata"
               playsInline
+              controlsList="nodownload"
               autoPlay
               muted
               webkit-playsinline="true"
@@ -292,52 +306,54 @@ export const MobilePlayerControl = ({
         )}
 
         {/* {!!audioRef?.current && <VoiceVisualizer  />} */}
-
         {!!show && media === "video" && (
-          <ReactPlayer
-            ref={playerRef} //
-            onReady={onReady}
-            config={{
-              file: {
-                attributes: { playsInline: true },
-                tracks: srt
-                  ? [
-                    {
-                      kind: "subtitles",
-                      src: faVtt, // Path to your SRT file
-                      srcLang: "fa",
-                      default: true,
-                    },
-                    ...(srt_en?.fileName
-                      ? [
-                        {
-                          kind: "subtitles",
-                          src: enVtt, // Path to your SRT file
-                          srcLang: "en",
-                        },
-                      ]
-                      : []),
-                  ]
-                  : [],
-              },
+          <video
+            ref={(el) => {
+              playerRef.current = el;
+              if (el && !el.dataset.ready) {
+                el.dataset.ready = "true";
+                onReady(el);
+              }
             }}
-            playing={isPlaying}
-            // onReady={onReady}
-            // onBufferEnd={onBufferEnd}
-            // onBuffer={onBuffer}
-            height="auto"
-            onProgress={(state) => {
-              const currentTime = state.playedSeconds;
+            playsInline
+            controls
+            controlsList="nodownload"
+            style={{ width: "100%", height: "auto" }}
+            onTimeUpdate={(e) => {
+              const currentTime = e.target.currentTime;
+              savePosition(lectureId || id, currentTime);
               setPosition(currentTime);
-              setSync({ ...sync, [lectureId]: currentTime * 1 });
+              setSync({ ...sync, [lectureId || id]: currentTime });
+              if (!!srtArray?.[ccType]) {
+                const text = srtArray[ccType].find(
+                  (caption) =>
+                    currentTime >= caption?.start && currentTime <= caption?.end
+                );
+                setText(text?.text);
+              }
             }}
-            width={"100%"}
-            controls={true}
-            url={video?.url || videoFinalSrc}
-          />
+            onPlay={() => setIsPlaying(true)}
+            onPause={() => setIsPlaying(false)}
+            src={video?.url || videoFinalSrc}
+          >
+            {srt && (
+              <track
+                kind="subtitles"
+                src={`/api/srt/vtt/${lectureId || id}?filename=${srt?.fileName}`}
+                srcLang="fa"
+                default
+              />
+            )}
+            {srt_en?.fileName && (
+              <track
+                kind="subtitles"
+                src={`/api/srt/vtt/${lectureId || id}?filename=${srt_en.fileName}`}
+                srcLang="en"
+              />
+            )}
+            Your browser does not support the video element.
+          </video>
         )}
-
-
       </Box>
     </>
   );

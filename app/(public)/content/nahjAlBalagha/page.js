@@ -4,6 +4,7 @@ import { db } from "@/app/libs/db";
 import { API } from "@/core/config/api";
 import { useConnectivity } from "@/core/ConnectivityProvider";
 import { Typography, Box, Button } from "@mui/material";
+import Dexie from "dexie";
 import React, { useEffect, useState } from "react";
 
 const NahjAlBalaghaPage = () => {
@@ -25,8 +26,8 @@ const NahjAlBalaghaPage = () => {
     try {
       // فیلتر کردن دیتابیس بر اساس main_id نهج‌البلاغه
       const offlineSeries = await db.series
-        .where("mainId")
-        .equals(3)
+        .where('[mainId+rowId]')
+        .between([3, Dexie.minKey], [3, Dexie.maxKey])
         .toArray();
 
       if (offlineSeries.length > 0) {
