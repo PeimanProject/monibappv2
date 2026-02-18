@@ -16,6 +16,7 @@ import { useUserStore } from "@/store/useUserStore";
 import { useRouter } from "next/navigation";
 import { useTranslate } from "@/core/useTranslation";
 import { useConnectivity } from "@/core/ConnectivityProvider";
+import { useNotify } from "@/core/notifire";
 
 const MainMenuKey = ({ pos = -40, top = 0, title, onClick, showMenu }) => {
   const theme = useTheme();
@@ -216,19 +217,8 @@ export const MobileAppBar = () => {
   const { show, setShow } = useMainMenuStore((state) => state);
   const setShowPlayList = usePlayListStore((state) => state.setShow);
   const router = useRouter();
-  const [open, setOpen] = React.useState(false);
+  const notify = useNotify()
 
-  const handleClick = () => {
-    setOpen(true);
-  };
-
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setOpen(false);
-  };
 
   const [showButtons, setShowButtons] = React.useState(false);
 
@@ -240,7 +230,7 @@ export const MobileAppBar = () => {
   const handleToggleLogin = React.useCallback(
     (show) => () => {
       if (!isConnected) {
-        handleClick()
+        notify("دسترسی به اینترنت وجود ندارد!", "error")
         return
       }
       if (!!!user) {
@@ -297,15 +287,6 @@ export const MobileAppBar = () => {
         <AppBarBack>
           {!!showButtons && (
             <>
-              <Snackbar anchorOrigin={{ vertical: "top", horizontal: "center" }} open={open} autoHideDuration={3000} onClose={handleClose}>
-                <Alert
-                  onClose={handleClose}
-                  severity="warning"
-                  variant="filled"
-                >
-                  دسترسی به اینترنت وجود ندارد!
-                </Alert>
-              </Snackbar>
               <MobileItems />
               <MenuKey
                 icon={!!!user ? "/menu/user.svg" : "/menu/profile.svg"}
