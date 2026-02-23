@@ -11,7 +11,7 @@ import { db } from "@/app/libs/db";
  * @param {string} params.displaySize - حجم فایل برای ذخیره در دیتابیس (مثلا 115.71 MB)
  * @param {Function} params.onProgress - کالبک برای آپدیت درصد پیشرفت در UI
  */
-export const downloadMediaHandler = async ({ lectureId, mainId, title, type, url, displaySize, onProgress }) => {
+export const downloadMediaHandler = async ({ lectureId, mainId, title, type, url, displaySize, onProgress, saveToPublic = false }) => {
     const extension = type === 'video' ? 'mp4' : 'mp3';
     const fileName = `lecture-${lectureId}-${type}.${extension}`;
     const relativePath = `media/${fileName}`;
@@ -65,7 +65,26 @@ export const downloadMediaHandler = async ({ lectureId, mainId, title, type, url
             size: displaySize || 'Unknown',
             createdAt: new Date().toISOString(),
         });
+        // ۶. عملیات اضافی: کپی به پوشه عمومی گوشی (در صورت درخواست)
+        if (saveToPublic && Capacitor.isNativePlatform()) {
+            if (onProgress) onProgress(101);
 
+            const publicName = `${title.replace(/\s+/g, '_')}_${lectureId}.${extension}`;
+
+            // خواندن فایل دانلود شده
+            const fileContents = await Filesystem.readFile({
+                path: relativePath,
+                directory: Directory.Data
+            });
+
+            // نوشتن در پوشه عمومی Documents
+            await Filesystem.writeFile({
+                path: publicName,
+                data: fileContents.data,
+                directory: Directory.Documents,
+                recursive: true
+            });
+        }
         return fileUri.uri;
 
     } catch (error) {

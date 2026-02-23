@@ -44,7 +44,7 @@ export const MobilePlayerControl = ({
   seriesId,
   verse,
 }) => {
-  console.log({ lectureId })
+
   // استفاده از علامت سوال قبل از نقطه برای جلوگیری از خطا در صورت null بودن
   const soundFinalSrc = sound?.localPath ? Capacitor.convertFileSrc(sound.localPath) : null;
   const videoFinalSrc = video?.localPath ? Capacitor.convertFileSrc(video.localPath) : null;

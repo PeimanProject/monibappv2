@@ -3,6 +3,10 @@ import { MenuItem } from "./menuItem";
 import { format as formatJ } from "date-fns-jalali";
 import { format } from "date-fns";
 import Link from "next/link";
+import { usePlayListStore } from "@/store/usePlayListStore";
+import React from "react";
+import { useUserStore } from "@/store/useUserStore";
+import { useAuthLoginStore } from "@/store/layout/useProfileStore";
 
 export const mainMenuData = [
   {
@@ -144,6 +148,41 @@ export const mainMenuData = [
         </Link>
       </Box>
     ),
+  },
+  {
+    id: "playlist",
+    render: ({ get, mode, onClose }) => {
+      const user = useUserStore((state) => state.user);
+      const setShowLogin = useAuthLoginStore((state) => state.setShow);
+      const setShowPlayList = usePlayListStore((state) => state.setShow);
+      const handlePlayListClick = async () => {
+        if (!!!user) {
+          await onClose()
+          setShowLogin(true);
+          return;
+        }
+        await onClose()
+        setShowPlayList(true);
+      }
+
+      return <Box
+        sx={{
+          flex: 1,
+          width: 1 / 1,
+          a: {
+            flex: 1,
+            width: 1 / 1,
+          },
+        }}
+      >
+        <MenuItem
+          onChange={handlePlayListClick}
+          title={get("Menu.playlist")}
+          icon={`/icons/light/playlist.svg`}
+        />
+      </Box>
+
+    },
   },
   {
     id: "setting",

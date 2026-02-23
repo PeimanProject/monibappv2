@@ -27,8 +27,11 @@ import { useConnectivity } from "@/core/ConnectivityProvider";
 import { motion, AnimatePresence } from "framer-motion";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import { useNotify } from "@/core/notifire";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 export const MobilePlayerTools = ({
   title,
+  id,
   lectureId,
   mainId,
   sound,
@@ -43,6 +46,7 @@ export const MobilePlayerTools = ({
   const [showDownload, setShowDownload] = React.useState(false);
   const [downloadProgress, setDownloadProgress] = useState(0); // Track progress
   const [isDownloading, setIsDownloading] = useState(false);   // Track state
+  const [downloadStatus, setDownloadStatus] = useState("idle"); // idle | success | error
   const [showSownloadOption, setShowDownloadOption] = useState({
     audio: false,
     video: false
@@ -53,15 +57,24 @@ export const MobilePlayerTools = ({
 
   const handleDownload = React.useCallback(
     (show) => () => {
-      setShowDownload(show)
+      if (isDownloading) {
+        notify("لطفا صبر کنید تا عملیات دانلود تمام شود", "error")
+        return;
+      }
+      setShowDownload(show);
+      // ریست کردن وضعیت‌ها هنگام باز و بسته شدن
+      if (show === true) {
+        setDownloadStatus("idle");
+        setIsDownloading(false);
+        setDownloadProgress(0);
+      }
       setShowDownloadOption({ audio: false, video: false });
     },
     []
   );
-
   const handleShare = React.useCallback(async () => {
     await Share.share({
-      text: window.location.href,
+      text: `https://monibapp.ir/fa/player/${lectureId || id}`
     });
 
   }, []);
@@ -74,7 +87,7 @@ export const MobilePlayerTools = ({
     setShowPlayList(true, { lectureId, lecture: true });
   }, [setShowPlayList, user, setShowLogin]);
 
-  const handleDownloadFileOffline = async () => {
+  const handleDownloadFileOffline = async (toPublic = false) => {
     const isAudio = showSownloadOption.audio;
     const type = isAudio ? "sound" : "video";
 
@@ -84,6 +97,7 @@ export const MobilePlayerTools = ({
 
     try {
       setIsDownloading(true);
+      setDownloadStatus("idle");
       setDownloadProgress(0);
 
       await downloadMediaHandler({
@@ -93,35 +107,37 @@ export const MobilePlayerTools = ({
         title: title,
         url: downloadUrl,
         displaySize: size,
+        saveToPublic: toPublic,
         onProgress: (percent) => setDownloadProgress(percent)
       });
-      notify("دانلود با موفقیت انجام شد", "success")
+      setDownloadStatus("success");
+      // بستن خودکار دیالوگ بعد از ۲ ثانیه
+      setTimeout(() => setShowDownload(false), 3000);
     } catch (error) {
-      notify("خطا در دانلود", "error")
+      setDownloadStatus("error");
+      // در صورت خطا، اجازه می‌دهیم کاربر پیام را ببیند و خودش ببندد یا دیالوگ بعد از ۳ ثانیه بسته شود
+      setTimeout(() => setShowDownload(false), 3000);
     } finally {
       setIsDownloading(false);
-      setShowDownload(false)
-      setShowDownloadOption({ audio: false, video: false });
     }
   };
   return (
     <>
       <Dialog
         open={showDownload}
-        maxWidth="md"
+        maxWidth="xs"
         fullWidth
         onClose={handleDownload(false)}
         sx={{
           "& .MuiPaper-root": {
-            bgcolor: (theme) => alpha(theme.palette.primary.dark, 0.8),
+            bgcolor: (theme) => alpha(theme.palette.primary.dark, 0.95),
+            backgroundImage: "none",
+            borderRadius: 5,
+            // m: 2
           },
         }}
         slotProps={{
-          backdrop: {
-            style: {
-              background: "transparent",
-            },
-          },
+          backdrop: { style: { background: "rgba(0,0,0,0.5)" } },
         }}
       >
         <DialogTitle component="div">
@@ -131,9 +147,15 @@ export const MobilePlayerTools = ({
           </IconButton>
         </DialogTitle>
 
-        <DialogContent sx={{ m: 4 }}>
+        <DialogContent sx={{
+          m: 2,
+          minHeight: '250px', // تضمین پایداری ارتفاع
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center'
+        }}>
           <AnimatePresence mode="wait">
-            {!isDownloading ? (
+            {!isDownloading && downloadStatus === "idle" && (
               <motion.div
                 key="options"
                 initial={{ opacity: 0, y: 10 }}
@@ -190,7 +212,7 @@ export const MobilePlayerTools = ({
                         fullWidth
                         variant="contained"
                         startIcon={<CloudDownloadIcon />}
-                        onClick={() => handleDownloadFileOffline(showSownloadOption.audio ? download.sound : download.video)}
+                        onClick={() => handleDownloadFileOffline(false)}
                         sx={{ borderRadius: 2, py: 1.2, fontWeight: "bold", bgcolor: "white", color: "primary.main", "&:hover": { bgcolor: "#f0f0f0" } }}
                       >
                         {get("Lecture.saveOffline")}
@@ -198,6 +220,7 @@ export const MobilePlayerTools = ({
                       <Button
                         fullWidth
                         variant="outlined"
+                        onClick={() => handleDownloadFileOffline(true)}
                         sx={{ borderRadius: 2, color: "white", borderColor: "rgba(255,255,255,0.3)" }}
                       >
                         {get("Lecture.saveDevice")}
@@ -206,21 +229,25 @@ export const MobilePlayerTools = ({
                   </motion.div>
                 )}
               </motion.div>
-            ) : (
-              /* بخش در حال دانلود */
+            )}
+            {isDownloading && (
               <motion.div
                 key="progress"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 style={{ textAlign: "center", padding: "20px 0" }}
               >
+                {/* تغییر داینامیک متن بر اساس پیشرفت */}
                 <Typography variant="h6" color="white" sx={{ mb: 2 }}>
-                  در حال دانلود ({downloadProgress}%)
+                  {downloadProgress > 100
+                    ? "در حال ذخیره‌سازی در دستگاه..."
+                    : `در حال دانلود (${downloadProgress}%)`}
                 </Typography>
+
                 <Box sx={{ width: '100%', position: 'relative' }}>
                   <LinearProgress
-                    variant="determinate"
-                    value={downloadProgress}
+                    variant={downloadProgress > 100 ? "indeterminate" : "determinate"}
+                    value={downloadProgress > 100 ? 0 : downloadProgress}
                     color="secondary"
                     sx={{
                       height: 12, borderRadius: 6, bgcolor: "rgba(255,255,255,0.1)",
@@ -228,8 +255,46 @@ export const MobilePlayerTools = ({
                     }}
                   />
                 </Box>
+
                 <Typography variant="caption" color="rgba(255,255,255,0.6)" sx={{ mt: 2, display: "block" }}>
-                  لطفاً تا پایان عملیات شکیبا باشید...
+                  {downloadProgress > 100
+                    ? "لطفاً چند لحظه صبر کنید، فایل در حال انتقال به حافظه است"
+                    : "لطفاً تا پایان عملیات شکیبا باشید..."}
+                </Typography>
+              </motion.div>
+            )}
+            {/* حالت ۳: موفقیت */}
+            {downloadStatus === "success" && (
+              <motion.div
+                key="success"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                style={{ textAlign: "center" }}
+              >
+                <CheckCircleOutlineIcon sx={{ fontSize: 60, color: "#4caf50", mb: 2 }} />
+                <Typography variant="h6" color="white">
+                  دانلود با موفقیت انجام شد
+                </Typography>
+                <Typography variant="body2" color="rgba(255,255,255,0.7)">
+                  فایل در بخش آفلاین قابل دسترسی است
+                </Typography>
+              </motion.div>
+            )}
+
+            {/* حالت ۴: خطا */}
+            {downloadStatus === "error" && (
+              <motion.div
+                key="error"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                style={{ textAlign: "center" }}
+              >
+                <ErrorOutlineIcon sx={{ fontSize: 60, color: "#f44336", mb: 2 }} />
+                <Typography variant="h6" color="white">
+                  خطا در عملیات دانلود
+                </Typography>
+                <Typography variant="body2" color="rgba(255,255,255,0.7)">
+                  لطفاً اتصال اینترنت خود را بررسی کنید
                 </Typography>
               </motion.div>
             )}

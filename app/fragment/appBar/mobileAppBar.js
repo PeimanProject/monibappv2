@@ -200,7 +200,7 @@ const MenuKey = ({ icon, pos = -40, top = 0, title, onClick, showMenu, disabled 
           />
         </ButtonBase>
       </animated.div>
-      <Typography variant="caption">{title}</Typography>
+      <Typography variant="caption" overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">{title}</Typography>
     </animated.div>
   );
 };
