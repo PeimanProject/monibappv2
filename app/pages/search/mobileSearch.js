@@ -110,8 +110,8 @@ export const MobileSearch = ({ desktop, q }) => {
   const handleKeyDown = React.useCallback(
     (event) => {
       if (event.key === "Enter") {
+        event.target.blur();
         handleSearch();
-        // You can trigger search or submit logic here
       }
     },
     [handleSearch]

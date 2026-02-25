@@ -66,24 +66,44 @@ export const downloadMediaHandler = async ({ lectureId, mainId, title, type, url
             createdAt: new Date().toISOString(),
         });
         // ۶. عملیات اضافی: کپی به پوشه عمومی گوشی (در صورت درخواست)
+        // ۶. عملیات کپی به پوشه عمومی گوشی
         if (saveToPublic && Capacitor.isNativePlatform()) {
-            if (onProgress) onProgress(101);
+            try {
+                if (onProgress) onProgress(101);
 
-            const publicName = `${title.replace(/\s+/g, '_')}_${lectureId}.${extension}`;
+                const extension = type === 'video' ? 'mp4' : 'mp3';
+                const cleanTitle = title.replace(/[\\/:*?"<>|]/g, '_').replace(/\s+/g, '_');
+                const publicName = `${cleanTitle}_${lectureId}.${extension}`;
+                const targetDir = Directory.Documents;
 
-            // خواندن فایل دانلود شده
-            const fileContents = await Filesystem.readFile({
-                path: relativePath,
-                directory: Directory.Data
-            });
+                if (type === 'video') {
+                    // برای ویدیو (حجیم): استفاده از متد Copy
+                    await Filesystem.copy({
+                        from: relativePath,
+                        directory: Directory.Data,
+                        to: publicName,
+                        toDirectory: targetDir
+                    });
+                } else {
+                    // برای صوت (مطمئن‌تر): استفاده از Read و Write
+                    // این روش مشکل عدم شناسایی فایل صوتی در برخی اندرویدها را حل می‌کند
+                    const fileData = await Filesystem.readFile({
+                        path: relativePath,
+                        directory: Directory.Data
+                    });
 
-            // نوشتن در پوشه عمومی Documents
-            await Filesystem.writeFile({
-                path: publicName,
-                data: fileContents.data,
-                directory: Directory.Documents,
-                recursive: true
-            });
+                    await Filesystem.writeFile({
+                        path: publicName,
+                        data: fileData.data,
+                        directory: targetDir,
+                        recursive: true
+                    });
+                }
+
+                console.log(`${type} با موفقیت در دستگاه کپی شد.`);
+            } catch (err) {
+                console.error(`خطا در کپی ${type}:`, err);
+            }
         }
         return fileUri.uri;
 

@@ -38,6 +38,8 @@ export const SearchControl = ({
             opacity: 1,
           },
         }}
+        type="search"
+        inputMode="search"
         onChange={onChange}
         onKeyDown={onKeyDown}
         placeholder={get("Common.searchAct")}

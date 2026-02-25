@@ -127,7 +127,7 @@ export const mainMenuData = [
     ),
   },
   {
-    id: "support",
+    id: "about",
     render: ({ get, mode, onClose }) => (
       <Box
         sx={{
@@ -139,11 +139,36 @@ export const mainMenuData = [
           },
         }}
       >
-        <Link href={"/support"}>
+        <Link href={"/about"}>
+          <MenuItem
+            onChange={onClose}
+            title={get("Menu.aboutUs")}
+            icon={`/icons/dark/about.svg`}
+          />
+        </Link>
+      </Box>
+    ),
+  },
+  {
+    id: "support",
+    render: ({ get, mode, onClose }) => (
+      <Box
+        sx={{ display: "flex", alignItems: "center", flex: 1, }}
+      >
+
+        <Link href={"/support"} style={{ flex: 1 }}>
           <MenuItem
             onChange={onClose}
             title={get("Menu.support")}
             icon={`/icons/${mode}/items/support.svg`}
+          />
+        </Link>
+        <Box mx={1} />
+        <Link href={"/inbox"}>
+          <MenuItem
+            onChange={onClose}
+            // title={get("Menu.inbox")}
+            icon={`/icons/${mode}/items/inbox.svg`}
           />
         </Link>
       </Box>
@@ -151,7 +176,7 @@ export const mainMenuData = [
   },
   {
     id: "playlist",
-    render: ({ get, mode, onClose }) => {
+    render: ({ get, mode, onClose, onChange }) => {
       const user = useUserStore((state) => state.user);
       const setShowLogin = useAuthLoginStore((state) => state.setShow);
       const setShowPlayList = usePlayListStore((state) => state.setShow);
@@ -166,37 +191,35 @@ export const mainMenuData = [
       }
 
       return <Box
-        sx={{
-          flex: 1,
-          width: 1 / 1,
-          a: {
-            flex: 1,
-            width: 1 / 1,
-          },
-        }}
+        sx={{ display: "flex", alignItems: "center", flex: 1, }}
       >
-        <MenuItem
-          onChange={handlePlayListClick}
-          title={get("Menu.playlist")}
-          icon={`/icons/light/playlist.svg`}
-        />
-      </Box>
+        <Box flex={1}>
 
-    },
-  },
-  {
-    id: "setting",
-    render: ({ onChange, mode }) => (
-      <Box sx={{ display: "flex", alignItems: "center", flex: 1 }}>
-        <Box sx={{ flex: 1 }} />
-        {/* <MenuItem center icon={`/icons/${mode}/items/profile.svg`} />
-        <Box sx={{ mx: 1 }} /> */}
+          <MenuItem
+            onChange={handlePlayListClick}
+            title={get("Menu.playlist")}
+            icon={`/icons/light/playlist.svg`}
+          />
+        </Box>
+        <Box mx={1} />
         <MenuItem
           center
           icon={`/icons/${mode}/items/setting.svg`}
           onChange={onChange("setting")}
         />
       </Box>
-    ),
+
+    },
   },
+  // {
+  //   id: "setting",
+  //   render: ({ onChange, mode }) => (
+  //     <Box sx={{ display: "flex", alignItems: "center", flex: 1 }}>
+  //       <Box sx={{ flex: 1 }} />
+  //       {/* <MenuItem center icon={`/icons/${mode}/items/profile.svg`} />
+  //       <Box sx={{ mx: 1 }} /> */}
+
+  //     </Box>
+  //   ),
+  // },
 ];
