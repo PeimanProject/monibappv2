@@ -151,10 +151,10 @@
   resolved "https://registry.yarnpkg.com/@capacitor/android/-/android-8.0.0.tgz#8cd63ed432460c70db0770dccd9234700152f31a"
   integrity sha512-FrBSvVAC5JuLaYHNyDnwQny0/SYnP+xDQbc/KA4wInmRkMXLDv22fkx9aBJIDrxjuUVd+jsRih4SAt8FgMEzCw==
 
-"@capacitor/app@^8.0.0":
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/@capacitor/app/-/app-8.0.0.tgz#47c2a90302919d71cef8a7297fb1d6ee439d1250"
-  integrity sha512-OwzIkUs4w433Bu9WWAEbEYngXEfJXZ9Wmdb8eoaqzYBgB0W9/3Ed/mh6sAYPNBAZlpyarmewgP7Nb+d3Vrh+xA==
+"@capacitor/app@^8.0.1":
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/@capacitor/app/-/app-8.0.1.tgz#5f01b17555fa310f5cd8fdf9c6d8d521df21c253"
+  integrity sha512-yeG3yyA0ETKqvgqexwHMBlmVOF13A1hRXzv/km0Ptv5TrNIZvZJK4MTI3uiqvnbHrzoJGP5DwWAjEXEfi90v3Q==
 
 "@capacitor/assets@^3.0.5":
   version "3.0.5"
@@ -227,10 +227,10 @@
   dependencies:
     tslib "^2.1.0"
 
-"@capacitor/device@^8.0.0":
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/@capacitor/device/-/device-8.0.0.tgz#4b0ca1a35c896e32dd125dba5fa9b681badd9c8d"
-  integrity sha512-qFmlTDnAvUwIg93YUF3u3ovqpDFqUl2RFkf2dVIF8Py7vTA+GjQIHQWITcBKfeUENoVXPNn04t5nxg5mAkjNEA==
+"@capacitor/device@^8.0.1":
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/@capacitor/device/-/device-8.0.1.tgz#344ab012bc1c858e6a9afe302ebe22a672827fdf"
+  integrity sha512-LHtf3ObK7dpFS3jJ0GNrTG0lHufNgD0tLBukeEAxeR28mu80dHQA1XxmQV0CWo+KKcI0hBdz4dfucRta3TdVxw==
 
 "@capacitor/file-transfer@^2.0.1":
   version "2.0.1"
@@ -255,6 +255,11 @@
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/@capacitor/network/-/network-8.0.0.tgz#40e749c94a47879f18f514854eae759bbad9bc93"
   integrity sha512-fgvB7pNKn8pKavuzys218j4YuA5euNfavp7nS3NuwWKWNupZAlbucfnl75lazxCyVF/ZRjzYVTb4vtTEfFrK1A==
+
+"@capacitor/push-notifications@^8.0.1":
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/@capacitor/push-notifications/-/push-notifications-8.0.1.tgz#5f454ab804a5ca65dcf365c62fca7dd8bf7c1733"
+  integrity sha512-CDY6syMxdG81Epn+V4fCYRR4L9tVS72F1kVrTY2ka6umWy4BmwXOXPsxGxlE5PmHLOhmBwKpy3uOiIJtSpMhOw==
 
 "@capacitor/share@^8.0.0":
   version "8.0.0"

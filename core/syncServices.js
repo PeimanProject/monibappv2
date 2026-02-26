@@ -62,6 +62,10 @@ export default function InitialSync({ children }) {
                         row_number: item.row_number,
                         course: item.course,
                         series_id: item.series_id, // کلید اتصال به series
+                        series_row: item.series_row,
+                        series_type: item.series_type,
+                        duration: item.duration,
+                        verse: item.verse,
                         main_id: item.main_id,
                         metadata: item.data // اطلاعات تکمیلی مثل زمان‌بندی‌ها
                     })));

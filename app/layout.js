@@ -11,6 +11,8 @@ import BackButtonHandler from "@/core/backButtonHandler";
 import InitialSync from "@/core/syncServices";
 import { ConnectivityProvider } from "@/core/ConnectivityProvider";
 import { NotifierProvider } from "@/core/notifire";
+import PushInit from "@/core/pushInit";
+import UpdateHandler from "@/core/updateChecker";
 
 // export const metadata = {
 //   title: appConfig.title,
@@ -108,6 +110,8 @@ export default async function RootLayout({ children }) {
         className={`${fonts[theme.theme.fontFamily].variable} ${tArabic.variable
           }`}
       >
+        <UpdateHandler />
+        <PushInit />
         <NotifierProvider>
 
           <ConnectivityProvider>

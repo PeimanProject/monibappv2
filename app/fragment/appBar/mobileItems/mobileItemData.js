@@ -7,6 +7,8 @@ import { usePlayListStore } from "@/store/usePlayListStore";
 import React from "react";
 import { useUserStore } from "@/store/useUserStore";
 import { useAuthLoginStore } from "@/store/layout/useProfileStore";
+import { useConnectivity } from "@/core/ConnectivityProvider";
+import { useNotify } from "@/core/notifire";
 
 export const mainMenuData = [
   {
@@ -139,7 +141,7 @@ export const mainMenuData = [
           },
         }}
       >
-        <Link href={"/about"}>
+        <Link href={"https://monibapp.ir/fa/help"} target="_blank">
           <MenuItem
             onChange={onClose}
             title={get("Menu.aboutUs")}
@@ -177,10 +179,17 @@ export const mainMenuData = [
   {
     id: "playlist",
     render: ({ get, mode, onClose, onChange }) => {
+      const notify = useNotify()
+      const { isConnected } = useConnectivity()
       const user = useUserStore((state) => state.user);
       const setShowLogin = useAuthLoginStore((state) => state.setShow);
       const setShowPlayList = usePlayListStore((state) => state.setShow);
       const handlePlayListClick = async () => {
+        if (!isConnected) {
+          notify("دسترسی به اینترنت وجود ندارد!", "error")
+          await onClose()
+          return
+        }
         if (!!!user) {
           await onClose()
           setShowLogin(true);
