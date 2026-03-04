@@ -5,6 +5,9 @@ const config: CapacitorConfig = {
   appName: 'monib',
   webDir: 'out',
   plugins: {
+    SystemBars: {
+      "insetsHandling": "disable"
+    },
     PushNotifications: {
       presentationOptions: ["badge", "sound", "alert"],
     },

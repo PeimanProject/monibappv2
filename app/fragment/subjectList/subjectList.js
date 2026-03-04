@@ -26,10 +26,10 @@ const TitleControl = ({ title, start_time, selected = false }) => {
   const handleTitleClick = React.useCallback(() => {
 
     if (!!audio) {
-      audio.currentTime = start_time;
+      audio.currentTime = Number(start_time);
     }
     if (video) {
-      video.currentTime = start_time;
+      video.currentTime = Number(start_time);
     }
   }, [audio, video]);
 
@@ -172,7 +172,7 @@ export const SubjectList = ({ list, lectureId, title }) => {
           <TitleControl
             key={index}
             {...item}
-            selected={position >= item.start_time && position <= item.end_time}
+            selected={position >= Number(item.start_time) && position <= Number(item.end_time)}
           />
         ))}
       </Box>

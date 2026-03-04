@@ -56,6 +56,7 @@ export const MobileSubjectText = ({
   const hasLastTopic = !_.isEmpty(lastTopic);
   // ۲. برای json_subject اول وجود metadata و بعد خالی نبودن فیلد را چک می‌کنیم
   const hasJsonSubject = metadata?.json_subject && !_.isEmpty(metadata.json_subject);
+  const hasEditedSubject = metadata?.edited_subject_list && !_.isEmpty(metadata.edited_subject_list);
   return (
     <Box
       sx={{
@@ -63,7 +64,7 @@ export const MobileSubjectText = ({
         mb: 2,
       }}
     >
-      {(hasTitles || hasTags || hasLastTopic || hasJsonSubject) && mainId === 1 && (
+      {(hasTitles || hasTags || hasLastTopic || hasJsonSubject || hasEditedSubject) && mainId === 1 && (
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <TabStyle index={index}>
             <TabNormalItem
@@ -93,7 +94,8 @@ export const MobileSubjectText = ({
                 !_.isEmpty(tags) ? tags :
                   !_.isEmpty(titles) ? titles :
                     !_.isEmpty(lastTopic) ? lastTopic :
-                      (metadata?.json_subject || []) // استفاده از Optional Chaining و مقدار پیش‌فرض
+                      !_.isEmpty(metadata?.edited_subject_list) ? metadata?.edited_subject_list :
+                        (metadata?.json_subject || []) // استفاده از Optional Chaining و مقدار پیش‌فرض
               }
               {...{
                 onTitleClick,

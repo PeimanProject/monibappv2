@@ -54,7 +54,7 @@ export const MobilePlayerTools = ({
   const setShowPlayList = useAddToPlayListStore((state) => state.setShow);
   const user = useUserStore((state) => state.user);
   const setShowLogin = useAuthLoginStore((state) => state.setShow);
-
+  const [lastDownloadType, setLastDownloadType] = useState(""); // "offline" | "public"
   const handleDownload = React.useCallback(
     (show) => () => {
       if (isDownloading) {
@@ -88,6 +88,7 @@ export const MobilePlayerTools = ({
   }, [setShowPlayList, user, setShowLogin]);
 
   const handleDownloadFileOffline = async (toPublic = false) => {
+    setLastDownloadType(toPublic ? "public" : "offline"); // ذخیره نوع انتخاب
     const isAudio = showSownloadOption.audio;
     const type = isAudio ? "sound" : "video";
 
@@ -276,7 +277,9 @@ export const MobilePlayerTools = ({
                   دانلود با موفقیت انجام شد
                 </Typography>
                 <Typography variant="body2" color="rgba(255,255,255,0.7)">
-                  فایل در بخش آفلاین قابل دسترسی است
+                  {lastDownloadType === "offline"
+                    ? "فایل در بخش «دانلودها» داخل اپلیکیشن ذخیره شد."
+                    : "فایل در پوشه Documents حافظه گوشی ذخیره شد."}
                 </Typography>
               </motion.div>
             )}

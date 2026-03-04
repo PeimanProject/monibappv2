@@ -176,7 +176,7 @@ export const StyleProvider = function ({
               },
               "body,html": {
                 backgroundColor: theme.palette.background.default,
-                padding: 0,
+                // padding: 0,
                 margin: 0,
                 fontFamily: "var(--global-font)",
                 ...(viewport.isMobile

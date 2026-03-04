@@ -185,7 +185,6 @@ export const MobilePlayerControl = ({
     }
   }, [ccType]);
 
-  console.log({ srt, srt_en })
   return (
     <>
       <Box

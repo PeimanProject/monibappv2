@@ -151,4 +151,22 @@ export const SettingData = [
       );
     },
   },
+  {
+    id: "size2",
+    render: ({ get }) => {
+      const { setTranslateFontSize, translateFontSize } =
+        useTranslateFontSizeStore((state) => state);
+
+      const handleTranslateQuranSize = React.useCallback(
+        (_e, value) => setTranslateFontSize(value),
+        [setTranslateFontSize]
+      );
+
+      return (
+        <Box sx={{ flex: 1, mt: 2, px: 2 }}>
+          <Typography variant="body1" textAlign={"center"} color="textDisabled">version: 1.0.0</Typography>
+        </Box>
+      );
+    },
+  },
 ];
