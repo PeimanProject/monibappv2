@@ -1,0 +1,137 @@
+/**
+ * Safe area & shell — Capacitor edge-to-edge
+ * Header top inset: --app-header-inset-top (synced in NativeHeaderInsetSync / useAppHeaderInset)
+ * Bottom nav: --app-bottom-nav-chrome
+ */
+
+:root {
+  --native-safe-top: 0px;
+  --native-safe-bottom: 0px;
+  --native-safe-left: 0px;
+  --native-safe-right: 0px;
+
+  /* Set at runtime — do NOT max(env, native) here (double inset on Android WebView) */
+  --app-header-inset-top: 0px;
+
+  --app-safe-top: var(--app-header-inset-top);
+  /* Synced at runtime (syncAppSafeBottom) — do not lift fixed nav with bottom: */
+  --app-safe-bottom: 0px;
+  --app-safe-left: max(
+    env(safe-area-inset-left, 0px),
+    var(--native-safe-left, 0px)
+  );
+  --app-safe-right: max(
+    env(safe-area-inset-right, 0px),
+    var(--native-safe-right, 0px)
+  );
+
+  --app-height: 100vh;
+  --app-bottom-nav-visual-height: 140px;
+  --app-bottom-nav-chrome: calc(
+    var(--app-bottom-nav-visual-height) + var(--app-safe-bottom)
+  );
+  --app-bottom-nav-z-index: 1300;
+  --app-public-top-offset: calc(var(--app-header-inset-top) + 40px);
+}
+
+html.capacitor-android body {
+  /* Fixed back.jpg shows through sub-pixel gaps between header & slider on WebView */
+  background: #ffffff !important;
+  background-image: none !important;
+  background-attachment: scroll !important;
+}
+
+@supports (height: 100dvh) {
+  :root {
+    --app-height: 100dvh;
+  }
+}
+
+html {
+  height: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+}
+
+/* Public mobile page stack — no accidental vertical gaps */
+.public-mobile-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.public-mobile-stack > * {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.app-shell {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 100vw;
+  min-height: var(--app-shell-height, var(--app-height, 100dvh));
+  height: var(--app-shell-height, var(--app-height, 100dvh));
+  overflow: hidden;
+  padding-left: var(--app-safe-left);
+  padding-right: var(--app-safe-right);
+}
+
+.app-shell__header {
+  flex-shrink: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.app-shell__header > * {
+  margin: 0;
+}
+
+.app-shell__main > *:first-child {
+  margin-top: 0;
+}
+
+.mobile-home-slider {
+  margin-top: 0 !important;
+  box-sizing: border-box;
+}
+
+.app-shell__main {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  /* Header lives in .app-shell__header — sticky children stick to main top (0) */
+  --app-sticky-top: 0px;
+  /* Single bottom clearance for fixed nav — do not repeat on page Containers */
+  padding-bottom: var(--app-bottom-nav-chrome, 188px);
+  box-sizing: border-box;
+}
+
+.app-shell__footer {
+  flex-shrink: 0;
+  z-index: var(--app-bottom-nav-z-index, 1300);
+  height: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.app-shell__footer > * {
+  pointer-events: auto;
+}
+
+.app-viewport-min-height {
+  min-height: var(--app-shell-height, var(--app-height, 100dvh));
+}

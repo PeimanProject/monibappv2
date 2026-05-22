@@ -45,7 +45,10 @@ export const TextList = ({ data, seriesId, verseId, rId }) => {
             px: 2,
             position: "sticky",
             zIndex: 99,
-            top: desktopValues({}).APP_HEIGHT + desktopValues({}).TITLE_HEIGHT,
+            top: mobileStickyTopOffset(
+              false,
+              desktopValues({}).TITLE_HEIGHT
+            ),
           }}
         >
           <Button

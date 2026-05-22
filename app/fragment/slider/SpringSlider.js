@@ -1,11 +1,58 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
-import { useSpring, animated, useTransition } from "@react-spring/web";
+import { Box, IconButton } from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import Image from "next/image";
-import _ from "lodash";
+import Link from "next/link";
+import {
+  getSliderHref,
+  isExternalSliderHref,
+  toSliderNavigationHref,
+} from "./sliderUtils";
+
+const SliderSlide = ({ item, slideWidthPercent, isMobile, children }) => {
+  const href = getSliderHref(item);
+  const navHref = href ? toSliderNavigationHref(href) : null;
+  const isExternal = navHref && isExternalSliderHref(navHref);
+
+  const boxSx = {
+    width: slideWidthPercent,
+    height: "100%",
+    position: "relative",
+    flexShrink: 0,
+    display: "block",
+    ...(navHref ? { cursor: "pointer" } : {}),
+  };
+
+  if (!navHref) {
+    return <Box sx={boxSx}>{children}</Box>;
+  }
+
+  if (isExternal) {
+    return (
+      <Box
+        component="a"
+        href={navHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        sx={{ ...boxSx, textDecoration: "none", color: "inherit" }}
+      >
+        {children}
+      </Box>
+    );
+  }
+
+  return (
+    <Box
+      component={Link}
+      href={navHref}
+      sx={{ ...boxSx, textDecoration: "none", color: "inherit" }}
+    >
+      {children}
+    </Box>
+  );
+};
 
 export const SpringSlider = ({
   list = [],
@@ -55,7 +102,6 @@ export const SpringSlider = ({
     setCurrentIndex(index);
   };
 
-  // Pause/play on hover
   const handleMouseEnter = () => {
     if (autoPlay) {
       setIsPlaying(false);
@@ -68,26 +114,13 @@ export const SpringSlider = ({
     }
   };
 
-  // Spring animation for the slider container
-  const slideSpring = useSpring({
-    transform: `translateX(-${currentIndex * 100}%)`,
-    config: { tension: 300, friction: 30 },
-  });
-
-  // Fade transition for individual slides
-  const transitions = useTransition(currentIndex, {
-    from: { opacity: 0, transform: "scale(1.1)" },
-    enter: { opacity: 1, transform: "scale(1)" },
-    leave: { opacity: 0, transform: "scale(0.9)" },
-    config: { tension: 300, friction: 30 },
-  });
-
   if (!list || list.length === 0) {
     return null;
   }
 
   const isMobile = variant === "mobile";
   const sliderHeight = isMobile ? 140 : height;
+  const slideWidthPercent = `${100 / list.length}%`;
 
   return (
     <Box
@@ -96,7 +129,14 @@ export const SpringSlider = ({
         width,
         height: sliderHeight,
         overflow: "hidden",
-        borderRadius: isMobile ? 0 : 6,
+        borderRadius: isMobile ? 1 : 6,
+        m: 0,
+        mt: 0,
+        maxWidth: "100%",
+        boxSizing: "border-box",
+        display: "block",
+        lineHeight: 0,
+        bgcolor: isMobile ? "background.default" : undefined,
         "&:hover .slider-controls": {
           opacity: 1,
         },
@@ -115,14 +155,11 @@ export const SpringSlider = ({
         }}
       >
         {list.map((item, index) => (
-          <Box
+          <SliderSlide
             key={index}
-            sx={{
-              width: `${100 / list.length}%`,
-              height: "100%",
-              position: "relative",
-              flexShrink: 0,
-            }}
+            item={item}
+            slideWidthPercent={slideWidthPercent}
+            isMobile={isMobile}
           >
             {item.src && (
               <Image
@@ -131,11 +168,15 @@ export const SpringSlider = ({
                 fill
                 style={{
                   objectFit: "contain",
+                  pointerEvents: "none",
                 }}
                 priority={index === 0}
+                unoptimized={
+                  typeof item.src === "string" && item.src.startsWith("http")
+                }
               />
             )}
-          </Box>
+          </SliderSlide>
         ))}
       </Box>
 
@@ -194,12 +235,16 @@ export const SpringSlider = ({
             transform: "translateX(-50%)",
             display: "flex",
             gap: 1,
+            zIndex: 2,
           }}
         >
           {list.map((_, index) => (
             <Box
               key={index}
-              onClick={() => goToSlide(index)}
+              onClick={(e) => {
+                e.stopPropagation();
+                goToSlide(index);
+              }}
               sx={{
                 width: 8,
                 height: 8,

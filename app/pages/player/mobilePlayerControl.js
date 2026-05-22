@@ -1,6 +1,6 @@
 "use client";
 
-import { appConfig, desktopValues } from "@/core/config/values";
+import { appConfig, desktopValues, mobileStickyTop } from "@/core/config/values";
 import { Box, Typography } from "@mui/material";
 import React from "react";
 import ReactPlayer from "react-player";
@@ -204,7 +204,7 @@ export const MobilePlayerControl = ({
 
           position: "sticky",
           overflow: "hidden",
-          top: desktopValues({}).APP_HEIGHT,
+          top: mobileStickyTop(false),
           zIndex: 999,
         }}
       >

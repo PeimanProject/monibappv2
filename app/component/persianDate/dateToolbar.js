@@ -8,7 +8,7 @@ import {
   styled,
   Menu,
 } from "@mui/material";
-import { desktopValues } from "@/core/config/values";
+import { desktopValues, mobileStickyTop } from "@/core/config/values";
 import _ from "lodash";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
 import DownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -170,7 +170,7 @@ export const DateToolbar = ({ year, desktop }) => {
             },
           }}
         >
-          {_.map(_.range(1404, 1392), (y) => (
+          {_.map(_.range(1405, 1392), (y) => (
             // <Link key={y} href={`/calendar/${y}`}>
             <Button
               onClick={() => goToYear(y)}
@@ -225,8 +225,8 @@ export const DateToolbar = ({ year, desktop }) => {
           height: desktopValues({}).CALENDAR_Tools_HEIGHT,
           position: "sticky",
           bgcolor: "background.default",
-          top: desktop ? 64 : desktopValues({}).APP_HEIGHT,
-          zIndex: 9999,
+          top: mobileStickyTop(desktop),
+          zIndex: 8,
           px: 2,
           display: "flex",
           flexDirection: "column",

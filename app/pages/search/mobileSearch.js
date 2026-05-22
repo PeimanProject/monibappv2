@@ -16,7 +16,7 @@ import {
 import React from "react";
 import _ from "lodash";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
-import { desktopValues } from "@/core/config/values";
+import { desktopValues, mobileStickyTop } from "@/core/config/values";
 import Link from "next/link";
 import { Book } from "./book";
 import { useTranslate } from "@/core/useTranslation";
@@ -133,7 +133,7 @@ export const MobileSearch = ({ desktop, q }) => {
           bgcolor: "background.default",
           alignItems: "center",
           flexDirection: "column",
-          top: desktop ? 64 : desktopValues({}).APP_HEIGHT,
+          top: mobileStickyTop(desktop),
           justifyContent: "center",
           position: "sticky",
           zIndex: 8,

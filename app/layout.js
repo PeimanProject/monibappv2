@@ -1,3 +1,4 @@
+import "./styles/safe-area.css";
 import { StyleProvider } from "@/theme/theme";
 import { SSR_GetTheme } from "@/core/ssrGetTheme";
 import { iranSans, iranYekan, tArabic } from "./font";
@@ -13,6 +14,9 @@ import { ConnectivityProvider } from "@/core/ConnectivityProvider";
 import { NotifierProvider } from "@/core/notifire";
 import PushInit from "@/core/pushInit";
 import UpdateHandler from "@/core/updateChecker";
+import { NativeSafeAreaInsets } from "@/core/nativeSafeAreaInsets";
+import { NativeHeaderInsetSync } from "@/core/useAppHeaderInset";
+import { NativeSystemBars } from "@/core/nativeSystemBars";
 
 // export const metadata = {
 //   title: appConfig.title,
@@ -111,6 +115,9 @@ export default async function RootLayout({ children }) {
           }`}
       >
         <UpdateHandler />
+        <NativeSafeAreaInsets />
+        <NativeHeaderInsetSync />
+        <NativeSystemBars />
         <PushInit />
         <NotifierProvider>
 

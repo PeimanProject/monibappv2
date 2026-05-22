@@ -1,6 +1,6 @@
 "use client";
 
-import { Alert, AppBar, ButtonBase, Snackbar, Typography, useTheme } from "@mui/material";
+import { Alert, AppBar, Box, ButtonBase, Snackbar, Typography, alpha, useTheme } from "@mui/material";
 import React from "react";
 import { AppBarBack } from "./appBarBack";
 import Image from "next/image";
@@ -13,7 +13,7 @@ import {
 } from "@/store/layout/useProfileStore";
 import { usePlayListStore } from "@/store/usePlayListStore";
 import { useUserStore } from "@/store/useUserStore";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useTranslate } from "@/core/useTranslation";
 import { useConnectivity } from "@/core/ConnectivityProvider";
 import { useNotify } from "@/core/notifire";
@@ -209,6 +209,7 @@ const m = 18;
 const topValue = 10;
 
 export const MobileAppBar = () => {
+  const theme = useTheme();
   const { isConnected } = useConnectivity()
   const user = useUserStore((state) => state.user);
   const setShowLogin = useAuthLoginStore((state) => state.setShow);
@@ -217,10 +218,15 @@ export const MobileAppBar = () => {
   const { show, setShow } = useMainMenuStore((state) => state);
   const setShowPlayList = usePlayListStore((state) => state.setShow);
   const router = useRouter();
+  const pathname = usePathname();
   const notify = useNotify()
 
 
   const [showButtons, setShowButtons] = React.useState(false);
+
+  React.useEffect(() => {
+    setShow(false);
+  }, [pathname, setShow]);
 
   const handleMenuClick = React.useCallback(
     (show) => () => setShow(show),
@@ -281,9 +287,37 @@ export const MobileAppBar = () => {
         sx={{
           top: "auto",
           bottom: 0,
-          zIndex: (theme) => theme.zIndex.drawer + 10
+          left: 0,
+          right: 0,
+          boxSizing: "border-box",
+          height: show
+            ? "calc(var(--app-height, 100dvh) - var(--app-safe-bottom, 0px))"
+            : "calc(var(--app-bottom-nav-visual-height, 140px) + var(--app-safe-bottom, 0px))",
+          paddingBottom: show ? 0 : "var(--app-safe-bottom, 0px)",
+          overflow: "hidden",
+          zIndex: "var(--app-bottom-nav-z-index, 1300)",
         }}
       >
+        {!show && (
+          <Box
+            aria-hidden
+            sx={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: "var(--app-safe-bottom, 0px)",
+              bgcolor: alpha(
+                theme.palette.mode === "dark"
+                  ? theme.palette.primary.dark
+                  : theme.palette.primary.main,
+                0.9
+              ),
+              zIndex: 0,
+              pointerEvents: "none",
+            }}
+          />
+        )}
         <AppBarBack>
           {!!showButtons && (
             <>

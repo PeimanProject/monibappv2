@@ -5,7 +5,7 @@ import { holidayColor, weekDays, jalaliWeekDay } from "./dayBar";
 import { addDays, isEqual, format } from "date-fns-jalali";
 import { format as gFormat } from "date-fns";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
-import { desktopValues } from "@/core/config/values";
+import { desktopValues, mobileStickyTopOffset } from "@/core/config/values";
 import { useEventCalendarStore } from "@/store/useEventCalendar";
 import { useTranslate } from "@/core/useTranslation";
 
@@ -256,10 +256,11 @@ export const MobileMonthSection = ({
           bgcolor: "background.default",
           zIndex: 99,
 
-          top:
-            (desktop ? 64 : desktopValues({}).APP_HEIGHT) +
-            desktopValues({}).CALENDAR_Tools_HEIGHT +
-            desktopValues({}).CALENDAR_APP_HEIGHT,
+          top: mobileStickyTopOffset(
+            desktop,
+            desktopValues({}).CALENDAR_Tools_HEIGHT,
+            desktopValues({}).CALENDAR_APP_HEIGHT
+          ),
         }}
       >
         {_.map(_.range(0, 7), (day) => (

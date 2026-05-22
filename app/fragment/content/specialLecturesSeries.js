@@ -5,7 +5,7 @@ import React from "react";
 import _ from "lodash";
 import { SearchControl } from "@/app/component/search";
 import { SeriesItemKey } from "@/app/component/seriesItemKey";
-import { desktopValues } from "@/core/config/values";
+import { mobileStickyTop } from "@/core/config/values";
 import { TabNormalItem, TabStyle } from "@/app/component/tabStyle";
 import { useTranslate } from "@/core/useTranslation";
 
@@ -38,10 +38,10 @@ export const MobileSeries = ({ list, nhj, sahifa }) => {
     <Container>
       <Box
         sx={{
-          py: 2,
-
+          pt: 0.5,
+          pb: 1,
           position: "sticky",
-          top: desktopValues({}).APP_HEIGHT,
+          top: mobileStickyTop(false),
           bgcolor: (theme) => alpha(theme.palette.background.default, 0.8),
           backdropFilter: "blur(5px)",
           zIndex: 8,

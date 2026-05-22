@@ -6,9 +6,9 @@ import * as d3 from "d3";
 import { useMainMenuStore } from "@/store/layout/useLayoutStore";
 import { useSpring, animated, config } from "@react-spring/web";
 
-const h = 140;
+const NAV_VISUAL_HEIGHT = 140;
 
-const SVG = ({ showMenu }) => {
+const SVG = ({ showMenu, containerHeight }) => {
   const theme = useTheme();
   const svgRef = React.useRef();
   const [curve, setCurve] = React.useState(60);
@@ -18,16 +18,19 @@ const SVG = ({ showMenu }) => {
   }, [showMenu]);
 
   React.useEffect(() => {
+    if (!svgRef.current || containerHeight <= 0) return;
+
     const width = window.innerWidth;
+    const height = containerHeight;
 
     const svg = d3
       .select(svgRef.current)
       .attr("width", width)
-      .attr("height", window.innerHeight);
+      .attr("height", height);
 
     const pathData = `M 0,${curve}
                       Q ${width / 2},${0} ${width},${curve}
-                      V ${window.innerHeight}
+                      V ${height}
                       H 0
                       Z`;
 
@@ -53,24 +56,26 @@ const SVG = ({ showMenu }) => {
       )
       .attr("stroke", "null")
       .attr("stroke-width", 0);
-  }, [showMenu, curve]);
+  }, [showMenu, curve, containerHeight, theme]);
 
-  return <Box component={"svg"} ref={svgRef} />;
+  return <Box component={"svg"} ref={svgRef} sx={{ display: "block" }} />;
 };
 
 export const AppBarBack = ({ children }) => {
   const showMenu = useMainMenuStore((state) => state.show);
 
+  const expandedHeight = React.useMemo(() => {
+    if (typeof window === "undefined") return NAV_VISUAL_HEIGHT;
+    return Math.max(NAV_VISUAL_HEIGHT, window.innerHeight - 20);
+  }, [showMenu]);
+
   const springs = useSpring({
-    ...(!!!showMenu && {
-      height: h,
-    }),
-    ...(!!showMenu && {
-      height: window.innerHeight - 20,
-    }),
-    delay: !!!showMenu ? 200 : 0,
-    config: !!!showMenu ? config.stiff : config.default,
+    height: showMenu ? expandedHeight : NAV_VISUAL_HEIGHT,
+    delay: !showMenu ? 200 : 0,
+    config: !showMenu ? config.stiff : config.default,
   });
+
+  const containerHeight = showMenu ? expandedHeight : NAV_VISUAL_HEIGHT;
 
   return (
     <animated.div
@@ -80,14 +85,12 @@ export const AppBarBack = ({ children }) => {
         bottom: 0,
         left: 0,
         width: "100%",
+        zIndex: 1,
         filter: "drop-shadow(0 0px 6px rgba(0, 0, 0, 0.8))",
-        // ...(showMenu && {
-        //   backdropFilter: "blur(28px)",
-        // }),
         ...springs,
       }}
     >
-      <SVG showMenu={showMenu} />
+      <SVG showMenu={showMenu} containerHeight={containerHeight} />
       {children}
     </animated.div>
   );

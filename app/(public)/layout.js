@@ -1,5 +1,7 @@
 "use client";
 import React from "react";
+import { Box } from "@mui/material";
+import { MobileAppShell } from "@/app/component/appShell/MobileAppShell";
 import { MainAppBar } from "@/app/fragment/appBar/mainAppBar";
 import { MobileTopBar } from "@/app/fragment/appBar/mobileTopBar";
 import { AuthLoginControl } from "@/app/fragment/auth/authLoginControl";
@@ -19,10 +21,17 @@ const PublicLayout = ({ children }) => {
       <AuthLoginControl />
       <PlayerAction />
       <ProfileControl />
-      <MobileTopBar />
-      <NetworkStatusBanner />
-      <MainAppBar viewport={viewport} />
-      {children}
+      <MobileAppShell
+        header={
+          <>
+            <MobileTopBar />
+            <NetworkStatusBanner />
+          </>
+        }
+        footer={<MainAppBar viewport={viewport} />}
+      >
+        {children}
+      </MobileAppShell>
     </>
   );
 };

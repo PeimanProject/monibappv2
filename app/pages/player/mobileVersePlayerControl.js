@@ -1,6 +1,6 @@
 "use client";
 
-import { desktopValues } from "@/core/config/values";
+import { desktopValues, mobileStickyTop } from "@/core/config/values";
 import { Box, ButtonBase, Typography } from "@mui/material";
 import React from "react";
 import ReactPlayer from "react-player";
@@ -144,7 +144,7 @@ export const MobileVersePlayerControl = ({
           bgcolor: "black",
           position: "sticky",
           overflow: "hidden",
-          top: desktop ? 64 : desktopValues({}).APP_HEIGHT,
+          top: mobileStickyTop(desktop),
           // ...(!!!show ||
           //   (media !== "video" && {
           //     background: `url(/images/back-sound.jpg) center`,

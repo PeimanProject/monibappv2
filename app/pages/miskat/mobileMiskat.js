@@ -1,7 +1,7 @@
 "use client";
 
 import { useNavBarStore } from "@/store/layout/useNavBarStore";
-import { desktopValues } from "@/core/config/values";
+import { desktopValues, mobileStickyTop } from "@/core/config/values";
 import { Container, Box, Typography, Divider, alpha } from "@mui/material";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
 import React, { useEffect } from "react";
@@ -118,7 +118,7 @@ export default function MobileMiskat({ content, viewport }) {
         <Box
           sx={{
             position: "sticky",
-            top: viewport === "desktop" ? 64 : desktopValues({}).APP_HEIGHT,
+            top: mobileStickyTop(viewport === "desktop"),
             zIndex: 99,
             height: 50,
 

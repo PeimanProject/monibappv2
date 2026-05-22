@@ -87,7 +87,7 @@ export default function Home() {
       {isConnected && homeData?.sliders && (
         <MobileSlider list={homeData.sliders} />
       )}
-      <Container maxWidth="sm" sx={{ pt: 1, pb: 20 }}>
+      <Container maxWidth="sm" sx={{ pt: 1, pb: 1 }}>
         <MobileMainButtonsList data={homeData?.count} />
         {/* بخش زنده و اکشن‌ها در حالت آفلاین حذف یا غیرفعال می‌شوند */}
 

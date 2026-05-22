@@ -18,6 +18,7 @@ import { alpha, styled } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
 import { ContactReq } from "@/app/data/contact/route";
+import { appConfig } from "@/core/config/values";
 import { useConnectivity } from "@/core/ConnectivityProvider";
 import OfflinePage from "@/app/component/offlienPage";
 
@@ -392,6 +393,13 @@ export default function SupportPage() {
             >
               ارسال
             </Button>
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              sx={{ mt: 1, display: "block", width: 140, textAlign: "center" }}
+            >
+              نسخه {digitsEnToFa(appConfig.version)}
+            </Typography>
           </Grid>
         </Grid>
       </form>

@@ -3,7 +3,7 @@
 import React from "react";
 import { Box, Container, Typography, alpha, Button } from "@mui/material";
 import { digitsEnToFa } from "@persian-tools/persian-tools";
-import { desktopValues } from "@/core/config/values";
+import { desktopValues, mobileStickyTop } from "@/core/config/values";
 import Link from "next/link";
 import { useCurrentVerseStore } from "@/store/useQuranStore";
 import { useTranslate } from "@/core/useTranslation";
@@ -32,7 +32,7 @@ export const MobileTitle = ({
             backdropFilter: "blur(5px)",
             boxShadow: 1,
             position: "sticky",
-            top: desktopValues({}).APP_HEIGHT,
+            top: mobileStickyTop(false),
             zIndex: 22,
             display: "flex",
             alignItems: "center",
